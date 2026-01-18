@@ -31,7 +31,7 @@ const ProductSlider: React.FC<ProductSliderProps> = ({ title, subtitle, products
     if (products.length === 0) return null;
 
     return (
-        <section className="w-full py-8 bg-white">
+        <section className="w-full py-8 bg-white relative z-20">
             <div className="w-full px-2 md:px-4">
                 <div className="flex flex-col items-center justify-center mb-8 relative">
                     <div className="text-center space-y-2 mb-2">
@@ -41,37 +41,39 @@ const ProductSlider: React.FC<ProductSliderProps> = ({ title, subtitle, products
 
                     <div className="flex items-center gap-4 absolute right-0 top-1/2 -translate-y-1/2 hidden md:flex">
                         {viewAllLink && (
-                            <Link to={viewAllLink} className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-gray-500 hover:text-black transition-colors mr-4">
+                            <Link to={viewAllLink} className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-gray-500 hover:text-black transition-colors">
                                 View All <ArrowRight size={14} />
                             </Link>
                         )}
-                        <div className="flex items-center gap-2">
-                            <button
-                                onClick={() => scroll('left')}
-                                className="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center hover:bg-black hover:text-white hover:border-black transition-all"
-                            >
-                                <ChevronLeft size={20} />
-                            </button>
-                            <button
-                                onClick={() => scroll('right')}
-                                className="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center hover:bg-black hover:text-white hover:border-black transition-all"
-                            >
-                                <ChevronRight size={20} />
-                            </button>
-                        </div>
                     </div>
                 </div>
 
-                <div
-                    ref={scrollContainerRef}
-                    className="flex gap-4 overflow-x-auto pb-8 scrollbar-hide snap-x"
-                    style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-                >
-                    {products.map(product => (
-                        <div key={product.id} className="w-[calc(50%-8px)] md:w-[calc(25%-12px)] flex-none snap-start">
-                            <ProductCard product={product} />
-                        </div>
-                    ))}
+                <div className="relative group">
+                    {/* Navigation Arrows */}
+                    <button
+                        onClick={() => scroll('left')}
+                        className="absolute left-0 top-1/2 -translate-y-1/2 z-10 w-10 h-10 bg-white border border-gray-100 shadow-md rounded-full flex items-center justify-center text-slate-700 opacity-0 group-hover:opacity-100 transition-opacity duration-300 hover:bg-black hover:text-white"
+                    >
+                        <ChevronLeft size={20} />
+                    </button>
+                    <button
+                        onClick={() => scroll('right')}
+                        className="absolute right-0 top-1/2 -translate-y-1/2 z-10 w-10 h-10 bg-white border border-gray-100 shadow-md rounded-full flex items-center justify-center text-slate-700 opacity-0 group-hover:opacity-100 transition-opacity duration-300 hover:bg-black hover:text-white"
+                    >
+                        <ChevronRight size={20} />
+                    </button>
+
+                    <div
+                        ref={scrollContainerRef}
+                        className="flex gap-4 overflow-x-auto pb-8 scrollbar-hide snap-x"
+                        style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+                    >
+                        {products.map(product => (
+                            <div key={product.id} className="w-[calc(50%-8px)] md:w-[calc(25%-12px)] flex-none snap-start">
+                                <ProductCard product={product} />
+                            </div>
+                        ))}
+                    </div>
                 </div>
 
                 {viewAllLink && (

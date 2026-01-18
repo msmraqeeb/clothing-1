@@ -42,7 +42,7 @@ const Blog: React.FC = () => {
                                 </div>
 
                                 <Link to={`/blog/${post.slug}`} className="block mb-2">
-                                    <h2 className="text-xl font-bold text-gray-800 group-hover:text-[#00a651] transition-colors line-clamp-2">
+                                    <h2 className="text-xl font-bold text-gray-800 group-hover:text-black transition-colors line-clamp-2">
                                         {post.title}
                                     </h2>
                                 </Link>
@@ -62,7 +62,7 @@ const Blog: React.FC = () => {
                                     </div>
                                     <Link
                                         to={`/blog/${post.slug}`}
-                                        className="text-[#00a651] font-semibold text-sm flex items-center gap-1 hover:gap-2 transition-all"
+                                        className="text-black font-semibold text-sm flex items-center gap-1 hover:gap-2 transition-all hover:text-gray-600"
                                     >
                                         Read More <ArrowRight size={16} />
                                     </Link>

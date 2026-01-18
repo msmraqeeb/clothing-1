@@ -183,7 +183,7 @@ const Home: React.FC = () => {
               key={section.id}
               title={section.title}
               products={getSectionProducts(section)}
-              viewAllLink={section.filterType === 'category' ? `/products?category=${encodeURIComponent(section.filterValue || '')}` : '/products'}
+              viewAllLink={section.filterType === 'category' ? `/products?category=${encodeURIComponent((section.filterValue || '').toLowerCase())}` : '/products'}
             />
           );
         } else if (section.type === 'tabbed-slider') {

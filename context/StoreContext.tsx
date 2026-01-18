@@ -87,6 +87,7 @@ interface StoreContextType {
   refreshAllData: () => Promise<void>;
   searchQuery: string;
   setSearchQuery: (q: string) => void;
+  superAdminName: string;
 }
 
 const StoreContext = createContext<StoreContextType | undefined>(undefined);
@@ -188,6 +189,7 @@ export const StoreProvider: React.FC<{ children: ReactNode }> = ({ children }) =
   const [searchQuery, setSearchQuery] = useState('');
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [superAdminName, setSuperAdminName] = useState('Admin');
 
   const isAdmin = userProfile?.role === 'admin' || user?.email === SUPER_ADMIN_EMAIL;
 
@@ -354,14 +356,18 @@ export const StoreProvider: React.FC<{ children: ReactNode }> = ({ children }) =
           // And `fullRev` in auth block.
 
           // I will restore that pattern.
-          const { data: publicReviews } = await supabase.from('reviews').select('id, product_id, rating').order('created_at', { ascending: false });
-          if (publicReviews) setReviews(publicReviews.map(rv => ({ id: String(rv.id), productId: String(rv.product_id), productName: '', authorName: '', rating: Number(rv.rating), comment: '', reply: undefined, createdAt: '' })));
+          const { data: publicReviews } = await supabase.from('reviews').select('*').order('created_at', { ascending: false });
+          if (publicReviews) setReviews(publicReviews.map(rv => ({ id: String(rv.id), productId: String(rv.product_id), productName: String(rv.product_name || ''), authorName: String(rv.author_name || 'Anonymous'), rating: Number(rv.rating), comment: String(rv.comment || ''), reply: rv.reply, createdAt: String(rv.created_at) })));
         }
       } else {
         // Guest user: also needs public reviews for stars
-        const { data: publicReviews } = await supabase.from('reviews').select('id, product_id, rating').order('created_at', { ascending: false });
-        if (publicReviews) setReviews(publicReviews.map(rv => ({ id: String(rv.id), productId: String(rv.product_id), productName: '', authorName: '', rating: Number(rv.rating), comment: '', reply: undefined, createdAt: '' })));
+        const { data: publicReviews } = await supabase.from('reviews').select('*').order('created_at', { ascending: false });
+        if (publicReviews) setReviews(publicReviews.map(rv => ({ id: String(rv.id), productId: String(rv.product_id), productName: String(rv.product_name || ''), authorName: String(rv.author_name || 'Anonymous'), rating: Number(rv.rating), comment: String(rv.comment || ''), reply: rv.reply, createdAt: String(rv.created_at) })));
       }
+
+      // Fetch Super Admin Name consistently for public display
+      const { data: saProfile } = await supabase.from('profiles').select('full_name').eq('email', SUPER_ADMIN_EMAIL).maybeSingle();
+      if (saProfile?.full_name) setSuperAdminName(saProfile.full_name);
 
     } catch (error: any) {
       console.error('Critical fetch error:', error.message);
@@ -408,22 +414,16 @@ export const StoreProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     }
   };
 
-  const lastInitializedUser = useRef<string | null>(null);
+  const lastInitializedUser = useRef<string | null | 'PENDING'>('PENDING');
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      if (session?.user?.id !== lastInitializedUser.current) {
-        initializeAuth(session?.user || null);
-        lastInitializedUser.current = session?.user?.id || null;
-      }
-    });
-
+    // Only use onAuthStateChange to prevent race conditions involved with getSession()
     const { data: authListener } = supabase.auth.onAuthStateChange((event, session) => {
-      // Ignore TOKEN_REFRESHED or other minor events to prevent reload loops/unnecessary fetches
+      // Ignore TOKEN_REFRESHED to prevent loops
       if (event === 'TOKEN_REFRESHED') return;
 
       if (event === 'SIGNED_OUT') {
-        lastInitializedUser.current = null; // Reset on sign out
+        lastInitializedUser.current = null;
         setUser(null);
         setUserProfile(null);
         setAddresses([]);
@@ -566,7 +566,7 @@ export const StoreProvider: React.FC<{ children: ReactNode }> = ({ children }) =
 
   return (
     <StoreContext.Provider value={{
-      products, categories, brands, orders, attributes, coupons, reviews, users, addresses, pages, blogPosts, banners, homeSections, wishlist, user, userProfile, shippingSettings, storeInfo, appliedCoupon, cart, isAdmin, adminTab, isCartOpen, loading,
+      products, categories, brands, orders, attributes, coupons, reviews, users, addresses, pages, blogPosts, banners, homeSections, wishlist, user, userProfile, shippingSettings, storeInfo, appliedCoupon, cart, isAdmin, adminTab, isCartOpen, loading, superAdminName,
 
       setAdminTab: (tab: AdminTab) => setAdminTab(tab), toggleAdmin: () => { }, addToCart, removeFromCart: (id) => setCart(cart.filter(i => (i.selectedVariantId ? `${i.id}-${i.selectedVariantId}` : i.id) !== id)),
       addHomeSection: async (section) => {

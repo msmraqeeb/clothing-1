@@ -8,7 +8,7 @@ import ProductCard from '../components/ProductCard';
 
 const ProductDetails: React.FC = () => {
   const { slug } = useParams() as { slug: string };
-  const { products, addToCart, reviews, addReview, userProfile } = useStore();
+  const { products, addToCart, reviews, addReview, userProfile, superAdminName } = useStore();
   const [quantity, setQuantity] = useState(1);
   const [selectedAttrValues, setSelectedAttrValues] = useState<Record<string, string>>({});
   const [selectionError, setSelectionError] = useState<string | null>(null);
@@ -470,7 +470,7 @@ const ProductDetails: React.FC = () => {
 
                     {rev.reply && (
                       <div className="mt-6 pl-6 border-l-2 border-black py-2 bg-gray-50 rounded-none">
-                        <span className="text-[10px] font-black text-black uppercase tracking-wider block mb-1">Reply</span>
+                        <span className="text-[10px] font-black text-black uppercase tracking-wider block mb-1">Reply by {superAdminName}</span>
                         <p className="text-gray-800 text-sm font-medium">"{rev.reply}"</p>
                       </div>
                     )}

@@ -8,7 +8,7 @@ import {
   Ticket, Eye, Truck, RefreshCw, Layers, Zap, Users as UsersIcon,
   Globe, PlusCircle, Image as ImageIcon, Save, AlertTriangle,
   ChevronDown, MessageSquare, Star, ChevronRight, Minus,
-  Settings as SettingsIcon, Search, Edit3, Check, Database, Copy, Printer, Calendar, BarChart3, FileText, LayoutTemplate, Upload, BookOpen
+  Settings as SettingsIcon, Search, Edit3, Check, Database, Copy, Printer, Calendar, BarChart3, FileText, LayoutTemplate, Upload, BookOpen, Loader2
 } from 'lucide-react';
 import { Product, Category, Order, Variant, ShippingSettings, Brand, Coupon, CartItem, StoreInfo, Page, HomeSection, BlogPost } from '../types';
 import { PageBuilder } from '../components/PageBuilder';
@@ -867,12 +867,15 @@ CREATE POLICY "Public read blog" ON public.blog_posts FOR SELECT USING (true);`;
 
   const handleBlogSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsSaving(true);
     const slug = blogForm.slug.toLowerCase().trim().replace(/[^\w\s-]/g, '').replace(/[\s_-]+/g, '-');
     try {
       if (editingItem?.type === 'blog') await updateBlogPost(editingItem.data.id, { ...blogForm, slug });
       else await addBlogPost({ ...blogForm, slug });
       closeForms();
-    } catch (err: any) { alert(err.message); }
+    } catch (err: any) { alert(err.message); } finally {
+      setIsSaving(false);
+    }
   };
 
   const handleBlogImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -1816,7 +1819,15 @@ CREATE POLICY "Public read blog" ON public.blog_posts FOR SELECT USING (true);`;
 
                 <div className="flex justify-end gap-3 pt-6 border-t border-gray-100">
                   <button type="button" onClick={closeForms} className="px-6 py-3 text-slate-400 font-bold uppercase text-[11px] hover:text-slate-600">Cancel</button>
-                  <button type="submit" className="bg-black text-white px-10 py-3 rounded-xl font-black uppercase text-[11px] shadow-lg transition-all hover:bg-gray-800">Save Post</button>
+                  <button type="submit" disabled={isSaving} className={`bg-black text-white px-10 py-3 rounded-xl font-black uppercase text-[11px] shadow-lg transition-all hover:bg-gray-800 flex items-center gap-2 ${isSaving ? 'opacity-70 cursor-not-allowed' : ''}`}>
+                    {isSaving ? (
+                      <>
+                        <Loader2 size={14} className="animate-spin" /> Saving
+                      </>
+                    ) : (
+                      'Save Post'
+                    )}
+                  </button>
                 </div>
               </form>
             ) : (

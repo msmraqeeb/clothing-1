@@ -374,7 +374,7 @@ const MyAccount: React.FC = () => {
                       </div>
                       <div className="pt-6 flex gap-6">
                         <button type="button" onClick={() => setShowAddressForm(false)} className="flex-1 bg-gray-50 hover:bg-gray-100 text-gray-400 font-black py-5 rounded-[1.5rem] uppercase text-xs tracking-widest transition-all">Cancel</button>
-                        <button type="submit" className="flex-[2] bg-[#00a651] hover:bg-[#008c44] text-white font-black py-5 rounded-[1.5rem] uppercase text-xs tracking-widest shadow-2xl shadow-emerald-100 transition-all active:scale-95">
+                        <button type="submit" className="flex-[2] bg-black hover:bg-gray-800 text-white font-black py-5 rounded-[1.5rem] uppercase text-xs tracking-widest shadow-2xl shadow-gray-200 transition-all active:scale-95">
                           {editingAddressId ? 'Update Address' : 'Save Address'}
                         </button>
                       </div>
