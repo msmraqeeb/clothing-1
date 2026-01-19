@@ -88,13 +88,13 @@ const Login: React.FC = () => {
 
   return (
     <div className="min-h-[80vh] flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8 bg-white p-10 rounded-[2.5rem] shadow-2xl border border-gray-100">
+      <div className="max-w-md w-full space-y-8 bg-white p-10 shadow-2xl border border-gray-100">
         <div className="text-center">
-          <div className="mx-auto flex items-center justify-center h-16 w-16 rounded-3xl bg-black text-white shadow-xl shadow-gray-200">
+          <div className="mx-auto flex items-center justify-center h-16 w-16 bg-black text-white shadow-xl shadow-gray-200">
             <User size={32} />
           </div>
           <h2 className="mt-6 text-3xl font-black text-gray-900 tracking-tight">
-            {isLogin ? 'Welcome Back!' : 'Join SMart Grocery'}
+            {isLogin ? 'Welcome Back!' : 'Join V&V'}
           </h2>
           <p className="mt-2 text-sm text-gray-500 font-medium">
             {isLogin ? 'Log in to access your orders and profile.' : 'Create an account to start shopping fresh!'}
@@ -121,7 +121,7 @@ const Login: React.FC = () => {
                   required={!isLogin}
                   value={formData.fullName}
                   onChange={handleInputChange}
-                  className="block w-full pl-12 pr-4 py-4 border border-gray-200 rounded-2xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-black/10 focus:border-black transition-all bg-gray-50/50 font-medium"
+                  className="block w-full pl-12 pr-4 py-4 border border-gray-200 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-black/10 focus:border-black transition-all bg-gray-50/50 font-medium"
                   placeholder="Full Name"
                 />
               </div>
@@ -138,7 +138,7 @@ const Login: React.FC = () => {
                 required
                 value={formData.email}
                 onChange={handleInputChange}
-                className="block w-full pl-12 pr-4 py-4 border border-gray-200 rounded-2xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-black/10 focus:border-black transition-all bg-gray-50/50 font-medium"
+                className="block w-full pl-12 pr-4 py-4 border border-gray-200 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-black/10 focus:border-black transition-all bg-gray-50/50 font-medium"
                 placeholder="Email Address"
               />
             </div>
@@ -154,7 +154,7 @@ const Login: React.FC = () => {
                 required
                 value={formData.password}
                 onChange={handleInputChange}
-                className="block w-full pl-12 pr-12 py-4 border border-gray-200 rounded-2xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-black/10 focus:border-black transition-all bg-gray-50/50 font-medium"
+                className="block w-full pl-12 pr-12 py-4 border border-gray-200 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-black/10 focus:border-black transition-all bg-gray-50/50 font-medium"
                 placeholder="Password"
               />
               <button
@@ -183,7 +183,7 @@ const Login: React.FC = () => {
             <button
               type="submit"
               disabled={loading}
-              className="group relative w-full flex justify-center py-4 px-4 border border-transparent text-sm font-black rounded-2xl text-white bg-black hover:bg-white hover:text-black hover:border-black focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black transition-all shadow-xl shadow-gray-200 uppercase tracking-widest disabled:opacity-70"
+              className="group relative w-full flex justify-center py-4 px-4 border border-transparent text-sm font-black text-white bg-black hover:bg-white hover:text-black hover:border-black focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-black transition-all shadow-xl shadow-gray-200 uppercase tracking-widest disabled:opacity-70"
             >
               {loading ? (
                 <Loader2 className="h-5 w-5 animate-spin" />

@@ -253,7 +253,7 @@ export const StoreProvider: React.FC<{ children: ReactNode }> = ({ children }) =
 
       // 1. Fetch Public Data (Parallel) - Optimized for initial rendering
       // Note: We still fetch '*' for products for now as logic depends on it, but splitting the admin data is the big win.
-      const [pd, cat, br, set, attr, storeSettings, pagesRes, homeSectionsRes, bannerRes, blogRes] = await Promise.all([
+      const [pd, cat, br, set, attr, storeSettings, pagesRes, homeSectionsRes, bannerRes, blogRes, coupRes] = await Promise.all([
         supabase.from('products').select('*').order('created_at', { ascending: false }),
         supabase.from('categories').select('*').order('name', { ascending: true }),
         supabase.from('brands').select('*').order('name', { ascending: true }),
@@ -263,7 +263,8 @@ export const StoreProvider: React.FC<{ children: ReactNode }> = ({ children }) =
         supabase.from('pages').select('*').order('created_at', { ascending: false }),
         supabase.from('settings').select('*').eq('key', 'home_sections').maybeSingle(),
         supabase.from('banners').select('*').order('sort_order', { ascending: true }),
-        supabase.from('blog_posts').select('*').order('created_at', { ascending: false })
+        supabase.from('blog_posts').select('*').order('created_at', { ascending: false }),
+        supabase.from('coupons').select('*').eq('status', 'Active').order('created_at', { ascending: false })
       ]);
 
       if (pd.data) setProducts(pd.data.map(mapProduct));
@@ -301,6 +302,19 @@ export const StoreProvider: React.FC<{ children: ReactNode }> = ({ children }) =
         imageUrl: p.image_url,
         slug: p.slug,
         tags: p.tags || []
+      })));
+      // Initialize coupons with active ones for everyone (Admins will override with ALL coupons later)
+      // Note: We use 'any' for the coupon map input to avoid strict type issues with Supabase return type
+      if (coupRes.data) setCoupons(coupRes.data.map((c: any) => ({
+        id: String(c.id),
+        code: c.code,
+        discountType: c.discount_type,
+        discountValue: Number(c.discount_value),
+        minimumSpend: Number(c.minimum_spend || 0),
+        expiryDate: String(c.expiry_date),
+        status: c.status,
+        autoApply: Boolean(c.auto_apply),
+        createdAt: String(c.created_at)
       })));
 
       let currentRole = null;

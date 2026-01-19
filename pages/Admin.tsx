@@ -1261,7 +1261,7 @@ CREATE POLICY "Public read blog" ON public.blog_posts FOR SELECT USING (true);`;
           <ShieldCheck className="text-white" size={36} />
           <span className="font-black text-2xl uppercase tracking-tighter">Admin <span className="text-gray-400">V&V</span></span>
         </div>
-        <button onClick={async () => { setIsSyncing(true); await refreshAllData(); setIsSyncing(false); }} className="mb-6 flex items-center justify-center gap-2 bg-gray-900 border border-gray-800 rounded-xl py-3 px-4 text-[11px] font-black uppercase tracking-widest hover:bg-gray-800 transition-all active:scale-95">
+        <button onClick={async () => { setIsSyncing(true); await refreshAllData(); setIsSyncing(false); }} className="mb-6 flex items-center justify-center gap-2 bg-gray-900 border border-gray-800  py-3 px-4 text-[11px] font-black uppercase tracking-widest hover:bg-gray-800 transition-all active:scale-95">
           <RefreshCw size={14} className={isSyncing ? 'animate-spin' : ''} /> {isSyncing ? 'Syncing...' : 'Sync Database'}
         </button>
         <nav className="flex flex-col gap-1 flex-1 overflow-y-auto custom-scrollbar">
@@ -1283,7 +1283,7 @@ CREATE POLICY "Public read blog" ON public.blog_posts FOR SELECT USING (true);`;
             { id: 'layout', icon: LayoutTemplate, label: 'Home Layout' },
             { id: 'blog', icon: BookOpen, label: 'Blog' },
           ].map(item => (
-            <button key={item.id} onClick={() => { setAdminTabState(item.id); closeForms(); }} className={`flex items-center gap-4 px-6 py-3.5 rounded-2xl transition-all font-bold text-sm ${adminTab === item.id ? 'bg-white text-black shadow-lg' : 'text-gray-400 hover:bg-white/10'}`}>
+            <button key={item.id} onClick={() => { setAdminTabState(item.id); closeForms(); }} className={`flex items-center gap-4 px-6 py-3.5  transition-all font-bold text-sm ${adminTab === item.id ? 'bg-white text-black shadow-lg' : 'text-gray-400 hover:bg-white/10'}`}>
               <item.icon size={18} /> {item.label}
             </button>
           ))}
@@ -1296,20 +1296,20 @@ CREATE POLICY "Public read blog" ON public.blog_posts FOR SELECT USING (true);`;
             <div className="flex justify-between items-center">
               <div><h2 className="text-2xl font-black text-slate-800 tracking-tight">Home Layout</h2><p className="text-slate-400 text-sm">Manage homepage sections.</p></div>
               {!isAdding && !editingItem && (
-                <button onClick={() => setIsAdding('section')} className="bg-black text-white px-8 py-3.5 rounded-xl font-black uppercase text-[11px] flex items-center gap-2 shadow-xl hover:bg-gray-800 transition-all"><Plus size={18} /> Add Section</button>
+                <button onClick={() => setIsAdding('section')} className="bg-black text-white px-8 py-3.5  font-black uppercase text-[11px] flex items-center gap-2 shadow-xl hover:bg-gray-800 transition-all"><Plus size={18} /> Add Section</button>
               )}
             </div>
 
             {(isAdding === 'section' || editingItem?.type === 'section') ? (
-              <form onSubmit={handleSectionSubmit} className="bg-white rounded-2xl border border-emerald-100 p-10 shadow-xl space-y-8">
+              <form onSubmit={handleSectionSubmit} className="bg-white  border border-emerald-100 p-10 shadow-xl space-y-8">
                 <div className="grid grid-cols-2 gap-6">
                   <div className="space-y-2">
                     <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Section Title</label>
-                    <input required value={sectionForm.title} onChange={e => setSectionForm({ ...sectionForm, title: e.target.value })} className="w-full bg-slate-50 border border-slate-100 rounded-xl px-4 py-3 font-bold outline-none" />
+                    <input required value={sectionForm.title} onChange={e => setSectionForm({ ...sectionForm, title: e.target.value })} className="w-full bg-slate-50 border border-slate-100  px-4 py-3 font-bold outline-none" />
                   </div>
                   <div className="space-y-2">
                     <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Type</label>
-                    <select value={sectionForm.type} onChange={e => setSectionForm({ ...sectionForm, type: e.target.value as any })} className="w-full bg-slate-50 border border-slate-100 rounded-xl px-4 py-3 font-bold outline-none">
+                    <select value={sectionForm.type} onChange={e => setSectionForm({ ...sectionForm, type: e.target.value as any })} className="w-full bg-slate-50 border border-slate-100  px-4 py-3 font-bold outline-none">
                       <option value="slider">Slider (1 Row)</option>
                       <option value="tabbed-slider">Tabbed Slider (Featured/New/Best)</option>
                       <option value="grid">Grid (2 Rows + Banner)</option>
@@ -1318,7 +1318,7 @@ CREATE POLICY "Public read blog" ON public.blog_posts FOR SELECT USING (true);`;
                   </div>
                   <div className="space-y-2">
                     <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Filter Type</label>
-                    <select value={sectionForm.filterType} onChange={e => setSectionForm({ ...sectionForm, filterType: e.target.value as any })} className="w-full bg-slate-50 border border-slate-100 rounded-xl px-4 py-3 font-bold outline-none">
+                    <select value={sectionForm.filterType} onChange={e => setSectionForm({ ...sectionForm, filterType: e.target.value as any })} className="w-full bg-slate-50 border border-slate-100  px-4 py-3 font-bold outline-none">
                       <option value="all">All Products</option>
                       <option value="sale">On Sale</option>
                       <option value="featured">Featured</option>
@@ -1328,7 +1328,7 @@ CREATE POLICY "Public read blog" ON public.blog_posts FOR SELECT USING (true);`;
                   {sectionForm.filterType === 'category' && (
                     <div className="space-y-2">
                       <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Category</label>
-                      <select value={sectionForm.filterValue} onChange={e => setSectionForm({ ...sectionForm, filterValue: e.target.value })} className="w-full bg-slate-50 border border-slate-100 rounded-xl px-4 py-3 font-bold outline-none">
+                      <select value={sectionForm.filterValue} onChange={e => setSectionForm({ ...sectionForm, filterValue: e.target.value })} className="w-full bg-slate-50 border border-slate-100  px-4 py-3 font-bold outline-none">
                         <option value="">Select Category</option>
                         {categories.map(c => <option key={c.id} value={c.name}>{c.name}</option>)}
                       </select>
@@ -1336,7 +1336,7 @@ CREATE POLICY "Public read blog" ON public.blog_posts FOR SELECT USING (true);`;
                   )}
                   <div className="space-y-2">
                     <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Sort Order</label>
-                    <input type="number" value={sectionForm.sortOrder} onChange={e => setSectionForm({ ...sectionForm, sortOrder: Number(e.target.value) })} className="w-full bg-slate-50 border border-slate-100 rounded-xl px-4 py-3 font-bold outline-none" />
+                    <input type="number" value={sectionForm.sortOrder} onChange={e => setSectionForm({ ...sectionForm, sortOrder: Number(e.target.value) })} className="w-full bg-slate-50 border border-slate-100  px-4 py-3 font-bold outline-none" />
                   </div>
                 </div>
 
@@ -1344,50 +1344,50 @@ CREATE POLICY "Public read blog" ON public.blog_posts FOR SELECT USING (true);`;
                   <div className="border-t pt-6">
                     <h3 className="font-bold text-lg mb-4">Grid Banner Settings</h3>
                     <div className="grid grid-cols-2 gap-6">
-                      <input placeholder="Banner Title" value={sectionForm.banner?.title || ''} onChange={e => setSectionForm({ ...sectionForm, banner: { ...(sectionForm.banner || { title: '', description: '', imageUrl: '', buttonText: '', link: '' }), title: e.target.value } })} className="bg-slate-50 border border-slate-100 rounded-xl px-4 py-3 font-bold" />
-                      <input placeholder="Description" value={sectionForm.banner?.description || ''} onChange={e => setSectionForm({ ...sectionForm, banner: { ...(sectionForm.banner || { title: '', description: '', imageUrl: '', buttonText: '', link: '' }), description: e.target.value } })} className="bg-slate-50 border border-slate-100 rounded-xl px-4 py-3 font-bold" />
+                      <input placeholder="Banner Title" value={sectionForm.banner?.title || ''} onChange={e => setSectionForm({ ...sectionForm, banner: { ...(sectionForm.banner || { title: '', description: '', imageUrl: '', buttonText: '', link: '' }), title: e.target.value } })} className="bg-slate-50 border border-slate-100  px-4 py-3 font-bold" />
+                      <input placeholder="Description" value={sectionForm.banner?.description || ''} onChange={e => setSectionForm({ ...sectionForm, banner: { ...(sectionForm.banner || { title: '', description: '', imageUrl: '', buttonText: '', link: '' }), description: e.target.value } })} className="bg-slate-50 border border-slate-100  px-4 py-3 font-bold" />
 
                       <div className="col-span-2 space-y-2">
                         <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Banner Image</label>
                         <div className="flex gap-3 items-center">
-                          {sectionForm.banner?.imageUrl && <img src={sectionForm.banner.imageUrl} className="w-12 h-12 object-cover rounded-lg border border-slate-200" />}
-                          <label className="cursor-pointer bg-slate-100 hover:bg-slate-200 text-slate-600 px-4 py-3 rounded-xl font-bold text-xs flex items-center gap-2 transition-colors h-[46px]">
+                          {sectionForm.banner?.imageUrl && <img src={sectionForm.banner.imageUrl} className="w-12 h-12 object-cover  border border-slate-200" />}
+                          <label className="cursor-pointer bg-slate-100 hover:bg-slate-200 text-slate-600 px-4 py-3  font-bold text-xs flex items-center gap-2 transition-colors h-[46px]">
                             <Upload size={16} /> Upload
                             <input type="file" onChange={handleSectionBannerImageUpload} className="hidden" accept="image/*" />
                           </label>
-                          <button type="button" onClick={() => setImageSelectorCallback(() => handleSectionImageSelect)} className="bg-emerald-50 hover:bg-emerald-100 text-emerald-600 px-4 py-3 rounded-xl font-bold text-xs flex items-center gap-2 transition-colors h-[46px]">
+                          <button type="button" onClick={() => setImageSelectorCallback(() => handleSectionImageSelect)} className="bg-emerald-50 hover:bg-emerald-100 text-emerald-600 px-4 py-3  font-bold text-xs flex items-center gap-2 transition-colors h-[46px]">
                             <ImageIcon size={16} /> Select Image
                           </button>
-                          <input placeholder="Or enter Image URL" value={sectionForm.banner?.imageUrl || ''} onChange={e => setSectionForm({ ...sectionForm, banner: { ...(sectionForm.banner || { title: '', description: '', imageUrl: '', buttonText: '', link: '' }), imageUrl: e.target.value } })} className="flex-1 bg-slate-50 border border-slate-100 rounded-xl px-4 py-3 font-bold outline-none" />
+                          <input placeholder="Or enter Image URL" value={sectionForm.banner?.imageUrl || ''} onChange={e => setSectionForm({ ...sectionForm, banner: { ...(sectionForm.banner || { title: '', description: '', imageUrl: '', buttonText: '', link: '' }), imageUrl: e.target.value } })} className="flex-1 bg-slate-50 border border-slate-100  px-4 py-3 font-bold outline-none" />
                         </div>
                       </div>
 
-                      <input placeholder="Link" value={sectionForm.banner?.link || ''} onChange={e => setSectionForm({ ...sectionForm, banner: { ...(sectionForm.banner || { title: '', description: '', imageUrl: '', buttonText: '', link: '' }), link: e.target.value } })} className="col-span-2 bg-slate-50 border border-slate-100 rounded-xl px-4 py-3 font-bold" />
+                      <input placeholder="Link" value={sectionForm.banner?.link || ''} onChange={e => setSectionForm({ ...sectionForm, banner: { ...(sectionForm.banner || { title: '', description: '', imageUrl: '', buttonText: '', link: '' }), link: e.target.value } })} className="col-span-2 bg-slate-50 border border-slate-100  px-4 py-3 font-bold" />
                     </div>
                   </div>
                 )}
 
                 <div className="flex justify-end gap-3 pt-6 border-t border-gray-100">
                   <button type="button" onClick={closeForms} className="px-6 py-3 text-slate-400 font-bold uppercase text-[11px] hover:text-slate-600">Cancel</button>
-                  <button type="submit" className="bg-black text-white px-10 py-3 rounded-xl font-black uppercase text-[11px] shadow-lg transition-all hover:bg-gray-800">Save Section</button>
+                  <button type="submit" className="bg-black text-white px-10 py-3  font-black uppercase text-[11px] shadow-lg transition-all hover:bg-gray-800">Save Section</button>
                 </div>
               </form>
             ) : (
               <div className="space-y-4">
                 {homeSections.sort((a, b) => a.sortOrder - b.sortOrder).map(section => (
-                  <div key={section.id} className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm flex justify-between items-center group hover:border-emerald-200 transition-all">
+                  <div key={section.id} className="bg-white p-6  border border-gray-100 shadow-sm flex justify-between items-center group hover:border-emerald-200 transition-all">
                     <div>
                       <h3 className="font-black text-lg text-gray-800">{section.title}</h3>
                       <div className="flex gap-2 mt-1">
-                        <span className="px-2 py-0.5 bg-emerald-50 text-emerald-600 text-[10px] font-black uppercase rounded">
+                        <span className="px-2 py-0.5 bg-emerald-50 text-emerald-600 text-[10px] font-black uppercase ">
                           {section.type === 'tabbed-slider' ? 'Tabbed Slider' : section.type}
                         </span>
-                        <span className="px-2 py-0.5 bg-blue-50 text-blue-600 text-[10px] font-black uppercase rounded">Filter: {section.filterType}</span>
+                        <span className="px-2 py-0.5 bg-blue-50 text-blue-600 text-[10px] font-black uppercase ">Filter: {section.filterType}</span>
                       </div>
                     </div>
                     <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                      <button onClick={() => startEditSection(section)} className="bg-gray-50 p-2 rounded-lg hover:bg-emerald-50 hover:text-emerald-600 transition-colors"><Pencil size={18} /></button>
-                      <button onClick={() => deleteHomeSection(section.id)} className="bg-gray-50 p-2 rounded-lg hover:bg-red-50 hover:text-red-600 transition-colors"><Trash2 size={18} /></button>
+                      <button onClick={() => startEditSection(section)} className="bg-gray-50 p-2  hover:bg-emerald-50 hover:text-emerald-600 transition-colors"><Pencil size={18} /></button>
+                      <button onClick={() => deleteHomeSection(section.id)} className="bg-gray-50 p-2  hover:bg-red-50 hover:text-red-600 transition-colors"><Trash2 size={18} /></button>
                     </div>
                   </div>
                 ))}
@@ -1398,54 +1398,54 @@ CREATE POLICY "Public read blog" ON public.blog_posts FOR SELECT USING (true);`;
 
         {adminTab === 'banners' && (
           <div className="space-y-8 animate-in fade-in duration-500">
-            <div className="flex justify-between items-center bg-white p-6 rounded-3xl border border-gray-100 shadow-sm">
+            <div className="flex justify-between items-center bg-white p-6  border border-gray-100 shadow-sm">
               <div>
                 <h2 className="text-2xl font-black text-gray-800 tracking-tight">Banner Management</h2>
                 <p className="text-gray-500 font-medium">Manage homepage slider and side banners</p>
               </div>
-              <button onClick={() => setIsAdding('banner')} className="bg-black hover:bg-gray-800 text-white px-6 py-3 rounded-2xl font-bold flex items-center gap-2 shadow-lg shadow-gray-200 transition-all active:scale-95">
+              <button onClick={() => setIsAdding('banner')} className="bg-black hover:bg-gray-800 text-white px-6 py-3  font-bold flex items-center gap-2 shadow-lg shadow-gray-200 transition-all active:scale-95">
                 <PlusCircle size={20} /> Add Banner
               </button>
             </div>
 
             {isAdding === 'banner' && (
               <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-[100] p-4 animate-in fade-in duration-200">
-                <div className="bg-white rounded-3xl p-8 w-full max-w-2xl shadow-2xl relative animate-in zoom-in-95 duration-200">
-                  <button onClick={closeForms} className="absolute top-6 right-6 p-2 hover:bg-gray-100 rounded-full transition-colors"><X size={20} /></button>
+                <div className="bg-white  p-8 w-full max-w-2xl shadow-2xl relative animate-in zoom-in-95 duration-200">
+                  <button onClick={closeForms} className="absolute top-6 right-6 p-2 hover:bg-gray-100  transition-colors"><X size={20} /></button>
                   <h3 className="text-xl font-black text-gray-800 mb-6 flex items-center gap-2"><ImageIcon className="text-black" /> {editingItem?.type === 'banner' ? 'Edit Banner' : 'Add New Banner'}</h3>
                   <form onSubmit={handleBannerSubmit} className="space-y-6">
                     <div className="grid grid-cols-2 gap-6">
                       <div className="space-y-3">
                         <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Type</label>
-                        <select value={bannerForm.type} onChange={e => setBannerForm({ ...bannerForm, type: e.target.value as any })} className="w-full bg-gray-50 border border-gray-100 rounded-2xl px-6 py-4 text-sm font-bold outline-none focus:bg-white focus:border-black transition-all">
+                        <select value={bannerForm.type} onChange={e => setBannerForm({ ...bannerForm, type: e.target.value as any })} className="w-full bg-gray-50 border border-gray-100  px-6 py-4 text-sm font-bold outline-none focus:bg-white focus:border-black transition-all">
                           <option value="slider">Main Slider</option>
                           <option value="home_banner">Home Banner (Grid)</option>
                         </select>
                       </div>
                       <div className="space-y-3">
                         <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Sort Order</label>
-                        <input type="number" value={bannerForm.sort_order} onChange={e => setBannerForm({ ...bannerForm, sort_order: Number(e.target.value) })} className="w-full bg-gray-50 border border-gray-100 rounded-2xl px-6 py-4 text-sm font-bold outline-none focus:bg-white focus:border-black transition-all" />
+                        <input type="number" value={bannerForm.sort_order} onChange={e => setBannerForm({ ...bannerForm, sort_order: Number(e.target.value) })} className="w-full bg-gray-50 border border-gray-100  px-6 py-4 text-sm font-bold outline-none focus:bg-white focus:border-black transition-all" />
                       </div>
                     </div>
                     <div className="space-y-3">
                       <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Banner Image</label>
                       <div className="flex items-center gap-4">
-                        {bannerForm.image_url && <img src={bannerForm.image_url} alt="Preview" className="w-20 h-20 object-cover rounded-xl border border-gray-200" />}
-                        <label className="cursor-pointer bg-gray-50 hover:bg-gray-100 text-gray-500 hover:text-black px-6 py-4 rounded-2xl text-xs font-black uppercase tracking-widest border border-gray-100 transition-all flex items-center gap-2">
+                        {bannerForm.image_url && <img src={bannerForm.image_url} alt="Preview" className="w-20 h-20 object-cover  border border-gray-200" />}
+                        <label className="cursor-pointer bg-gray-50 hover:bg-gray-100 text-gray-500 hover:text-black px-6 py-4  text-xs font-black uppercase tracking-widest border border-gray-100 transition-all flex items-center gap-2">
                           <ImageIcon size={16} /> Upload Image
                           <input type="file" accept="image/*" onChange={handleBannerImageUpload} className="hidden" />
                         </label>
-                        <button type="button" onClick={() => setImageSelectorCallback(() => handleBannerImageSelect)} className="bg-emerald-50 hover:bg-emerald-100 text-emerald-600 hover:text-emerald-700 px-6 py-4 rounded-2xl text-xs font-black uppercase tracking-widest border border-emerald-100 transition-all flex items-center gap-2">
+                        <button type="button" onClick={() => setImageSelectorCallback(() => handleBannerImageSelect)} className="bg-emerald-50 hover:bg-emerald-100 text-emerald-600 hover:text-emerald-700 px-6 py-4  text-xs font-black uppercase tracking-widest border border-emerald-100 transition-all flex items-center gap-2">
                           <ImageIcon size={16} /> Select Image
                         </button>
                       </div>
                     </div>
                     <div className="grid grid-cols-2 gap-6">
-                      <div className="space-y-3"><label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Title (Optional)</label><input value={bannerForm.title} onChange={e => setBannerForm({ ...bannerForm, title: e.target.value })} className="w-full bg-gray-50 border border-gray-100 rounded-2xl px-6 py-4 text-sm font-bold outline-none focus:bg-white focus:border-black transition-all" placeholder="Big Sale" /></div>
-                      <div className="space-y-3"><label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Subtitle (Optional)</label><input value={bannerForm.subtitle} onChange={e => setBannerForm({ ...bannerForm, subtitle: e.target.value })} className="w-full bg-gray-50 border border-gray-100 rounded-2xl px-6 py-4 text-sm font-bold outline-none focus:bg-white focus:border-black transition-all" placeholder="Up to 50% off" /></div>
+                      <div className="space-y-3"><label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Title (Optional)</label><input value={bannerForm.title} onChange={e => setBannerForm({ ...bannerForm, title: e.target.value })} className="w-full bg-gray-50 border border-gray-100  px-6 py-4 text-sm font-bold outline-none focus:bg-white focus:border-black transition-all" placeholder="Big Sale" /></div>
+                      <div className="space-y-3"><label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Subtitle (Optional)</label><input value={bannerForm.subtitle} onChange={e => setBannerForm({ ...bannerForm, subtitle: e.target.value })} className="w-full bg-gray-50 border border-gray-100  px-6 py-4 text-sm font-bold outline-none focus:bg-white focus:border-black transition-all" placeholder="Up to 50% off" /></div>
                     </div>
-                    <div className="space-y-3"><label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Link (Optional)</label><input value={bannerForm.link} onChange={e => setBannerForm({ ...bannerForm, link: e.target.value })} className="w-full bg-gray-50 border border-gray-100 rounded-2xl px-6 py-4 text-sm font-bold outline-none focus:bg-white focus:border-black transition-all" placeholder="/category/vegetables" /></div>
-                    <button type="submit" className="w-full bg-black hover:bg-gray-800 text-white py-4 rounded-2xl font-black uppercase tracking-widest shadow-lg shadow-gray-200 transition-all active:scale-95">Save Banner</button>
+                    <div className="space-y-3"><label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Link (Optional)</label><input value={bannerForm.link} onChange={e => setBannerForm({ ...bannerForm, link: e.target.value })} className="w-full bg-gray-50 border border-gray-100  px-6 py-4 text-sm font-bold outline-none focus:bg-white focus:border-black transition-all" placeholder="/category/vegetables" /></div>
+                    <button type="submit" className="w-full bg-black hover:bg-gray-800 text-white py-4  font-black uppercase tracking-widest shadow-lg shadow-gray-200 transition-all active:scale-95">Save Banner</button>
                   </form>
                 </div>
               </div>
@@ -1455,31 +1455,31 @@ CREATE POLICY "Public read blog" ON public.blog_posts FOR SELECT USING (true);`;
               {/* Slider Banners Section */}
               <div>
                 <h3 className="text-lg font-black text-gray-700 mb-4 flex items-center gap-2">
-                  <span className="w-2 h-8 bg-black rounded-full"></span>
+                  <span className="w-2 h-8 bg-black "></span>
                   Slider Banners
                 </h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {banners.filter(b => b.type === 'slider').map(banner => (
-                    <div key={banner.id} className="bg-white rounded-3xl p-6 border border-gray-100 shadow-sm relative group overflow-hidden">
-                      <div className="aspect-video bg-gray-100 rounded-2xl mb-4 overflow-hidden relative">
+                    <div key={banner.id} className="bg-white  p-6 border border-gray-100 shadow-sm relative group overflow-hidden">
+                      <div className="aspect-video bg-gray-100  mb-4 overflow-hidden relative">
                         <img src={banner.image_url} alt={banner.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
-                        <div className="absolute top-2 right-2 bg-black text-white text-[10px] font-bold px-2 py-1 rounded-full uppercase backdrop-blur-md">
+                        <div className="absolute top-2 right-2 bg-black text-white text-[10px] font-bold px-2 py-1  uppercase backdrop-blur-md">
                           Slider
                         </div>
                       </div>
                       <h3 className="font-bold text-gray-800 text-lg mb-1">{banner.title || 'Untitled Banner'}</h3>
                       <p className="text-sm text-gray-500 mb-4">{banner.subtitle || 'No subtitle'}</p>
                       <div className="flex items-center justify-between">
-                        <span className="text-xs font-bold text-gray-400 px-2 py-1 bg-gray-50 rounded-lg border border-gray-100">Order: {banner.sort_order}</span>
+                        <span className="text-xs font-bold text-gray-400 px-2 py-1 bg-gray-50  border border-gray-100">Order: {banner.sort_order}</span>
                         <div className="flex gap-2">
-                          <button onClick={() => startEditBanner(banner)} className="bg-gray-50 text-black p-2 rounded-xl hover:bg-black hover:text-white transition-colors"><Pencil size={16} /></button>
-                          <button onClick={() => deleteBanner(banner.id)} className="bg-red-50 text-red-500 p-2 rounded-xl hover:bg-red-500 hover:text-white transition-colors"><Trash2 size={16} /></button>
+                          <button onClick={() => startEditBanner(banner)} className="bg-gray-50 text-black p-2  hover:bg-black hover:text-white transition-colors"><Pencil size={16} /></button>
+                          <button onClick={() => deleteBanner(banner.id)} className="bg-red-50 text-red-500 p-2  hover:bg-red-500 hover:text-white transition-colors"><Trash2 size={16} /></button>
                         </div>
                       </div>
                     </div>
                   ))}
                   {banners.filter(b => b.type === 'slider').length === 0 && (
-                    <div className="col-span-full py-12 text-center text-gray-400 font-medium italic bg-gray-50 rounded-3xl border border-dashed border-gray-200">
+                    <div className="col-span-full py-12 text-center text-gray-400 font-medium italic bg-gray-50  border border-dashed border-gray-200">
                       No slider banners added yet
                     </div>
                   )}
@@ -1489,31 +1489,31 @@ CREATE POLICY "Public read blog" ON public.blog_posts FOR SELECT USING (true);`;
               {/* Right Banners Section */}
               <div>
                 <h3 className="text-lg font-black text-gray-700 mb-4 flex items-center gap-2">
-                  <span className="w-2 h-8 bg-gray-500 rounded-full"></span>
+                  <span className="w-2 h-8 bg-gray-500 "></span>
                   Home Banners
                 </h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {banners.filter(b => b.type === 'home_banner').map(banner => (
-                    <div key={banner.id} className="bg-white rounded-3xl p-6 border border-gray-100 shadow-sm relative group overflow-hidden">
-                      <div className="aspect-video bg-gray-100 rounded-2xl mb-4 overflow-hidden relative">
+                    <div key={banner.id} className="bg-white  p-6 border border-gray-100 shadow-sm relative group overflow-hidden">
+                      <div className="aspect-video bg-gray-100  mb-4 overflow-hidden relative">
                         <img src={banner.image_url} alt={banner.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
-                        <div className="absolute top-2 right-2 bg-gray-800 text-white text-[10px] font-bold px-2 py-1 rounded-full uppercase backdrop-blur-md">
+                        <div className="absolute top-2 right-2 bg-gray-800 text-white text-[10px] font-bold px-2 py-1  uppercase backdrop-blur-md">
                           Home Banner
                         </div>
                       </div>
                       <h3 className="font-bold text-gray-800 text-lg mb-1">{banner.title || 'Untitled Banner'}</h3>
                       <p className="text-sm text-gray-500 mb-4">{banner.subtitle || 'No subtitle'}</p>
                       <div className="flex items-center justify-between">
-                        <span className="text-xs font-bold text-gray-400 px-2 py-1 bg-gray-50 rounded-lg border border-gray-100">Order: {banner.sort_order}</span>
+                        <span className="text-xs font-bold text-gray-400 px-2 py-1 bg-gray-50  border border-gray-100">Order: {banner.sort_order}</span>
                         <div className="flex gap-2">
-                          <button onClick={() => startEditBanner(banner)} className="bg-gray-50 text-black p-2 rounded-xl hover:bg-black hover:text-white transition-colors"><Pencil size={16} /></button>
-                          <button onClick={() => deleteBanner(banner.id)} className="bg-red-50 text-red-500 p-2 rounded-xl hover:bg-red-500 hover:text-white transition-colors"><Trash2 size={16} /></button>
+                          <button onClick={() => startEditBanner(banner)} className="bg-gray-50 text-black p-2  hover:bg-black hover:text-white transition-colors"><Pencil size={16} /></button>
+                          <button onClick={() => deleteBanner(banner.id)} className="bg-red-50 text-red-500 p-2  hover:bg-red-500 hover:text-white transition-colors"><Trash2 size={16} /></button>
                         </div>
                       </div>
                     </div>
                   ))}
                   {banners.filter(b => b.type === 'home_banner').length === 0 && (
-                    <div className="col-span-full py-12 text-center text-gray-400 font-medium italic bg-gray-50 rounded-3xl border border-dashed border-gray-200">
+                    <div className="col-span-full py-12 text-center text-gray-400 font-medium italic bg-gray-50  border border-dashed border-gray-200">
                       No home banners added yet
                     </div>
                   )}
@@ -1524,12 +1524,12 @@ CREATE POLICY "Public read blog" ON public.blog_posts FOR SELECT USING (true);`;
         )}
         {adminTab === 'reports' && (
           <div className="space-y-8 animate-in fade-in duration-500">
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-white p-6 rounded-3xl border border-gray-100 shadow-sm">
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-white p-6  border border-gray-100 shadow-sm">
               <div>
                 <h2 className="text-2xl font-black text-gray-800 tracking-tight">Business Reports</h2>
                 <p className="text-gray-500 font-medium">Insights and analytics for your store</p>
               </div>
-              <div className="flex items-center gap-4 bg-gray-50 p-2 rounded-2xl border border-gray-200">
+              <div className="flex items-center gap-4 bg-gray-50 p-2  border border-gray-200">
                 <div className="flex flex-col px-2">
                   <label className="text-[10px] font-black uppercase text-gray-400 tracking-widest">From</label>
                   <input type="date" value={reportStartDate} onChange={(e) => setReportStartDate(e.target.value)} className="bg-transparent font-bold text-gray-800 outline-none text-sm" />
@@ -1544,15 +1544,15 @@ CREATE POLICY "Public read blog" ON public.blog_posts FOR SELECT USING (true);`;
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {/* Summary Cards */}
-              <div className="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm">
+              <div className="bg-white p-6  border border-gray-100 shadow-sm">
                 <h3 className="text-gray-500 font-bold uppercase text-xs tracking-widest mb-2">Total Revenue</h3>
                 <p className="text-3xl font-black text-black">৳{Object.values(reportData.salesByDate).reduce((a, b) => a + b, 0).toFixed(2)}</p>
               </div>
-              <div className="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm">
+              <div className="bg-white p-6  border border-gray-100 shadow-sm">
                 <h3 className="text-gray-500 font-bold uppercase text-xs tracking-widest mb-2">New Customers</h3>
                 <p className="text-3xl font-black text-blue-600">{reportData.newCustomersCount}</p>
               </div>
-              <div className="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm">
+              <div className="bg-white p-6  border border-gray-100 shadow-sm">
                 <h3 className="text-gray-500 font-bold uppercase text-xs tracking-widest mb-2">Coupon Orders</h3>
                 <p className="text-3xl font-black text-purple-600">{Object.values(reportData.couponsByDate).reduce((a, b) => a + b, 0)}</p>
               </div>
@@ -1560,7 +1560,7 @@ CREATE POLICY "Public read blog" ON public.blog_posts FOR SELECT USING (true);`;
 
             <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
               {/* Sales by Date */}
-              <div className="bg-white p-8 rounded-[30px] border border-gray-100 shadow-sm">
+              <div className="bg-white p-8  border border-gray-100 shadow-sm">
                 <h3 className="text-xl font-black text-gray-800 mb-6 flex items-center gap-2"><Calendar size={20} className="text-emerald-500" /> Sales by Date</h3>
                 <div className="overflow-y-auto max-h-80 custom-scrollbar">
                   <table className="w-full text-left border-collapse">
@@ -1584,7 +1584,7 @@ CREATE POLICY "Public read blog" ON public.blog_posts FOR SELECT USING (true);`;
               </div>
 
               {/* Sales by Category */}
-              <div className="bg-white p-8 rounded-[30px] border border-gray-100 shadow-sm">
+              <div className="bg-white p-8  border border-gray-100 shadow-sm">
                 <h3 className="text-xl font-black text-gray-800 mb-6 flex items-center gap-2"><Layers size={20} className="text-blue-500" /> Sales by Category</h3>
                 <div className="space-y-4">
                   {Object.entries(reportData.salesByCategory).length === 0 ? (
@@ -1601,8 +1601,8 @@ CREATE POLICY "Public read blog" ON public.blog_posts FOR SELECT USING (true);`;
                               <span>{cat}</span>
                               <span>৳{total.toFixed(2)}</span>
                             </div>
-                            <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
-                              <div className="h-full bg-blue-500 rounded-full" style={{ width: `${percent}%` }}></div>
+                            <div className="h-2 bg-gray-100  overflow-hidden">
+                              <div className="h-full bg-blue-500 " style={{ width: `${percent}%` }}></div>
                             </div>
                           </div>
                         )
@@ -1614,7 +1614,7 @@ CREATE POLICY "Public read blog" ON public.blog_posts FOR SELECT USING (true);`;
 
             <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
               {/* Sales by Product */}
-              <div className="bg-white p-8 rounded-[30px] border border-gray-100 shadow-sm">
+              <div className="bg-white p-8  border border-gray-100 shadow-sm">
                 <h3 className="text-xl font-black text-gray-800 mb-6 flex items-center gap-2"><Package size={20} className="text-purple-500" /> Top Products</h3>
                 <div className="overflow-y-auto max-h-80 custom-scrollbar">
                   <table className="w-full text-left">
@@ -1640,7 +1640,7 @@ CREATE POLICY "Public read blog" ON public.blog_posts FOR SELECT USING (true);`;
 
               {/* Coupons and Customers Brief */}
               <div className="space-y-8">
-                <div className="bg-white p-8 rounded-[30px] border border-gray-100 shadow-sm">
+                <div className="bg-white p-8  border border-gray-100 shadow-sm">
                   <h3 className="text-xl font-black text-gray-800 mb-6 flex items-center gap-2"><Ticket size={20} className="text-pink-500" /> Coupon Usage by Date</h3>
                   <div className="overflow-y-auto max-h-40 custom-scrollbar">
                     {Object.entries(reportData.couponsByDate).length === 0 ? (
@@ -1648,16 +1648,16 @@ CREATE POLICY "Public read blog" ON public.blog_posts FOR SELECT USING (true);`;
                     ) : (
                       <div className="grid grid-cols-2 gap-4">
                         {Object.entries(reportData.couponsByDate).map(([date, count]) => (
-                          <div key={date} className="bg-pink-50 p-3 rounded-xl border border-pink-100 flex justify-between items-center">
+                          <div key={date} className="bg-pink-50 p-3  border border-pink-100 flex justify-between items-center">
                             <span className="text-sm font-bold text-gray-600">{date}</span>
-                            <span className="bg-white px-2 py-0.5 rounded-md text-xs font-black text-pink-600 shadow-sm">{count} Used</span>
+                            <span className="bg-white px-2 py-0.5  text-xs font-black text-pink-600 shadow-sm">{count} Used</span>
                           </div>
                         ))}
                       </div>
                     )}
                   </div>
                 </div>
-                <div className="bg-white p-8 rounded-[30px] border border-gray-100 shadow-sm">
+                <div className="bg-white p-8  border border-gray-100 shadow-sm">
                   <h3 className="text-xl font-black text-gray-800 mb-6 flex items-center gap-2"><UsersIcon size={20} className="text-orange-500" /> Customer Report</h3>
                   <div className="overflow-y-auto max-h-80 custom-scrollbar">
                     <table className="w-full text-left border-collapse">
@@ -1698,23 +1698,23 @@ CREATE POLICY "Public read blog" ON public.blog_posts FOR SELECT USING (true);`;
               <div className="flex justify-between items-center">
                 <div><h2 className="text-2xl font-black text-slate-800 tracking-tight">Pages</h2><p className="text-slate-400 text-sm">Create and manage content pages.</p></div>
                 {!isAdding && !editingItem && (
-                  <button onClick={() => setIsAdding('page')} className="bg-black text-white px-8 py-3.5 rounded-xl font-black uppercase text-[11px] flex items-center gap-2 shadow-xl hover:bg-gray-800 transition-all"><Plus size={18} /> Add Page</button>
+                  <button onClick={() => setIsAdding('page')} className="bg-black text-white px-8 py-3.5  font-black uppercase text-[11px] flex items-center gap-2 shadow-xl hover:bg-gray-800 transition-all"><Plus size={18} /> Add Page</button>
                 )}
               </div>
 
               {(isAdding === 'page' || editingItem?.type === 'page') ? (
-                <form onSubmit={handlePageSubmit} className="bg-white rounded-2xl border border-emerald-100 p-10 shadow-xl space-y-8">
+                <form onSubmit={handlePageSubmit} className="bg-white  border border-emerald-100 p-10 shadow-xl space-y-8">
                   <div className="space-y-2">
                     <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Page Title</label>
                     <input required value={pageForm.title} onChange={e => {
                       const title = e.target.value;
                       const slug = title.toLowerCase().trim().replace(/[^\w\s-]/g, '').replace(/[\s_-]+/g, '-');
                       setPageForm({ ...pageForm, title, slug: pageForm.slug === '' || isAdding === 'page' ? slug : pageForm.slug })
-                    }} className="w-full bg-slate-50 border border-slate-100 rounded-xl px-5 py-3.5 text-base font-bold outline-none" />
+                    }} className="w-full bg-slate-50 border border-slate-100  px-5 py-3.5 text-base font-bold outline-none" />
                   </div>
                   <div className="space-y-2">
                     <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Slug (URL Path)</label>
-                    <input required value={pageForm.slug} onChange={e => setPageForm({ ...pageForm, slug: e.target.value })} className="w-full bg-slate-50 border border-slate-100 rounded-xl px-5 py-3.5 text-sm font-bold outline-none text-emerald-600" />
+                    <input required value={pageForm.slug} onChange={e => setPageForm({ ...pageForm, slug: e.target.value })} className="w-full bg-slate-50 border border-slate-100  px-5 py-3.5 text-sm font-bold outline-none text-emerald-600" />
                   </div>
                   <div className="space-y-3">
                     <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Page Builder</label>
@@ -1732,11 +1732,11 @@ CREATE POLICY "Public read blog" ON public.blog_posts FOR SELECT USING (true);`;
                   </div>
                   <div className="flex justify-end gap-3 pt-6 border-t border-gray-100">
                     <button type="button" onClick={closeForms} className="px-6 py-3 text-slate-400 font-bold uppercase text-[11px] hover:text-slate-600">Cancel</button>
-                    <button type="submit" className="bg-black text-white px-10 py-3 rounded-xl font-black uppercase text-[11px] shadow-lg transition-all hover:bg-gray-800">Save Page</button>
+                    <button type="submit" className="bg-black text-white px-10 py-3  font-black uppercase text-[11px] shadow-lg transition-all hover:bg-gray-800">Save Page</button>
                   </div>
                 </form>
               ) : (
-                <div className="bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm">
+                <div className="bg-white  border border-gray-100 overflow-hidden shadow-sm">
                   <table className="w-full text-left">
                     <thead className="bg-slate-50 border-b text-[10px] uppercase font-black text-slate-400 tracking-widest">
                       <tr><th className="px-8 py-6">Title</th><th className="px-6 py-6">Slug</th><th className="px-6 py-6">Status</th><th className="px-8 py-6 text-right">Actions</th></tr>
@@ -1746,11 +1746,11 @@ CREATE POLICY "Public read blog" ON public.blog_posts FOR SELECT USING (true);`;
                         <tr key={p.id} className="hover:bg-slate-50/50 group transition-colors">
                           <td className="px-8 py-5 font-bold text-gray-700">{p.title}</td>
                           <td className="px-6 py-5 text-emerald-600 font-medium text-sm">/{p.slug}</td>
-                          <td className="px-6 py-5"><span className={`px-4 py-1 rounded-full text-[10px] font-black uppercase tracking-widest border ${p.isPublished ? 'bg-emerald-50 text-emerald-600 border-emerald-100' : 'bg-gray-50 text-gray-400 border-gray-100'}`}>{p.isPublished ? 'Published' : 'Draft'}</span></td>
+                          <td className="px-6 py-5"><span className={`px-4 py-1  text-[10px] font-black uppercase tracking-widest border ${p.isPublished ? 'bg-emerald-50 text-emerald-600 border-emerald-100' : 'bg-gray-50 text-gray-400 border-gray-100'}`}>{p.isPublished ? 'Published' : 'Draft'}</span></td>
                           <td className="px-8 py-5 text-right flex justify-end gap-2">
-                            <a href={`/${p.slug}`} target="_blank" rel="noreferrer" className="bg-white p-2.5 rounded-xl border border-slate-100 text-slate-300 hover:text-emerald-500 shadow-sm"><Eye size={18} /></a>
-                            <button onClick={() => startEditPage(p)} className="bg-white p-2.5 rounded-xl border border-slate-100 text-slate-300 hover:text-blue-500 shadow-sm"><Pencil size={18} /></button>
-                            <button onClick={() => deletePage(p.id)} className="bg-white p-2.5 rounded-xl border border-slate-100 text-slate-300 hover:text-red-500 shadow-sm"><Trash2 size={18} /></button>
+                            <a href={`/${p.slug}`} target="_blank" rel="noreferrer" className="bg-white p-2.5  border border-slate-100 text-slate-300 hover:text-emerald-500 shadow-sm"><Eye size={18} /></a>
+                            <button onClick={() => startEditPage(p)} className="bg-white p-2.5  border border-slate-100 text-slate-300 hover:text-blue-500 shadow-sm"><Pencil size={18} /></button>
+                            <button onClick={() => deletePage(p.id)} className="bg-white p-2.5  border border-slate-100 text-slate-300 hover:text-red-500 shadow-sm"><Trash2 size={18} /></button>
                           </td>
                         </tr>
                       ))}
@@ -1768,45 +1768,45 @@ CREATE POLICY "Public read blog" ON public.blog_posts FOR SELECT USING (true);`;
             <div className="flex justify-between items-center">
               <div><h2 className="text-2xl font-black text-slate-800 tracking-tight">Blog Posts</h2><p className="text-slate-400 text-sm">Manage your blog articles.</p></div>
               {!isAdding && !editingItem && (
-                <button onClick={() => setIsAdding('blog')} className="bg-black text-white px-8 py-3.5 rounded-xl font-black uppercase text-[11px] flex items-center gap-2 shadow-xl hover:bg-gray-800 transition-all"><Plus size={18} /> Add Post</button>
+                <button onClick={() => setIsAdding('blog')} className="bg-black text-white px-8 py-3.5  font-black uppercase text-[11px] flex items-center gap-2 shadow-xl hover:bg-gray-800 transition-all"><Plus size={18} /> Add Post</button>
               )}
             </div>
 
             {(isAdding === 'blog' || editingItem?.type === 'blog') ? (
-              <form onSubmit={handleBlogSubmit} className="bg-white rounded-2xl border border-gray-200 p-10 shadow-xl space-y-8">
+              <form onSubmit={handleBlogSubmit} className="bg-white  border border-gray-200 p-10 shadow-xl space-y-8">
                 <div className="space-y-2">
                   <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Post Title</label>
                   <input required value={blogForm.title} onChange={e => {
                     const title = e.target.value;
                     const slug = title.toLowerCase().trim().replace(/[^\w\s-]/g, '').replace(/[\s_-]+/g, '-');
                     setBlogForm({ ...blogForm, title, slug: blogForm.slug === '' || isAdding === 'blog' ? slug : blogForm.slug })
-                  }} className="w-full bg-slate-50 border border-slate-100 rounded-xl px-5 py-3.5 text-base font-bold outline-none" />
+                  }} className="w-full bg-slate-50 border border-slate-100  px-5 py-3.5 text-base font-bold outline-none" />
                 </div>
                 <div className="space-y-2">
                   <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Slug</label>
-                  <input required value={blogForm.slug} onChange={e => setBlogForm({ ...blogForm, slug: e.target.value })} className="w-full bg-slate-50 border border-slate-100 rounded-xl px-5 py-3.5 text-sm font-bold outline-none text-gray-600" />
+                  <input required value={blogForm.slug} onChange={e => setBlogForm({ ...blogForm, slug: e.target.value })} className="w-full bg-slate-50 border border-slate-100  px-5 py-3.5 text-sm font-bold outline-none text-gray-600" />
                 </div>
                 <div className="space-y-2">
                   <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Author</label>
-                  <input required value={blogForm.author} onChange={e => setBlogForm({ ...blogForm, author: e.target.value })} className="w-full bg-slate-50 border border-slate-100 rounded-xl px-5 py-3.5 text-sm font-bold outline-none" />
+                  <input required value={blogForm.author} onChange={e => setBlogForm({ ...blogForm, author: e.target.value })} className="w-full bg-slate-50 border border-slate-100  px-5 py-3.5 text-sm font-bold outline-none" />
                 </div>
                 <div className="space-y-2">
                   <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Featured Image</label>
                   <div className="flex gap-3 items-center">
-                    {blogForm.imageUrl && <img src={blogForm.imageUrl} className="w-12 h-12 object-cover rounded-lg border border-slate-200" />}
-                    <label className="cursor-pointer bg-slate-100 hover:bg-slate-200 text-slate-600 px-4 py-3 rounded-xl font-bold text-xs flex items-center gap-2 transition-colors h-[46px]">
+                    {blogForm.imageUrl && <img src={blogForm.imageUrl} className="w-12 h-12 object-cover  border border-slate-200" />}
+                    <label className="cursor-pointer bg-slate-100 hover:bg-slate-200 text-slate-600 px-4 py-3  font-bold text-xs flex items-center gap-2 transition-colors h-[46px]">
                       <Upload size={16} /> Upload
                       <input type="file" onChange={handleBlogImageUpload} className="hidden" accept="image/*" />
                     </label>
-                    <button type="button" onClick={() => setImageSelectorCallback(() => handleBlogImageSelect)} className="bg-emerald-50 hover:bg-emerald-100 text-emerald-600 px-4 py-3 rounded-xl font-bold text-xs flex items-center gap-2 transition-colors h-[46px]">
+                    <button type="button" onClick={() => setImageSelectorCallback(() => handleBlogImageSelect)} className="bg-emerald-50 hover:bg-emerald-100 text-emerald-600 px-4 py-3  font-bold text-xs flex items-center gap-2 transition-colors h-[46px]">
                       <ImageIcon size={16} /> Select
                     </button>
-                    <input placeholder="Or enter Image URL" required={!blogForm.imageUrl} value={blogForm.imageUrl} onChange={e => setBlogForm({ ...blogForm, imageUrl: e.target.value })} className="flex-1 bg-slate-50 border border-slate-100 rounded-xl px-4 py-3.5 font-bold outline-none text-sm" />
+                    <input placeholder="Or enter Image URL" required={!blogForm.imageUrl} value={blogForm.imageUrl} onChange={e => setBlogForm({ ...blogForm, imageUrl: e.target.value })} className="flex-1 bg-slate-50 border border-slate-100  px-4 py-3.5 font-bold outline-none text-sm" />
                   </div>
                 </div>
                 <div className="space-y-2">
                   <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Excerpt</label>
-                  <textarea required value={blogForm.excerpt} onChange={e => setBlogForm({ ...blogForm, excerpt: e.target.value })} className="w-full bg-slate-50 border border-slate-100 rounded-xl px-5 py-3.5 text-sm font-bold outline-none h-24" />
+                  <textarea required value={blogForm.excerpt} onChange={e => setBlogForm({ ...blogForm, excerpt: e.target.value })} className="w-full bg-slate-50 border border-slate-100  px-5 py-3.5 text-sm font-bold outline-none h-24" />
                 </div>
                 <div className="space-y-3">
                   <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Content</label>
@@ -1814,12 +1814,12 @@ CREATE POLICY "Public read blog" ON public.blog_posts FOR SELECT USING (true);`;
                 </div>
                 <div className="space-y-2">
                   <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Tags (comma separated)</label>
-                  <input value={blogForm.tags.join(', ')} onChange={e => setBlogForm({ ...blogForm, tags: e.target.value.split(',').map(t => t.trim()) })} className="w-full bg-slate-50 border border-slate-100 rounded-xl px-5 py-3.5 text-sm font-bold outline-none" />
+                  <input value={blogForm.tags.join(', ')} onChange={e => setBlogForm({ ...blogForm, tags: e.target.value.split(',').map(t => t.trim()) })} className="w-full bg-slate-50 border border-slate-100  px-5 py-3.5 text-sm font-bold outline-none" />
                 </div>
 
                 <div className="flex justify-end gap-3 pt-6 border-t border-gray-100">
                   <button type="button" onClick={closeForms} className="px-6 py-3 text-slate-400 font-bold uppercase text-[11px] hover:text-slate-600">Cancel</button>
-                  <button type="submit" disabled={isSaving} className={`bg-black text-white px-10 py-3 rounded-xl font-black uppercase text-[11px] shadow-lg transition-all hover:bg-gray-800 flex items-center gap-2 ${isSaving ? 'opacity-70 cursor-not-allowed' : ''}`}>
+                  <button type="submit" disabled={isSaving} className={`bg-black text-white px-10 py-3  font-black uppercase text-[11px] shadow-lg transition-all hover:bg-gray-800 flex items-center gap-2 ${isSaving ? 'opacity-70 cursor-not-allowed' : ''}`}>
                     {isSaving ? (
                       <>
                         <Loader2 size={14} className="animate-spin" /> Saving
@@ -1831,7 +1831,7 @@ CREATE POLICY "Public read blog" ON public.blog_posts FOR SELECT USING (true);`;
                 </div>
               </form>
             ) : (
-              <div className="bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm">
+              <div className="bg-white  border border-gray-100 overflow-hidden shadow-sm">
                 <table className="w-full text-left">
                   <thead className="bg-slate-50 border-b text-[10px] uppercase font-black text-slate-400 tracking-widest">
                     <tr><th className="px-8 py-6">Title</th><th className="px-6 py-6">Author</th><th className="px-6 py-6">Date</th><th className="px-8 py-6 text-right">Actions</th></tr>
@@ -1843,9 +1843,9 @@ CREATE POLICY "Public read blog" ON public.blog_posts FOR SELECT USING (true);`;
                         <td className="px-6 py-5 text-gray-500 font-medium text-sm">{p.author}</td>
                         <td className="px-6 py-5 text-gray-400 text-sm">{p.date}</td>
                         <td className="px-8 py-5 text-right flex justify-end gap-2">
-                          <a href={`/blog/${p.slug}`} target="_blank" rel="noreferrer" className="bg-white p-2.5 rounded-xl border border-slate-100 text-slate-300 hover:text-black shadow-sm"><Eye size={18} /></a>
-                          <button onClick={() => startEditBlog(p)} className="bg-white p-2.5 rounded-xl border border-slate-100 text-slate-300 hover:text-blue-500 shadow-sm"><Pencil size={18} /></button>
-                          <button onClick={() => deleteBlogPost(p.id)} className="bg-white p-2.5 rounded-xl border border-slate-100 text-slate-300 hover:text-red-500 shadow-sm"><Trash2 size={18} /></button>
+                          <a href={`/blog/${p.slug}`} target="_blank" rel="noreferrer" className="bg-white p-2.5  border border-slate-100 text-slate-300 hover:text-black shadow-sm"><Eye size={18} /></a>
+                          <button onClick={() => startEditBlog(p)} className="bg-white p-2.5  border border-slate-100 text-slate-300 hover:text-blue-500 shadow-sm"><Pencil size={18} /></button>
+                          <button onClick={() => deleteBlogPost(p.id)} className="bg-white p-2.5  border border-slate-100 text-slate-300 hover:text-red-500 shadow-sm"><Trash2 size={18} /></button>
                         </td>
                       </tr>
                     ))}
@@ -1863,9 +1863,9 @@ CREATE POLICY "Public read blog" ON public.blog_posts FOR SELECT USING (true);`;
               <>
                 <div className="flex justify-between items-center">
                   <div><h2 className="text-2xl font-black text-slate-800 tracking-tight">Products</h2><p className="text-slate-400 text-sm">Manage your product catalog.</p></div>
-                  <button onClick={() => setIsAdding('product')} className="bg-black text-white px-8 py-3.5 rounded-xl font-black uppercase text-[11px] flex items-center gap-2 shadow-xl hover:bg-gray-800 transition-all"><Plus size={18} /> Add Product</button>
+                  <button onClick={() => setIsAdding('product')} className="bg-black text-white px-8 py-3.5  font-black uppercase text-[11px] flex items-center gap-2 shadow-xl hover:bg-gray-800 transition-all"><Plus size={18} /> Add Product</button>
                 </div>
-                <div className="bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm">
+                <div className="bg-white  border border-gray-100 overflow-hidden shadow-sm">
                   <table className="w-full text-left">
                     <thead className="bg-slate-50 border-b text-[10px] uppercase font-black text-slate-400 tracking-widest">
                       <tr><th className="px-8 py-6">Product</th><th className="px-6 py-6">Category</th><th className="px-6 py-6">Price Details (৳)</th><th className="px-8 py-6 text-right">Actions</th></tr>
@@ -1878,7 +1878,7 @@ CREATE POLICY "Public read blog" ON public.blog_posts FOR SELECT USING (true);`;
                           return (
                             <tr key={p.id} className="hover:bg-slate-50/50 group transition-colors">
                               <td className="px-8 py-5 flex items-center gap-4">
-                                <div className="w-12 h-12 bg-slate-50 rounded-xl p-1 border border-slate-100 flex items-center justify-center shrink-0">
+                                <div className="w-12 h-12 bg-slate-50  p-1 border border-slate-100 flex items-center justify-center shrink-0">
                                   {(!p.images?.[0] || brokenImages[p.id]) ? <ImageIcon className="text-slate-200" size={20} /> : <img src={p.images[0]} className="max-h-full max-w-full object-contain" onError={() => handleImageError(p.id)} />}
                                 </div>
                                 <div className="min-w-0"><span className="font-bold text-slate-700 block truncate max-w-xs">{p.name}</span><span className="text-[10px] text-slate-400 font-black uppercase tracking-widest">SKU: {p.sku || 'N/A'}</span></div>
@@ -1891,8 +1891,8 @@ CREATE POLICY "Public read blog" ON public.blog_posts FOR SELECT USING (true);`;
                                 </div>
                               </td>
                               <td className="px-8 py-5 text-right flex justify-end gap-2">
-                                <button onClick={() => startEditProduct(p)} className="bg-white p-2.5 rounded-xl border border-slate-100 text-slate-300 hover:text-blue-500 shadow-sm"><Pencil size={18} /></button>
-                                <button onClick={() => deleteProduct(p.id)} className="bg-white p-2.5 rounded-xl border border-slate-100 text-slate-300 hover:text-red-500 shadow-sm"><Trash2 size={18} /></button>
+                                <button onClick={() => startEditProduct(p)} className="bg-white p-2.5  border border-slate-100 text-slate-300 hover:text-blue-500 shadow-sm"><Pencil size={18} /></button>
+                                <button onClick={() => deleteProduct(p.id)} className="bg-white p-2.5  border border-slate-100 text-slate-300 hover:text-red-500 shadow-sm"><Trash2 size={18} /></button>
                               </td>
                             </tr>
                           );
@@ -1908,7 +1908,7 @@ CREATE POLICY "Public read blog" ON public.blog_posts FOR SELECT USING (true);`;
                       <button
                         disabled={productsPage === 1}
                         onClick={() => setProductsPage(p => Math.max(1, p - 1))}
-                        className={`p-2 rounded-lg border ${productsPage === 1 ? 'bg-gray-100 text-gray-300 border-gray-100 cursor-not-allowed' : 'bg-white text-gray-600 border-gray-200 hover:bg-black hover:text-white hover:border-black'} transition-all`}
+                        className={`p-2  border ${productsPage === 1 ? 'bg-gray-100 text-gray-300 border-gray-100 cursor-not-allowed' : 'bg-white text-gray-600 border-gray-200 hover:bg-black hover:text-white hover:border-black'} transition-all`}
                       >
                         <ChevronRight size={16} className="rotate-180" />
                       </button>
@@ -1919,7 +1919,7 @@ CREATE POLICY "Public read blog" ON public.blog_posts FOR SELECT USING (true);`;
                             <button
                               key={i}
                               onClick={() => setProductsPage(i + 1)}
-                              className={`w-8 h-8 rounded-lg text-xs font-bold flex items-center justify-center border transition-all ${productsPage === i + 1 ? 'bg-black text-white border-black' : 'bg-white text-gray-600 border-gray-200 hover:border-gray-300'}`}
+                              className={`w-8 h-8  text-xs font-bold flex items-center justify-center border transition-all ${productsPage === i + 1 ? 'bg-black text-white border-black' : 'bg-white text-gray-600 border-gray-200 hover:border-gray-300'}`}
                             >
                               {i + 1}
                             </button>
@@ -1931,7 +1931,7 @@ CREATE POLICY "Public read blog" ON public.blog_posts FOR SELECT USING (true);`;
                       <button
                         disabled={productsPage === Math.ceil(products.length / itemsPerPage)}
                         onClick={() => setProductsPage(p => Math.min(Math.ceil(products.length / itemsPerPage), p + 1))}
-                        className={`p-2 rounded-lg border ${productsPage === Math.ceil(products.length / itemsPerPage) ? 'bg-gray-100 text-gray-300 border-gray-100 cursor-not-allowed' : 'bg-white text-gray-600 border-gray-200 hover:bg-black hover:text-white hover:border-black'} transition-all`}
+                        className={`p-2  border ${productsPage === Math.ceil(products.length / itemsPerPage) ? 'bg-gray-100 text-gray-300 border-gray-100 cursor-not-allowed' : 'bg-white text-gray-600 border-gray-200 hover:bg-black hover:text-white hover:border-black'} transition-all`}
                       >
                         <ChevronRight size={16} />
                       </button>
@@ -1944,10 +1944,10 @@ CREATE POLICY "Public read blog" ON public.blog_posts FOR SELECT USING (true);`;
                 <div className="flex items-center justify-between">
                   <button onClick={closeForms} className="flex items-center gap-2 text-slate-400 hover:text-slate-800 font-bold text-sm uppercase tracking-widest transition-colors"><ChevronRight size={20} className="rotate-180" /> Back</button>
                 </div>
-                <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-10 space-y-8">
+                <div className="bg-white  border border-gray-100 shadow-sm p-10 space-y-8">
                   <div className="space-y-4">
                     <h3 className="text-lg font-bold text-[#1a3a34]">Images</h3>
-                    <div onClick={() => fileInputRef.current?.click()} className="border-2 border-dashed border-gray-200 rounded-2xl bg-gray-50 py-16 flex flex-col items-center justify-center cursor-pointer hover:bg-gray-100 transition-all group">
+                    <div onClick={() => fileInputRef.current?.click()} className="border-2 border-dashed border-gray-200  bg-gray-50 py-16 flex flex-col items-center justify-center cursor-pointer hover:bg-gray-100 transition-all group">
                       <input type="file" ref={fileInputRef} className="hidden" multiple accept="image/*" onChange={(e) => {
                         Array.from(e.target.files || []).forEach((file: File) => {
                           const reader = new FileReader();
@@ -1959,7 +1959,7 @@ CREATE POLICY "Public read blog" ON public.blog_posts FOR SELECT USING (true);`;
                       <p className="text-gray-600 font-black text-lg">Click to select product images</p>
                     </div>
                     <div className="flex justify-end pt-2">
-                      <button type="button" onClick={() => setImageSelectorCallback(() => handleProductImageSelect)} className="text-emerald-600 hover:text-emerald-700 font-black uppercase text-xs tracking-widest flex items-center gap-2 bg-emerald-50 px-4 py-2 rounded-lg hover:bg-emerald-100 transition-colors">
+                      <button type="button" onClick={() => setImageSelectorCallback(() => handleProductImageSelect)} className="text-emerald-600 hover:text-emerald-700 font-black uppercase text-xs tracking-widest flex items-center gap-2 bg-emerald-50 px-4 py-2  hover:bg-emerald-100 transition-colors">
                         <ImageIcon size={16} /> Select from Library
                       </button>
                     </div>
@@ -1980,22 +1980,22 @@ CREATE POLICY "Public read blog" ON public.blog_posts FOR SELECT USING (true);`;
                             setProdForm(prev => ({ ...prev, images: newImages }));
                             setDraggedImageIndex(null);
                           }}
-                          className={`relative w-24 h-24 border rounded-xl overflow-hidden p-2 cursor-grab active:cursor-grabbing transition-all ${draggedImageIndex === idx ? 'opacity-50 scale-95 border-dashed border-gray-400' : 'hover:border-black'}`}
+                          className={`relative w-24 h-24 border  overflow-hidden p-2 cursor-grab active:cursor-grabbing transition-all ${draggedImageIndex === idx ? 'opacity-50 scale-95 border-dashed border-gray-400' : 'hover:border-black'}`}
                         >
                           <img src={img} className="w-full h-full object-contain pointer-events-none" />
-                          <button onClick={() => setProdForm(p => ({ ...p, images: p.images.filter((_, i) => i !== idx) }))} className="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 hover:bg-red-600 transition-colors z-10"><X size={10} /></button>
+                          <button onClick={() => setProdForm(p => ({ ...p, images: p.images.filter((_, i) => i !== idx) }))} className="absolute top-1 right-1 bg-red-500 text-white  p-1 hover:bg-red-600 transition-colors z-10"><X size={10} /></button>
                         </div>
                       ))}
                     </div>
                   </div>
-                  <div className="space-y-2"><label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Name</label><input required value={prodForm.name} onChange={e => setProdForm({ ...prodForm, name: e.target.value })} className="w-full bg-gray-50 border border-gray-200 rounded-xl px-6 py-4 text-base font-bold outline-none focus:ring-2 focus:ring-black" /></div>
+                  <div className="space-y-2"><label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Name</label><input required value={prodForm.name} onChange={e => setProdForm({ ...prodForm, name: e.target.value })} className="w-full bg-gray-50 border border-gray-200  px-6 py-4 text-base font-bold outline-none focus:ring-2 focus:ring-black" /></div>
                   <div className="grid grid-cols-2 gap-8">
-                    <div className="space-y-2"><label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Regular M.R.P (৳)</label><input required type="number" value={prodForm.basePrice} onChange={e => setProdForm({ ...prodForm, basePrice: e.target.value })} className="w-full bg-gray-50 border border-gray-200 rounded-xl px-6 py-4 text-sm font-bold" placeholder="Base Retail Price" /></div>
-                    <div className="space-y-2"><label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Sale Price (৳) - Optional</label><input type="number" value={prodForm.salePrice} onChange={e => setProdForm({ ...prodForm, salePrice: e.target.value })} className="w-full bg-gray-50 border border-gray-200 rounded-xl px-6 py-4 text-sm font-bold text-black" placeholder="Selling Price" /></div>
+                    <div className="space-y-2"><label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Regular M.R.P (৳)</label><input required type="number" value={prodForm.basePrice} onChange={e => setProdForm({ ...prodForm, basePrice: e.target.value })} className="w-full bg-gray-50 border border-gray-200  px-6 py-4 text-sm font-bold" placeholder="Base Retail Price" /></div>
+                    <div className="space-y-2"><label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Sale Price (৳) - Optional</label><input type="number" value={prodForm.salePrice} onChange={e => setProdForm({ ...prodForm, salePrice: e.target.value })} className="w-full bg-gray-50 border border-gray-200  px-6 py-4 text-sm font-bold text-black" placeholder="Selling Price" /></div>
                   </div>
                   <div className="grid grid-cols-2 gap-8">
-                    <div className="space-y-2"><label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Category</label><select required value={prodForm.category} onChange={e => setProdForm({ ...prodForm, category: e.target.value })} className="w-full bg-gray-50 border border-gray-200 rounded-xl px-6 py-4 text-sm font-bold appearance-none"><option value="">Select Category</option>{hierarchicalCategories.map(c => <option key={c.id} value={c.name}>{'\u00A0'.repeat(c.level * 4) + (c.level > 0 ? '↳ ' : '') + c.name}</option>)}</select></div>
-                    <div className="space-y-2"><label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Brand</label><select value={prodForm.brand} onChange={e => setProdForm({ ...prodForm, brand: e.target.value })} className="w-full bg-gray-50 border border-gray-200 rounded-xl px-6 py-4 text-sm font-bold appearance-none"><option value="">No Brand</option>{brands.map(b => <option key={b.id} value={b.name}>{b.name}</option>)}</select></div>
+                    <div className="space-y-2"><label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Category</label><select required value={prodForm.category} onChange={e => setProdForm({ ...prodForm, category: e.target.value })} className="w-full bg-gray-50 border border-gray-200  px-6 py-4 text-sm font-bold appearance-none"><option value="">Select Category</option>{hierarchicalCategories.map(c => <option key={c.id} value={c.name}>{'\u00A0'.repeat(c.level * 4) + (c.level > 0 ? '↳ ' : '') + c.name}</option>)}</select></div>
+                    <div className="space-y-2"><label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Brand</label><select value={prodForm.brand} onChange={e => setProdForm({ ...prodForm, brand: e.target.value })} className="w-full bg-gray-50 border border-gray-200  px-6 py-4 text-sm font-bold appearance-none"><option value="">No Brand</option>{brands.map(b => <option key={b.id} value={b.name}>{b.name}</option>)}</select></div>
                   </div>
                   <div className="space-y-2"><label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Short Description</label><RichTextEditor value={prodForm.shortDescription} onChange={val => setProdForm({ ...prodForm, shortDescription: val })} label="Brief Overview" height="150px" /></div>
                   <div className="space-y-2 pt-10"><label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Full Description</label><RichTextEditor value={prodForm.description} onChange={val => setProdForm({ ...prodForm, description: val })} label="Long Product Content" height="300px" /></div>
@@ -2006,29 +2006,29 @@ CREATE POLICY "Public read blog" ON public.blog_posts FOR SELECT USING (true);`;
                       <p className="text-sm text-gray-500">Manage size, color, or other options with dynamic pricing.</p>
                     </div>
                     {prodForm.tempAttributes.map((attr, idx) => (
-                      <div key={idx} className="flex items-center justify-between bg-gray-50 p-4 rounded-xl border border-gray-200">
+                      <div key={idx} className="flex items-center justify-between bg-gray-50 p-4  border border-gray-200">
                         <div className="flex gap-2 items-center">
                           <span className="font-black text-black text-xs uppercase tracking-widest">{attr.name}:</span>
                           <div className="flex flex-wrap gap-1">
-                            {attr.options.map((opt, i) => (<span key={i} className="bg-white border border-gray-200 px-2 py-0.5 rounded-lg text-[10px] font-bold text-gray-700">{opt}</span>))}
+                            {attr.options.map((opt, i) => (<span key={i} className="bg-white border border-gray-200 px-2 py-0.5  text-[10px] font-bold text-gray-700">{opt}</span>))}
                           </div>
                         </div>
                         <button type="button" onClick={() => removeTempAttribute(idx)} className="text-gray-400 hover:text-red-500"><Trash2 size={16} /></button>
                       </div>
                     ))}
                     {showAttrForm ? (
-                      <div className="bg-white rounded-xl border border-gray-200 p-8 shadow-sm space-y-6 relative animate-in zoom-in-95 duration-200">
+                      <div className="bg-white  border border-gray-200 p-8 shadow-sm space-y-6 relative animate-in zoom-in-95 duration-200">
                         <button onClick={() => setShowAttrForm(false)} className="absolute top-4 right-4 text-red-500 hover:text-red-700 transition-colors"><X size={20} /></button>
                         <div className="space-y-4">
                           <div className="flex justify-between items-center">
                             <label className="text-[13px] font-medium text-gray-600">Use Global Attribute (Optional)</label>
-                            <label className="flex items-center gap-2 cursor-pointer bg-gray-50 px-3 py-1.5 rounded-lg border border-gray-200 hover:bg-gray-100 transition-colors">
-                              <input type="checkbox" checked={draftAttr.forVariations} onChange={e => setDraftAttr({ ...draftAttr, forVariations: e.target.checked })} className="w-4 h-4 accent-black rounded" />
+                            <label className="flex items-center gap-2 cursor-pointer bg-gray-50 px-3 py-1.5  border border-gray-200 hover:bg-gray-100 transition-colors">
+                              <input type="checkbox" checked={draftAttr.forVariations} onChange={e => setDraftAttr({ ...draftAttr, forVariations: e.target.checked })} className="w-4 h-4 accent-black " />
                               <span className="text-xs font-bold text-gray-700">Use for variations</span>
                             </label>
                           </div>
                           <div className="relative">
-                            <select onChange={(e) => handleGlobalAttrSelect(e.target.value)} className="w-full border border-gray-200 rounded-xl px-4 py-3.5 text-sm font-medium outline-none focus:ring-1 focus:ring-emerald-500 appearance-none bg-white text-gray-400">
+                            <select onChange={(e) => handleGlobalAttrSelect(e.target.value)} className="w-full border border-gray-200  px-4 py-3.5 text-sm font-medium outline-none focus:ring-1 focus:ring-emerald-500 appearance-none bg-white text-gray-400">
                               <option value="">Select a global attribute...</option>
                               {attributes.map(a => <option key={a.id} value={a.id}>{a.name}</option>)}
                             </select>
@@ -2038,19 +2038,19 @@ CREATE POLICY "Public read blog" ON public.blog_posts FOR SELECT USING (true);`;
                         <div className="flex flex-col md:flex-row gap-6">
                           <div className="flex-1 space-y-2">
                             <label className="text-[13px] font-medium text-gray-600">Attribute Name</label>
-                            <input placeholder="e.g. Color" value={draftAttr.name} onChange={(e) => setDraftAttr(p => ({ ...p, name: e.target.value }))} className="w-full border border-gray-200 rounded-xl px-4 py-3.5 text-sm font-medium outline-none focus:ring-1 focus:ring-emerald-500" />
+                            <input placeholder="e.g. Color" value={draftAttr.name} onChange={(e) => setDraftAttr(p => ({ ...p, name: e.target.value }))} className="w-full border border-gray-200  px-4 py-3.5 text-sm font-medium outline-none focus:ring-1 focus:ring-emerald-500" />
                           </div>
                           <div className="flex-[2] space-y-2">
                             <label className="text-[13px] font-medium text-gray-600">Options</label>
                             <div className="space-y-3">
                               <div className="flex gap-2">
-                                <input placeholder="e.g. Red" value={draftAttr.currentOption} onChange={(e) => setDraftAttr(prev => ({ ...prev, currentOption: e.target.value }))} onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), handleAddOption())} className="flex-1 border border-gray-200 rounded-xl px-4 py-3.5 text-sm font-medium outline-none focus:ring-1 focus:ring-emerald-500" />
-                                <button type="button" onClick={handleAddOption} className="bg-black text-white px-8 py-3.5 rounded-xl font-bold text-sm hover:bg-gray-800 transition-all active:scale-95">Add</button>
+                                <input placeholder="e.g. Red" value={draftAttr.currentOption} onChange={(e) => setDraftAttr(prev => ({ ...prev, currentOption: e.target.value }))} onKeyDown={(e) => e.key === 'Enter' && (e.preventDefault(), handleAddOption())} className="flex-1 border border-gray-200  px-4 py-3.5 text-sm font-medium outline-none focus:ring-1 focus:ring-emerald-500" />
+                                <button type="button" onClick={handleAddOption} className="bg-black text-white px-8 py-3.5  font-bold text-sm hover:bg-gray-800 transition-all active:scale-95">Add</button>
                               </div>
 
                               {/* Global Attribute Suggestions */}
                               {draftAttr.globalAttrId && (
-                                <div className="border border-gray-200 rounded-xl p-4 bg-gray-50/50">
+                                <div className="border border-gray-200  p-4 bg-gray-50/50">
                                   <label className="text-[10px] uppercase font-black text-gray-400 tracking-widest mb-2 block">Available Options (Click to Add)</label>
                                   <div className="flex flex-wrap gap-2 max-h-[120px] overflow-y-auto custom-scrollbar">
                                     {attributes.find(a => a.id === draftAttr.globalAttrId)?.values.map(v => {
@@ -2067,7 +2067,7 @@ CREATE POLICY "Public read blog" ON public.blog_posts FOR SELECT USING (true);`;
                                                 : [...prev.options, v.value]
                                             }));
                                           }}
-                                          className={`px-3 py-1.5 rounded-lg text-xs font-bold border transition-all ${isSelected ? 'bg-black border-black text-white shadow-md' : 'bg-white border-gray-200 text-gray-600 hover:border-gray-300 hover:bg-gray-50'}`}
+                                          className={`px-3 py-1.5  text-xs font-bold border transition-all ${isSelected ? 'bg-black border-black text-white shadow-md' : 'bg-white border-gray-200 text-gray-600 hover:border-gray-300 hover:bg-gray-50'}`}
                                         >
                                           {v.value} {isSelected && <Check size={10} className="inline ml-1" />}
                                         </button>
@@ -2087,22 +2087,22 @@ CREATE POLICY "Public read blog" ON public.blog_posts FOR SELECT USING (true);`;
                           <div className="pt-4 border-t flex flex-col gap-4">
                             <div className="flex flex-wrap gap-2">
                               {draftAttr.options.map((o, i) => (
-                                <span key={i} className="flex items-center gap-1.5 bg-gray-100 text-gray-700 px-4 py-2 rounded-xl border border-gray-200 text-xs font-bold shadow-sm">
+                                <span key={i} className="flex items-center gap-1.5 bg-gray-100 text-gray-700 px-4 py-2  border border-gray-200 text-xs font-bold shadow-sm">
                                   {o}
                                   <X size={12} className="cursor-pointer hover:text-red-500" onClick={() => setDraftAttr(p => ({ ...p, options: p.options.filter((_, idx) => idx !== i) }))} />
                                 </span>
                               ))}
                             </div>
                             <div className="flex justify-end pt-2">
-                              <button type="button" onClick={commitDraftAttribute} className="bg-black text-white px-10 py-3.5 rounded-xl font-black uppercase text-[11px] tracking-widest shadow-lg hover:bg-gray-800 transition-all">Confirm Attribute Block</button>
+                              <button type="button" onClick={commitDraftAttribute} className="bg-black text-white px-10 py-3.5  font-black uppercase text-[11px] tracking-widest shadow-lg hover:bg-gray-800 transition-all">Confirm Attribute Block</button>
                             </div>
                           </div>
                         )}
                       </div>
                     ) : (
-                      <button type="button" onClick={() => setShowAttrForm(true)} className="flex items-center gap-2 px-6 py-3 border border-gray-200 rounded-xl text-xs font-bold text-gray-600 hover:bg-gray-50 shadow-sm transition-all"><PlusCircle size={18} className="text-black" /> Add Attribute</button>
+                      <button type="button" onClick={() => setShowAttrForm(true)} className="flex items-center gap-2 px-6 py-3 border border-gray-200  text-xs font-bold text-gray-600 hover:bg-gray-50 shadow-sm transition-all"><PlusCircle size={18} className="text-black" /> Add Attribute</button>
                     )}
-                    <button type="button" onClick={generateVariants} className="w-full bg-slate-800 text-white px-6 py-4 rounded-xl font-bold text-sm flex items-center justify-center gap-2">Generate Variants Table</button>
+                    <button type="button" onClick={generateVariants} className="w-full bg-slate-800 text-white px-6 py-4  font-bold text-sm flex items-center justify-center gap-2">Generate Variants Table</button>
                     {prodForm.variants.length > 0 && (
                       <div className="space-y-3">
                         <div className="grid grid-cols-12 gap-4 px-4 pb-1 text-[10px] uppercase font-black text-gray-400 tracking-widest">
@@ -2112,21 +2112,21 @@ CREATE POLICY "Public read blog" ON public.blog_posts FOR SELECT USING (true);`;
                           <div className="col-span-3">Stock</div>
                         </div>
                         {prodForm.variants.map((v, vIdx) => (
-                          <div key={v.id} className="grid grid-cols-12 gap-4 p-4 bg-gray-50 rounded-2xl items-center">
+                          <div key={v.id} className="grid grid-cols-12 gap-4 p-4 bg-gray-50  items-center">
                             <div className="col-span-3 font-black text-xs text-black">{Object.values(v.attributeValues).join(' / ')}</div>
-                            <div className="col-span-3"><input type="number" className="w-full bg-white border border-gray-200 rounded-lg px-3 py-2 text-xs font-bold" value={v.originalPrice || v.price} onChange={e => { const vs = [...prodForm.variants]; const newMrp = parseFloat(e.target.value); const oldMrp = vs[vIdx].originalPrice || vs[vIdx].price; vs[vIdx].originalPrice = newMrp; if (vs[vIdx].price === oldMrp || vs[vIdx].price === 0) { vs[vIdx].price = newMrp; } setProdForm({ ...prodForm, variants: vs }); }} placeholder="MRP" /></div>
-                            <div className="col-span-3"><input type="number" className="w-full bg-white border border-gray-200 rounded-lg px-3 py-2 text-xs font-bold text-black" value={v.price} onChange={e => { const vs = [...prodForm.variants]; vs[vIdx].price = parseFloat(e.target.value); setProdForm({ ...prodForm, variants: vs }); }} placeholder="Final Price" /></div>
-                            <div className="col-span-3"><input className="w-full bg-white border border-gray-200 rounded-lg px-3 py-2 text-xs font-bold" value={v.stock} onChange={e => { const vs = [...prodForm.variants]; vs[vIdx].stock = parseInt(e.target.value); setProdForm({ ...prodForm, variants: vs }); }} placeholder="Stock" /></div>
+                            <div className="col-span-3"><input type="number" className="w-full bg-white border border-gray-200  px-3 py-2 text-xs font-bold" value={v.originalPrice || v.price} onChange={e => { const vs = [...prodForm.variants]; const newMrp = parseFloat(e.target.value); const oldMrp = vs[vIdx].originalPrice || vs[vIdx].price; vs[vIdx].originalPrice = newMrp; if (vs[vIdx].price === oldMrp || vs[vIdx].price === 0) { vs[vIdx].price = newMrp; } setProdForm({ ...prodForm, variants: vs }); }} placeholder="MRP" /></div>
+                            <div className="col-span-3"><input type="number" className="w-full bg-white border border-gray-200  px-3 py-2 text-xs font-bold text-black" value={v.price} onChange={e => { const vs = [...prodForm.variants]; vs[vIdx].price = parseFloat(e.target.value); setProdForm({ ...prodForm, variants: vs }); }} placeholder="Final Price" /></div>
+                            <div className="col-span-3"><input className="w-full bg-white border border-gray-200  px-3 py-2 text-xs font-bold" value={v.stock} onChange={e => { const vs = [...prodForm.variants]; vs[vIdx].stock = parseInt(e.target.value); setProdForm({ ...prodForm, variants: vs }); }} placeholder="Stock" /></div>
                           </div>
                         ))}
                       </div>
                     )}
                   </div>
                   <div className="flex justify-end pt-8 border-t border-gray-100">
-                    <button onClick={handleProductSubmit} disabled={isSaving} className={`bg-black text-white px-10 py-3.5 rounded-xl font-black uppercase text-xs shadow-lg hover:bg-gray-800 flex items-center gap-2 transition-all ${isSaving ? 'opacity-70 cursor-not-allowed' : ''}`}>
+                    <button onClick={handleProductSubmit} disabled={isSaving} className={`bg-black text-white px-10 py-3.5  font-black uppercase text-xs shadow-lg hover:bg-gray-800 flex items-center gap-2 transition-all ${isSaving ? 'opacity-70 cursor-not-allowed' : ''}`}>
                       {isSaving ? (
                         <>
-                          <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent"></div>
+                          <div className="animate-spin  h-4 w-4 border-2 border-white border-t-transparent"></div>
                           Saving...
                         </>
                       ) : (
@@ -2149,17 +2149,17 @@ CREATE POLICY "Public read blog" ON public.blog_posts FOR SELECT USING (true);`;
             <div className="space-y-8 animate-in fade-in duration-500">
               <div className="flex justify-between items-center">
                 <div><h2 className="text-2xl font-black text-slate-800 tracking-tight">Global Attributes</h2><p className="text-slate-400 text-sm">Define global variant options like Size, Color, etc.</p></div>
-                <button onClick={() => { setIsAdding('attribute'); setAttrForm({ name: '' }); setAttrValuesInput(''); }} className="bg-black text-white px-8 py-3.5 rounded-xl font-black uppercase text-[11px] flex items-center gap-2 shadow-xl hover:bg-gray-800 transition-all"><Plus size={18} /> Add Attribute</button>
+                <button onClick={() => { setIsAdding('attribute'); setAttrForm({ name: '' }); setAttrValuesInput(''); }} className="bg-black text-white px-8 py-3.5  font-black uppercase text-[11px] flex items-center gap-2 shadow-xl hover:bg-gray-800 transition-all"><Plus size={18} /> Add Attribute</button>
               </div>
 
               {(isAdding === 'attribute' || editingItem?.type === 'attribute') && (
                 <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-[100] p-4 animate-in fade-in duration-200">
-                  <div className="bg-white rounded-2xl border border-gray-200 p-8 shadow-2xl w-full max-w-2xl animate-in zoom-in-95 duration-200 max-h-[90vh] overflow-y-auto">
+                  <div className="bg-white  border border-gray-200 p-8 shadow-2xl w-full max-w-2xl animate-in zoom-in-95 duration-200 max-h-[90vh] overflow-y-auto">
                     <div className="flex justify-between items-center mb-6">
                       <h3 className="text-xl font-black text-gray-800 tracking-tight">
                         {isAdding === 'attribute' ? 'Add Attribute' : 'Edit Attribute'}
                       </h3>
-                      <button onClick={closeForms} className="p-2 hover:bg-gray-100 rounded-full transition-colors">
+                      <button onClick={closeForms} className="p-2 hover:bg-gray-100  transition-colors">
                         <X size={24} className="text-gray-500" />
                       </button>
                     </div>
@@ -2167,7 +2167,7 @@ CREATE POLICY "Public read blog" ON public.blog_posts FOR SELECT USING (true);`;
                       <div className="space-y-6">
                         <div className="space-y-2">
                           <label className="text-[12px] font-black text-gray-400 uppercase tracking-widest ml-1">Attribute Name</label>
-                          <input required value={attrForm.name} onChange={e => setAttrForm({ ...attrForm, name: e.target.value })} className="w-full bg-white border border-gray-200 rounded-xl px-6 py-4 text-sm font-bold outline-none focus:border-black focus:ring-1 focus:ring-black transition-all" placeholder="e.g. Size" />
+                          <input required value={attrForm.name} onChange={e => setAttrForm({ ...attrForm, name: e.target.value })} className="w-full bg-white border border-gray-200  px-6 py-4 text-sm font-bold outline-none focus:border-black focus:ring-1 focus:ring-black transition-all" placeholder="e.g. Size" />
                         </div>
                         <div className="space-y-2">
                           <label className="text-[12px] font-black text-gray-400 uppercase tracking-widest ml-1">VALUES (COMMA SEPARATED)</label>
@@ -2175,14 +2175,14 @@ CREATE POLICY "Public read blog" ON public.blog_posts FOR SELECT USING (true);`;
                             required
                             value={attrValuesInput}
                             onChange={e => setAttrValuesInput(e.target.value)}
-                            className="w-full bg-white border border-gray-200 rounded-xl px-6 py-4 text-sm font-bold outline-none focus:border-black focus:ring-1 focus:ring-black transition-all"
+                            className="w-full bg-white border border-gray-200  px-6 py-4 text-sm font-bold outline-none focus:border-black focus:ring-1 focus:ring-black transition-all"
                             placeholder="e.g. 50ml, 100ml"
                           />
                         </div>
                       </div>
                       <div className="flex justify-end items-center gap-4 pt-4 border-t border-gray-100">
                         <button type="button" onClick={closeForms} className="text-gray-400 hover:text-gray-600 font-black uppercase text-[13px] tracking-widest transition-colors px-4 py-2">CANCEL</button>
-                        <button type="submit" className="bg-black text-white px-10 py-3 rounded-xl font-black uppercase text-[13px] tracking-widest shadow-lg transition-all hover:bg-gray-800 active:scale-95">SAVE ATTRIBUTE</button>
+                        <button type="submit" className="bg-black text-white px-10 py-3  font-black uppercase text-[13px] tracking-widest shadow-lg transition-all hover:bg-gray-800 active:scale-95">SAVE ATTRIBUTE</button>
                       </div>
                     </form>
                   </div>
@@ -2191,7 +2191,7 @@ CREATE POLICY "Public read blog" ON public.blog_posts FOR SELECT USING (true);`;
 
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {attributes.map(attr => (
-                  <div key={attr.id} className="bg-white p-6 rounded-2xl border border-gray-100 space-y-4 group hover:shadow-md transition-shadow">
+                  <div key={attr.id} className="bg-white p-6  border border-gray-100 space-y-4 group hover:shadow-md transition-shadow">
                     <div className="flex justify-between items-center">
                       <h3 className="font-black text-gray-800 uppercase tracking-widest text-xs">{attr.name}</h3>
                       <div className="flex gap-2">
@@ -2200,7 +2200,7 @@ CREATE POLICY "Public read blog" ON public.blog_posts FOR SELECT USING (true);`;
                       </div>
                     </div>
                     <div className="flex flex-wrap gap-2">
-                      {attr.values.map(v => (<span key={v.id} className="bg-gray-50 text-gray-500 px-3 py-1 rounded-lg text-xs font-bold border border-gray-100">{v.value}</span>))}
+                      {attr.values.map(v => (<span key={v.id} className="bg-gray-50 text-gray-500 px-3 py-1  text-xs font-bold border border-gray-100">{v.value}</span>))}
                     </div>
                   </div>
                 ))}
@@ -2215,16 +2215,16 @@ CREATE POLICY "Public read blog" ON public.blog_posts FOR SELECT USING (true);`;
             <div className="space-y-8 animate-in fade-in duration-500">
               <div className="flex justify-between items-center">
                 <div><h2 className="text-2xl font-black text-slate-800 tracking-tight">Categories</h2><p className="text-slate-400 text-sm">Organize your products catalog.</p></div>
-                <button onClick={() => setIsAdding('category')} className="bg-black text-white px-8 py-3.5 rounded-xl font-black uppercase text-[11px] flex items-center gap-2 shadow-xl hover:bg-gray-800 transition-all"><Plus size={18} /> Add Category</button>
+                <button onClick={() => setIsAdding('category')} className="bg-black text-white px-8 py-3.5  font-black uppercase text-[11px] flex items-center gap-2 shadow-xl hover:bg-gray-800 transition-all"><Plus size={18} /> Add Category</button>
               </div>
               {(isAdding === 'category' || editingItem?.type === 'category') && (
                 <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-[100] p-4 animate-in fade-in duration-200">
-                  <div className="bg-white rounded-2xl border border-gray-200 p-8 shadow-2xl w-full max-w-2xl animate-in zoom-in-95 duration-200 max-h-[90vh] overflow-y-auto">
+                  <div className="bg-white  border border-gray-200 p-8 shadow-2xl w-full max-w-2xl animate-in zoom-in-95 duration-200 max-h-[90vh] overflow-y-auto">
                     <div className="flex justify-between items-center mb-6">
                       <h3 className="text-xl font-black text-gray-800 tracking-tight">
                         {isAdding === 'category' ? 'Add New Category' : 'Edit Category'}
                       </h3>
-                      <button onClick={closeForms} className="p-2 hover:bg-gray-100 rounded-full transition-colors">
+                      <button onClick={closeForms} className="p-2 hover:bg-gray-100  transition-colors">
                         <X size={24} className="text-gray-500" />
                       </button>
                     </div>
@@ -2232,11 +2232,11 @@ CREATE POLICY "Public read blog" ON public.blog_posts FOR SELECT USING (true);`;
                       <div className="grid grid-cols-2 gap-8">
                         <div className="space-y-2">
                           <label className="text-[10px] font-black text-gray-400 uppercase ml-1">Category Name</label>
-                          <input required value={catForm.name} onChange={e => setCatForm({ ...catForm, name: e.target.value })} className="w-full bg-slate-50 border border-slate-100 rounded-xl px-5 py-3.5 text-sm font-bold outline-none focus:ring-2 focus:ring-black transition-all" />
+                          <input required value={catForm.name} onChange={e => setCatForm({ ...catForm, name: e.target.value })} className="w-full bg-slate-50 border border-slate-100  px-5 py-3.5 text-sm font-bold outline-none focus:ring-2 focus:ring-black transition-all" />
                         </div>
                         <div className="space-y-2">
                           <label className="text-[10px] font-black text-gray-400 uppercase ml-1">Parent Category</label>
-                          <select value={catForm.parentId || ''} onChange={e => setCatForm({ ...catForm, parentId: e.target.value || null })} className="w-full bg-slate-50 border border-slate-100 rounded-xl px-5 py-3.5 text-sm font-bold resize-none cursor-pointer focus:ring-2 focus:ring-black transition-all">
+                          <select value={catForm.parentId || ''} onChange={e => setCatForm({ ...catForm, parentId: e.target.value || null })} className="w-full bg-slate-50 border border-slate-100  px-5 py-3.5 text-sm font-bold resize-none cursor-pointer focus:ring-2 focus:ring-black transition-all">
                             <option value="">None (Top Level)</option>
                             {hierarchicalCategories.map(c => (
                               // Prevent selecting itself or its own children/descendants as parent to avoid cycles (basic cycle prevention can be enhanced later)
@@ -2247,13 +2247,13 @@ CREATE POLICY "Public read blog" ON public.blog_posts FOR SELECT USING (true);`;
                       </div>
                       <div className="flex justify-end gap-3 pt-4 border-t border-gray-100">
                         <button type="button" onClick={closeForms} className="px-6 py-3 text-slate-400 font-bold uppercase text-[11px] hover:text-slate-600 transition-colors">Cancel</button>
-                        <button type="submit" className="bg-black text-white px-10 py-3 rounded-xl font-black uppercase text-[11px] shadow-lg transition-all hover:bg-gray-800 hover:scale-105 active:scale-95">Save Category</button>
+                        <button type="submit" className="bg-black text-white px-10 py-3  font-black uppercase text-[11px] shadow-lg transition-all hover:bg-gray-800 hover:scale-105 active:scale-95">Save Category</button>
                       </div>
                     </form>
                   </div>
                 </div>
               )}
-              <div className="bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm">
+              <div className="bg-white  border border-gray-100 overflow-hidden shadow-sm">
                 <table className="w-full text-left">
                   <thead className="bg-slate-50 border-b text-[10px] uppercase font-black text-slate-400 tracking-widest">
                     <tr><th className="px-8 py-3">Category Name</th><th className="px-6 py-3">Parent</th><th className="px-8 py-3 text-right">Actions</th></tr>
@@ -2264,8 +2264,8 @@ CREATE POLICY "Public read blog" ON public.blog_posts FOR SELECT USING (true);`;
                         <td className="px-8 py-2"><div className="flex items-center gap-3" style={{ marginLeft: `${c.level * 24}px` }}>{c.level > 0 && <ChevronRight size={14} className="text-slate-300" />}<span className={`font-bold text-slate-700 ${c.level === 0 ? 'text-base' : 'text-sm'}`}>{c.name}</span></div></td>
                         <td className="px-6 py-2 text-slate-400 font-medium text-xs">{c.parentId ? categories.find(cat => cat.id === c.parentId)?.name : 'Top Level'}</td>
                         <td className="px-8 py-2 text-right flex justify-end gap-2">
-                          <button onClick={() => { setEditingItem({ type: 'category', data: c }); setCatForm({ name: c.name, parentId: c.parentId || null, image: c.image }); }} className="bg-white p-2.5 rounded-xl border border-slate-100 text-slate-300 hover:text-blue-500 shadow-sm"><Pencil size={18} /></button>
-                          <button onClick={() => deleteCategory(c.id)} className="bg-white p-2.5 rounded-xl border border-slate-100 text-slate-300 hover:text-red-500 shadow-sm"><Trash2 size={18} /></button>
+                          <button onClick={() => { setEditingItem({ type: 'category', data: c }); setCatForm({ name: c.name, parentId: c.parentId || null, image: c.image }); }} className="bg-white p-2.5  border border-slate-100 text-slate-300 hover:text-blue-500 shadow-sm"><Pencil size={18} /></button>
+                          <button onClick={() => deleteCategory(c.id)} className="bg-white p-2.5  border border-slate-100 text-slate-300 hover:text-red-500 shadow-sm"><Trash2 size={18} /></button>
                         </td>
                       </tr>
                     ))}
@@ -2282,10 +2282,10 @@ CREATE POLICY "Public read blog" ON public.blog_posts FOR SELECT USING (true);`;
             <div className="space-y-8 animate-in fade-in duration-500">
               <div className="flex justify-between items-center">
                 <div><h2 className="text-2xl font-black text-slate-800 tracking-tight">Brands</h2><p className="text-slate-400 text-sm">Manage product brands and logos.</p></div>
-                <button onClick={() => setIsAdding('brand')} className="bg-black text-white px-8 py-3.5 rounded-xl font-black uppercase text-[11px] flex items-center gap-2 shadow-xl hover:bg-gray-800 transition-all"><Plus size={18} /> Add Brand</button>
+                <button onClick={() => setIsAdding('brand')} className="bg-black text-white px-8 py-3.5  font-black uppercase text-[11px] flex items-center gap-2 shadow-xl hover:bg-gray-800 transition-all"><Plus size={18} /> Add Brand</button>
               </div>
               {(isAdding === 'brand' || editingItem?.type === 'brand') && (
-                <form onSubmit={handleBrandSubmit} className="bg-white rounded-2xl border border-gray-200 p-8 shadow-xl space-y-6">
+                <form onSubmit={handleBrandSubmit} className="bg-white  border border-gray-200 p-8 shadow-xl space-y-6">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                     <div className="space-y-4">
                       <div className="space-y-2">
@@ -2294,17 +2294,17 @@ CREATE POLICY "Public read blog" ON public.blog_posts FOR SELECT USING (true);`;
                           const name = e.target.value;
                           const slug = name.toLowerCase().trim().replace(/[^\w\s-]/g, '').replace(/[\s_-]+/g, '-');
                           setBrandForm({ ...brandForm, name, slug: brandForm.slug || isAdding === 'brand' ? slug : brandForm.slug });
-                        }} className="w-full bg-slate-50 border border-slate-100 rounded-xl px-5 py-3.5 text-sm font-bold" />
+                        }} className="w-full bg-slate-50 border border-slate-100  px-5 py-3.5 text-sm font-bold" />
                       </div>
                       <div className="space-y-2">
                         <label className="text-[10px] font-black text-gray-400 uppercase ml-1">Slug (URL Path)</label>
-                        <input value={brandForm.slug} onChange={e => setBrandForm({ ...brandForm, slug: e.target.value })} className="w-full bg-slate-50 border border-slate-100 rounded-xl px-5 py-3.5 text-sm font-bold text-gray-600" />
+                        <input value={brandForm.slug} onChange={e => setBrandForm({ ...brandForm, slug: e.target.value })} className="w-full bg-slate-50 border border-slate-100  px-5 py-3.5 text-sm font-bold text-gray-600" />
                       </div>
                     </div>
                     <div className="space-y-2">
                       <label className="text-[10px] font-black text-gray-400 uppercase ml-1">Brand Logo (Optional)</label>
                       <div className="flex items-center gap-4">
-                        <div className="w-24 h-24 bg-gray-50 rounded-xl border border-slate-200 flex items-center justify-center relative overflow-hidden group">
+                        <div className="w-24 h-24 bg-gray-50  border border-slate-200 flex items-center justify-center relative overflow-hidden group">
                           {brandForm.logo_url ? (
                             <>
                               <img src={brandForm.logo_url} className="w-full h-full object-contain p-2" alt="logo preview" />
@@ -2317,11 +2317,11 @@ CREATE POLICY "Public read blog" ON public.blog_posts FOR SELECT USING (true);`;
                           )}
                         </div>
                         <div className="flex-1">
-                          <label className="cursor-pointer bg-black text-white px-5 py-2.5 rounded-xl text-[11px] font-black uppercase tracking-widest hover:bg-gray-800 transition-colors flex items-center gap-2 w-fit">
+                          <label className="cursor-pointer bg-black text-white px-5 py-2.5  text-[11px] font-black uppercase tracking-widest hover:bg-gray-800 transition-colors flex items-center gap-2 w-fit">
                             <Upload size={14} /> Upload Logo
                             <input type="file" className="hidden" accept="image/*" onChange={handleBrandLogoUpload} />
                           </label>
-                          <button type="button" onClick={() => setImageSelectorCallback(() => handleBrandImageSelect)} className="bg-emerald-50 text-emerald-600 px-5 py-2.5 rounded-xl text-[11px] font-black uppercase tracking-widest hover:bg-emerald-100 transition-colors flex items-center gap-2 w-fit mt-2">
+                          <button type="button" onClick={() => setImageSelectorCallback(() => handleBrandImageSelect)} className="bg-emerald-50 text-emerald-600 px-5 py-2.5  text-[11px] font-black uppercase tracking-widest hover:bg-emerald-100 transition-colors flex items-center gap-2 w-fit mt-2">
                             <ImageIcon size={14} /> Select Logo
                           </button>
                           <p className="text-[10px] text-gray-400 mt-2 font-medium">Recommended size: 200x200px. <br /> Transparent PNG works best.</p>
@@ -2329,19 +2329,19 @@ CREATE POLICY "Public read blog" ON public.blog_posts FOR SELECT USING (true);`;
                       </div>
                     </div>
                   </div>
-                  <div className="flex justify-end gap-3"><button type="button" onClick={closeForms} className="px-6 py-3 text-slate-400 font-bold uppercase text-[11px]">Cancel</button><button type="submit" className="bg-black text-white px-10 py-3 rounded-xl font-black uppercase text-[11px]">Save Brand</button></div>
+                  <div className="flex justify-end gap-3"><button type="button" onClick={closeForms} className="px-6 py-3 text-slate-400 font-bold uppercase text-[11px]">Cancel</button><button type="submit" className="bg-black text-white px-10 py-3  font-black uppercase text-[11px]">Save Brand</button></div>
                 </form>
               )}
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 {brands.map(brand => (
-                  <div key={brand.id} className="bg-white p-6 rounded-2xl border border-gray-100 flex items-center justify-between group hover:shadow-md transition-all">
+                  <div key={brand.id} className="bg-white p-6  border border-gray-100 flex items-center justify-between group hover:shadow-md transition-all">
                     <div className="flex items-center gap-4">
-                      <div className="w-10 h-10 bg-gray-50 rounded-lg flex items-center justify-center p-1.5 border border-gray-50 shadow-sm">{brand.logo_url ? <img src={brand.logo_url} className="max-h-full max-w-full object-contain" /> : <Globe className="text-gray-300" />}</div>
+                      <div className="w-10 h-10 bg-gray-50  flex items-center justify-center p-1.5 border border-gray-50 shadow-sm">{brand.logo_url ? <img src={brand.logo_url} className="max-h-full max-w-full object-contain" /> : <Globe className="text-gray-300" />}</div>
                       <span className="font-bold text-gray-700">{brand.name}</span>
                     </div>
                     <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                      <button onClick={() => { setEditingItem({ type: 'brand', data: brand }); setBrandForm({ name: brand.name, slug: brand.slug || '', logo_url: brand.logo_url || '' }); }} className="text-blue-500 hover:bg-blue-50 p-1.5 rounded-lg"><Pencil size={16} /></button>
-                      <button onClick={() => deleteBrand(brand.id)} className="text-red-500 hover:bg-red-50 p-1.5 rounded-lg"><Trash2 size={16} /></button>
+                      <button onClick={() => { setEditingItem({ type: 'brand', data: brand }); setBrandForm({ name: brand.name, slug: brand.slug || '', logo_url: brand.logo_url || '' }); }} className="text-blue-500 hover:bg-blue-50 p-1.5 "><Pencil size={16} /></button>
+                      <button onClick={() => deleteBrand(brand.id)} className="text-red-500 hover:bg-red-50 p-1.5 "><Trash2 size={16} /></button>
                     </div>
                   </div>
                 ))}
@@ -2355,7 +2355,7 @@ CREATE POLICY "Public read blog" ON public.blog_posts FOR SELECT USING (true);`;
           adminTab === 'orders' && (
             <div className="space-y-8 animate-in fade-in duration-500">
               <div><h2 className="text-2xl font-black text-slate-800 tracking-tight">Order Management</h2><p className="text-slate-400 text-sm">Process incoming orders and update tracking status.</p></div>
-              <div className="bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm">
+              <div className="bg-white  border border-gray-100 overflow-hidden shadow-sm">
                 <table className="w-full text-left">
                   <thead className="bg-slate-50 border-b text-[10px] uppercase font-black text-slate-400 tracking-widest">
                     <tr><th className="px-8 py-6">Order ID</th><th className="px-6 py-6">Customer</th><th className="px-6 py-6">Date</th><th className="px-6 py-6">Total</th><th className="px-6 py-6">Status</th><th className="px-8 py-6 text-right">Actions</th></tr>
@@ -2370,14 +2370,14 @@ CREATE POLICY "Public read blog" ON public.blog_posts FOR SELECT USING (true);`;
                         <td className="px-6 py-5 text-gray-400 font-bold text-sm">{new Date(order.date).toLocaleDateString()}</td>
                         <td className="px-6 py-5 font-black text-gray-900">৳{order.total.toFixed(2)}</td>
                         <td className="px-6 py-5">
-                          <span className={`px-4 py-1 rounded-full text-[10px] font-black uppercase tracking-widest border ${getOrderStatusColor(order.status)}`}>{order.status}</span>
+                          <span className={`px-4 py-1  text-[10px] font-black uppercase tracking-widest border ${getOrderStatusColor(order.status)}`}>{order.status}</span>
                         </td>
                         <td className="px-8 py-5 text-right flex justify-end gap-2">
-                          <button onClick={() => { setViewingOrder(order); setIsEditingOrder(false); }} className="bg-white p-2.5 rounded-xl border border-slate-100 text-slate-300 hover:text-black shadow-sm"><Eye size={18} /></button>
+                          <button onClick={() => { setViewingOrder(order); setIsEditingOrder(false); }} className="bg-white p-2.5  border border-slate-100 text-slate-300 hover:text-black shadow-sm"><Eye size={18} /></button>
                           <select
                             value={order.status}
                             onChange={(e) => updateOrderStatus(order.id, e.target.value as Order['status'])}
-                            className="bg-gray-50 border border-gray-100 rounded-xl px-3 py-2 text-xs font-bold outline-none"
+                            className="bg-gray-50 border border-gray-100  px-3 py-2 text-xs font-bold outline-none"
                           >
                             {['Pending', 'Processing', 'Delivered', 'Cancelled'].map(s => <option key={s} value={s}>{s}</option>)}
                           </select>
@@ -2389,16 +2389,16 @@ CREATE POLICY "Public read blog" ON public.blog_posts FOR SELECT USING (true);`;
               </div>
               {viewingOrder && (
                 <div className="fixed inset-0 bg-black/50 z-[100] flex items-center justify-center p-4">
-                  <div className="bg-white rounded-[2rem] w-full max-w-4xl max-h-[90vh] overflow-y-auto p-10 shadow-2xl space-y-10 animate-in zoom-in-95 relative">
+                  <div className="bg-white  w-full max-w-4xl max-h-[90vh] overflow-y-auto p-10 shadow-2xl space-y-10 animate-in zoom-in-95 relative">
                     <div className="flex justify-between items-center border-b pb-6">
                       <div className="flex items-center gap-4">
                         <h3 className="text-2xl font-black text-gray-800">Order Details <span className="text-black">#{viewingOrder.id}</span></h3>
                         {!isEditingOrder && (
                           <div className="flex gap-2">
-                            <button onClick={() => printInvoice(viewingOrder)} className="flex items-center gap-1.5 bg-slate-50 text-slate-600 px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest border border-slate-200 hover:bg-slate-100 transition-colors">
+                            <button onClick={() => printInvoice(viewingOrder)} className="flex items-center gap-1.5 bg-slate-50 text-slate-600 px-4 py-1.5  text-[10px] font-black uppercase tracking-widest border border-slate-200 hover:bg-slate-100 transition-colors">
                               <Printer size={12} /> Print Invoice
                             </button>
-                            <button onClick={startEditingOrder} className="flex items-center gap-1.5 bg-gray-50 text-black px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest border border-gray-200 hover:bg-gray-100 transition-colors">
+                            <button onClick={startEditingOrder} className="flex items-center gap-1.5 bg-gray-50 text-black px-4 py-1.5  text-[10px] font-black uppercase tracking-widest border border-gray-200 hover:bg-gray-100 transition-colors">
                               <Edit3 size={12} /> Edit Order
                             </button>
                           </div>
@@ -2408,19 +2408,19 @@ CREATE POLICY "Public read blog" ON public.blog_posts FOR SELECT USING (true);`;
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
                       <div className="space-y-4">
-                        <h4 className="text-xs font-black text-gray-400 uppercase tracking-widest flex items-center gap-2"><div className="w-1.5 h-1.5 bg-black rounded-full"></div> Customer Information</h4>
-                        <div className="bg-gray-50 p-6 rounded-2xl border border-gray-100 space-y-4 text-sm">
+                        <h4 className="text-xs font-black text-gray-400 uppercase tracking-widest flex items-center gap-2"><div className="w-1.5 h-1.5 bg-black "></div> Customer Information</h4>
+                        <div className="bg-gray-50 p-6  border border-gray-100 space-y-4 text-sm">
                           {isEditingOrder ? (
                             <>
-                              <div className="space-y-1"><label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Customer Name</label><input value={editingOrderData?.customerName} onChange={e => updateCustomerInfo('customerName', e.target.value)} className="w-full bg-white border border-gray-200 rounded-xl px-4 py-2.5 text-sm font-bold outline-none focus:ring-1 focus:ring-emerald-500" /></div>
+                              <div className="space-y-1"><label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Customer Name</label><input value={editingOrderData?.customerName} onChange={e => updateCustomerInfo('customerName', e.target.value)} className="w-full bg-white border border-gray-200  px-4 py-2.5 text-sm font-bold outline-none focus:ring-1 focus:ring-emerald-500" /></div>
                               <div className="grid grid-cols-2 gap-4">
-                                <div className="space-y-1"><label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Email</label><input value={editingOrderData?.customerEmail} onChange={e => updateCustomerInfo('customerEmail', e.target.value)} className="w-full bg-white border border-gray-200 rounded-xl px-4 py-2.5 text-sm font-bold outline-none" /></div>
-                                <div className="space-y-1"><label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Phone</label><input value={editingOrderData?.customerPhone} onChange={e => updateCustomerInfo('customerPhone', e.target.value)} className="w-full bg-white border border-gray-200 rounded-xl px-4 py-2.5 text-sm font-bold outline-none" /></div>
+                                <div className="space-y-1"><label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Email</label><input value={editingOrderData?.customerEmail} onChange={e => updateCustomerInfo('customerEmail', e.target.value)} className="w-full bg-white border border-gray-200  px-4 py-2.5 text-sm font-bold outline-none" /></div>
+                                <div className="space-y-1"><label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Phone</label><input value={editingOrderData?.customerPhone} onChange={e => updateCustomerInfo('customerPhone', e.target.value)} className="w-full bg-white border border-gray-200  px-4 py-2.5 text-sm font-bold outline-none" /></div>
                               </div>
-                              <div className="space-y-1"><label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Street Address</label><input value={editingOrderData?.customerAddress} onChange={e => updateCustomerInfo('customerAddress', e.target.value)} className="w-full bg-white border border-gray-200 rounded-xl px-4 py-2.5 text-sm font-bold outline-none" /></div>
+                              <div className="space-y-1"><label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Street Address</label><input value={editingOrderData?.customerAddress} onChange={e => updateCustomerInfo('customerAddress', e.target.value)} className="w-full bg-white border border-gray-200  px-4 py-2.5 text-sm font-bold outline-none" /></div>
                               <div className="grid grid-cols-2 gap-4">
-                                <div className="space-y-1"><label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">District</label><select value={editingOrderData?.customerDistrict} onChange={e => updateCustomerInfo('customerDistrict', e.target.value)} className="w-full bg-white border border-gray-200 rounded-xl px-4 py-2.5 text-sm font-bold outline-none appearance-none"><option value="">Select District</option>{Object.keys(DISTRICT_AREA_DATA).map(d => <option key={d} value={d}>{d}</option>)}</select></div>
-                                <div className="space-y-1"><label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Area</label><select value={editingOrderData?.customerArea} onChange={e => updateCustomerInfo('customerArea', e.target.value)} disabled={!editingOrderData?.customerDistrict} className="w-full bg-white border border-gray-200 rounded-xl px-4 py-2.5 text-sm font-bold outline-none appearance-none disabled:opacity-50"><option value="">Select Area</option>{editingOrderData?.customerDistrict && DISTRICT_AREA_DATA[editingOrderData.customerDistrict].map(a => <option key={a} value={a}>{a}</option>)}</select></div>
+                                <div className="space-y-1"><label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">District</label><select value={editingOrderData?.customerDistrict} onChange={e => updateCustomerInfo('customerDistrict', e.target.value)} className="w-full bg-white border border-gray-200  px-4 py-2.5 text-sm font-bold outline-none appearance-none"><option value="">Select District</option>{Object.keys(DISTRICT_AREA_DATA).map(d => <option key={d} value={d}>{d}</option>)}</select></div>
+                                <div className="space-y-1"><label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Area</label><select value={editingOrderData?.customerArea} onChange={e => updateCustomerInfo('customerArea', e.target.value)} disabled={!editingOrderData?.customerDistrict} className="w-full bg-white border border-gray-200  px-4 py-2.5 text-sm font-bold outline-none appearance-none disabled:opacity-50"><option value="">Select Area</option>{editingOrderData?.customerDistrict && DISTRICT_AREA_DATA[editingOrderData.customerDistrict].map(a => <option key={a} value={a}>{a}</option>)}</select></div>
                               </div>
                             </>
                           ) : (
@@ -2434,20 +2434,20 @@ CREATE POLICY "Public read blog" ON public.blog_posts FOR SELECT USING (true);`;
                         </div>
                       </div>
                       <div className="space-y-4">
-                        <h4 className="text-xs font-black text-gray-400 uppercase tracking-widest flex items-center gap-2"><div className="w-1.5 h-1.5 bg-black rounded-full"></div> Order Summary</h4>
-                        <div className="bg-gray-50 p-6 rounded-2xl border border-gray-100 space-y-3 font-bold text-sm">
+                        <h4 className="text-xs font-black text-gray-400 uppercase tracking-widest flex items-center gap-2"><div className="w-1.5 h-1.5 bg-black "></div> Order Summary</h4>
+                        <div className="bg-gray-50 p-6  border border-gray-100 space-y-3 font-bold text-sm">
                           <div className="flex justify-between"><span>Subtotal</span><span className="text-gray-800 font-black">৳{(isEditingOrder ? editingOrderData?.subtotal : viewingOrder.subtotal)?.toFixed(2)}</span></div>
-                          <div className="flex justify-between items-center"><span>Shipping Fee</span>{isEditingOrder ? (<div className="flex items-center gap-2"><span className="text-xs text-gray-400">৳</span><input type="number" className="w-24 bg-white border border-gray-200 rounded-xl px-3 py-1.5 text-right text-sm font-black text-[#1a3a34] focus:ring-1 focus:ring-emerald-500 outline-none" value={editingOrderData?.shippingCost} onChange={(e) => changeOrderShipping(parseFloat(e.target.value) || 0)} /></div>) : (<span className="text-gray-800 font-black">৳{viewingOrder.shippingCost.toFixed(2)}</span>)}</div>
+                          <div className="flex justify-between items-center"><span>Shipping Fee</span>{isEditingOrder ? (<div className="flex items-center gap-2"><span className="text-xs text-gray-400">৳</span><input type="number" className="w-24 bg-white border border-gray-200  px-3 py-1.5 text-right text-sm font-black text-[#1a3a34] focus:ring-1 focus:ring-emerald-500 outline-none" value={editingOrderData?.shippingCost} onChange={(e) => changeOrderShipping(parseFloat(e.target.value) || 0)} /></div>) : (<span className="text-gray-800 font-black">৳{viewingOrder.shippingCost.toFixed(2)}</span>)}</div>
                           <div className="flex justify-between text-black"><span className="flex items-center gap-1.5">{viewingOrder.coupon_code && <Ticket size={12} />} Discount {viewingOrder.coupon_code && `(${viewingOrder.coupon_code})`}</span><span className="font-black">-৳{(isEditingOrder ? editingOrderData?.discount : viewingOrder.discount)?.toFixed(2)}</span></div>
                           <div className="flex justify-between text-lg font-black pt-3 border-t border-gray-200"><span>Total</span><span className="text-black text-xl font-black">৳{(isEditingOrder ? editingOrderData?.total : viewingOrder.total)?.toFixed(2)}</span></div>
                         </div>
                       </div>
                     </div>
                     <div className="space-y-6">
-                      <div className="flex justify-between items-center"><h4 className="text-xs font-black text-gray-400 uppercase tracking-widest flex items-center gap-2"><Package size={16} className="text-black" /> Items Purchased</h4>{isEditingOrder && (<div className="relative"><button onClick={() => setShowProductPicker(!showProductPicker)} className="flex items-center gap-2 bg-black text-white px-5 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-gray-800 transition-all shadow-lg active:scale-95"><Plus size={14} /> Add Item</button>{showProductPicker && (<div className="absolute right-0 mt-3 w-96 bg-white border border-gray-200 rounded-[2rem] shadow-2xl p-6 z-[110] animate-in slide-in-from-top-2 duration-300"><div className="relative mb-5"><Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-300" size={18} /><input autoFocus placeholder="Search products..." className="w-full pl-12 pr-4 py-3.5 bg-gray-50 border border-gray-100 rounded-2xl text-sm font-bold outline-none focus:ring-4 focus:ring-gray-100 focus:bg-white focus:border-black transition-all" value={orderProductSearch} onChange={(e) => setOrderProductSearch(e.target.value)} /></div><div className="space-y-3 max-h-80 overflow-y-auto custom-scrollbar pr-1">{orderSearchFilteredProducts.map(p => (<div key={p.id} className="p-4 bg-gray-50/50 rounded-2xl border border-gray-100 transition-all"><div className="flex justify-between items-center mb-3"><div className="flex items-center gap-3"><div className="w-10 h-10 bg-white rounded-xl p-1 border border-gray-100 flex items-center justify-center"><img src={p.images?.[0] || ''} className="max-h-full max-w-full object-contain" /></div><span className="text-xs font-black text-gray-800 leading-tight">{p.name}</span></div><span className="text-[11px] font-black text-black bg-white px-2 py-1 rounded-lg border border-gray-200 shadow-sm">৳{p.price}</span></div>{p.variants && p.variants.length > 0 ? (<div className="flex flex-wrap gap-2">{p.variants.map(v => (<button key={v.id} onClick={() => addProductToOrder(p, v)} className="text-[9px] font-black uppercase tracking-widest bg-gray-50 text-gray-700 px-3 py-1.5 rounded-xl border border-gray-200 hover:bg-black hover:text-white hover:border-black transition-all">{Object.values(v.attributeValues).join(' / ')}</button>))}</div>) : (<button onClick={() => addProductToOrder(p)} className="w-full text-[9px] font-black uppercase tracking-widest bg-black text-white py-2 rounded-xl hover:bg-gray-800 transition-all shadow-md active:scale-95">Add Piece</button>)}</div>))}{orderSearchFilteredProducts.length === 0 && orderProductSearch && (<div className="text-center py-10"><Search size={32} className="mx-auto text-gray-200 mb-2" /><p className="text-xs font-bold text-gray-400 italic">No products matched "{orderProductSearch}"</p></div>)}</div></div>)}</div>)}</div>
-                      <div className="space-y-3">{(isEditingOrder ? editingOrderData?.items : viewingOrder.items)?.map((item, idx) => (<div key={idx} className="flex justify-between items-center p-5 bg-gray-50/50 rounded-[2rem] border border-gray-50 group hover:bg-gray-100 transition-all duration-300"><div className="flex items-center gap-5"><div className="w-14 h-14 bg-white rounded-2xl p-2 flex items-center justify-center border border-gray-100 shadow-sm overflow-hidden group-hover:scale-105 transition-transform"><img src={item.selectedVariantImage || item.images?.[0] || ''} className="max-h-full max-w-full object-contain" /></div><div><p className="font-black text-gray-800 text-[15px] leading-tight mb-1">{item.name}</p>{item.selectedVariantName && (<p className="text-[10px] font-black text-gray-500 uppercase tracking-widest inline-block bg-white px-2 py-0.5 rounded-lg border border-gray-200">{item.selectedVariantName}</p>)}</div></div><div className="flex items-center gap-10"><div className="flex items-center gap-5">{isEditingOrder ? (<div className="flex items-center bg-white border border-gray-200 rounded-2xl p-1 shadow-sm ring-4 ring-gray-100"><button onClick={() => changeOrderItemQty(idx, -1)} className="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-red-500 transition-colors"><Minus size={14} /></button><span className="w-8 text-center text-sm font-black text-[#1a3a34]">{item.quantity}</span><button onClick={() => changeOrderItemQty(idx, 1)} className="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-black transition-colors"><Plus size={14} /></button></div>) : (<p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Qty: <span className="text-gray-700 text-sm ml-1">{item.quantity}</span></p>)}</div><div className="text-right min-w-[120px]"><div className="text-base font-black text-[#1a3a34]">৳{(item.price * item.quantity).toFixed(2)}</div><div className="text-[10px] font-bold text-gray-400">৳{item.price.toFixed(2)} / unit</div></div>{isEditingOrder && (<button onClick={() => removeOrderItem(idx)} className="w-10 h-10 flex items-center justify-center bg-white text-gray-300 hover:text-red-500 hover:bg-red-50 border border-gray-100 rounded-2xl transition-all shadow-sm active:scale-90"><Trash2 size={18} /></button>)}</div></div>))}</div>
+                      <div className="flex justify-between items-center"><h4 className="text-xs font-black text-gray-400 uppercase tracking-widest flex items-center gap-2"><Package size={16} className="text-black" /> Items Purchased</h4>{isEditingOrder && (<div className="relative"><button onClick={() => setShowProductPicker(!showProductPicker)} className="flex items-center gap-2 bg-black text-white px-5 py-2  text-[10px] font-black uppercase tracking-widest hover:bg-gray-800 transition-all shadow-lg active:scale-95"><Plus size={14} /> Add Item</button>{showProductPicker && (<div className="absolute right-0 mt-3 w-96 bg-white border border-gray-200  shadow-2xl p-6 z-[110] animate-in slide-in-from-top-2 duration-300"><div className="relative mb-5"><Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-300" size={18} /><input autoFocus placeholder="Search products..." className="w-full pl-12 pr-4 py-3.5 bg-gray-50 border border-gray-100  text-sm font-bold outline-none focus:ring-4 focus:ring-gray-100 focus:bg-white focus:border-black transition-all" value={orderProductSearch} onChange={(e) => setOrderProductSearch(e.target.value)} /></div><div className="space-y-3 max-h-80 overflow-y-auto custom-scrollbar pr-1">{orderSearchFilteredProducts.map(p => (<div key={p.id} className="p-4 bg-gray-50/50  border border-gray-100 transition-all"><div className="flex justify-between items-center mb-3"><div className="flex items-center gap-3"><div className="w-10 h-10 bg-white  p-1 border border-gray-100 flex items-center justify-center"><img src={p.images?.[0] || ''} className="max-h-full max-w-full object-contain" /></div><span className="text-xs font-black text-gray-800 leading-tight">{p.name}</span></div><span className="text-[11px] font-black text-black bg-white px-2 py-1  border border-gray-200 shadow-sm">৳{p.price}</span></div>{p.variants && p.variants.length > 0 ? (<div className="flex flex-wrap gap-2">{p.variants.map(v => (<button key={v.id} onClick={() => addProductToOrder(p, v)} className="text-[9px] font-black uppercase tracking-widest bg-gray-50 text-gray-700 px-3 py-1.5  border border-gray-200 hover:bg-black hover:text-white hover:border-black transition-all">{Object.values(v.attributeValues).join(' / ')}</button>))}</div>) : (<button onClick={() => addProductToOrder(p)} className="w-full text-[9px] font-black uppercase tracking-widest bg-black text-white py-2  hover:bg-gray-800 transition-all shadow-md active:scale-95">Add Piece</button>)}</div>))}{orderSearchFilteredProducts.length === 0 && orderProductSearch && (<div className="text-center py-10"><Search size={32} className="mx-auto text-gray-200 mb-2" /><p className="text-xs font-bold text-gray-400 italic">No products matched "{orderProductSearch}"</p></div>)}</div></div>)}</div>)}</div>
+                      <div className="space-y-3">{(isEditingOrder ? editingOrderData?.items : viewingOrder.items)?.map((item, idx) => (<div key={idx} className="flex justify-between items-center p-5 bg-gray-50/50  border border-gray-50 group hover:bg-gray-100 transition-all duration-300"><div className="flex items-center gap-5"><div className="w-14 h-14 bg-white  p-2 flex items-center justify-center border border-gray-100 shadow-sm overflow-hidden group-hover:scale-105 transition-transform"><img src={item.selectedVariantImage || item.images?.[0] || ''} className="max-h-full max-w-full object-contain" /></div><div><p className="font-black text-gray-800 text-[15px] leading-tight mb-1">{item.name}</p>{item.selectedVariantName && (<p className="text-[10px] font-black text-gray-500 uppercase tracking-widest inline-block bg-white px-2 py-0.5  border border-gray-200">{item.selectedVariantName}</p>)}</div></div><div className="flex items-center gap-10"><div className="flex items-center gap-5">{isEditingOrder ? (<div className="flex items-center bg-white border border-gray-200  p-1 shadow-sm ring-4 ring-gray-100"><button onClick={() => changeOrderItemQty(idx, -1)} className="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-red-500 transition-colors"><Minus size={14} /></button><span className="w-8 text-center text-sm font-black text-[#1a3a34]">{item.quantity}</span><button onClick={() => changeOrderItemQty(idx, 1)} className="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-black transition-colors"><Plus size={14} /></button></div>) : (<p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Qty: <span className="text-gray-700 text-sm ml-1">{item.quantity}</span></p>)}</div><div className="text-right min-w-[120px]"><div className="text-base font-black text-[#1a3a34]">৳{(item.price * item.quantity).toFixed(2)}</div><div className="text-[10px] font-bold text-gray-400">৳{item.price.toFixed(2)} / unit</div></div>{isEditingOrder && (<button onClick={() => removeOrderItem(idx)} className="w-10 h-10 flex items-center justify-center bg-white text-gray-300 hover:text-red-500 hover:bg-red-50 border border-gray-100  transition-all shadow-sm active:scale-90"><Trash2 size={18} /></button>)}</div></div>))}</div>
                     </div>
-                    {isEditingOrder && (<div className="pt-12 flex gap-5 border-t border-gray-50"><button onClick={closeForms} className="flex-1 bg-gray-50 text-gray-400 font-black py-5 rounded-[1.2rem] uppercase text-xs tracking-widest hover:bg-gray-100 transition-all active:scale-95">Discard Changes</button><button onClick={saveOrderEdits} className="flex-[2] bg-black text-white font-black py-5 rounded-[1.2rem] uppercase text-xs tracking-widest shadow-xl shadow-gray-200 hover:bg-gray-800 transition-all flex items-center justify-center gap-3 active:scale-[0.98]"><Check size={20} /> Update Order</button></div>)}
+                    {isEditingOrder && (<div className="pt-12 flex gap-5 border-t border-gray-50"><button onClick={closeForms} className="flex-1 bg-gray-50 text-gray-400 font-black py-5  uppercase text-xs tracking-widest hover:bg-gray-100 transition-all active:scale-95">Discard Changes</button><button onClick={saveOrderEdits} className="flex-[2] bg-black text-white font-black py-5  uppercase text-xs tracking-widest shadow-xl shadow-gray-200 hover:bg-gray-800 transition-all flex items-center justify-center gap-3 active:scale-[0.98]"><Check size={20} /> Update Order</button></div>)}
                   </div>
                 </div>
               )}
@@ -2461,27 +2461,27 @@ CREATE POLICY "Public read blog" ON public.blog_posts FOR SELECT USING (true);`;
             <div className="space-y-8 animate-in fade-in duration-500">
               <div className="flex justify-between items-center">
                 <div><h2 className="text-2xl font-black text-slate-800 tracking-tight">Promo Coupons</h2><p className="text-slate-400 text-sm">Create and manage marketing discount codes.</p></div>
-                <button onClick={() => setIsAdding('coupon')} className="bg-black text-white px-8 py-3.5 rounded-xl font-black uppercase text-[11px] flex items-center gap-2 shadow-xl hover:bg-gray-800 transition-all"><Plus size={18} /> Add Coupon</button>
+                <button onClick={() => setIsAdding('coupon')} className="bg-black text-white px-8 py-3.5  font-black uppercase text-[11px] flex items-center gap-2 shadow-xl hover:bg-gray-800 transition-all"><Plus size={18} /> Add Coupon</button>
               </div>
               {(isAdding === 'coupon' || editingItem?.type === 'coupon') && (
-                <form onSubmit={handleCouponSubmit} className="bg-white rounded-2xl border border-gray-200 p-8 shadow-xl space-y-6">
+                <form onSubmit={handleCouponSubmit} className="bg-white  border border-gray-200 p-8 shadow-xl space-y-6">
                   <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
-                    <div className="space-y-2"><label className="text-[10px] font-black text-gray-400 uppercase ml-1">Coupon Code</label><input required value={couponForm.code} onChange={e => setCouponForm({ ...couponForm, code: e.target.value.toUpperCase() })} className="w-full bg-slate-50 border border-slate-100 rounded-xl px-5 py-3.5 text-sm font-bold" /></div>
-                    <div className="space-y-2"><label className="text-[10px] font-black text-gray-400 uppercase ml-1">Discount Type</label><select value={couponForm.discountType} onChange={e => setCouponForm({ ...couponForm, discountType: e.target.value as any })} className="w-full bg-slate-50 border border-slate-100 rounded-xl px-5 py-3.5 text-sm font-bold"><option value="Fixed">Fixed Amount</option><option value="Percentage">Percentage %</option></select></div>
-                    <div className="space-y-2"><label className="text-[10px] font-black text-gray-400 uppercase ml-1">Value</label><input required type="number" value={couponForm.discountValue} onChange={e => setCouponForm({ ...couponForm, discountValue: parseFloat(e.target.value) })} className="w-full bg-slate-50 border border-slate-100 rounded-xl px-5 py-3.5 text-sm font-bold" /></div>
-                    <div className="space-y-2"><label className="text-[10px] font-black text-gray-400 uppercase ml-1">Min Spend</label><input required type="number" value={couponForm.minimumSpend} onChange={e => setCouponForm({ ...couponForm, minimumSpend: parseFloat(e.target.value) })} className="w-full bg-slate-50 border border-slate-100 rounded-xl px-5 py-3.5 text-sm font-bold" /></div>
-                    <div className="space-y-2"><label className="text-[10px] font-black text-gray-400 uppercase ml-1">Expiry Date</label><input required type="date" value={couponForm.expiryDate} onChange={e => setCouponForm({ ...couponForm, expiryDate: e.target.value })} className="w-full bg-slate-50 border border-slate-100 rounded-xl px-5 py-3.5 text-sm font-bold" /></div>
+                    <div className="space-y-2"><label className="text-[10px] font-black text-gray-400 uppercase ml-1">Coupon Code</label><input required value={couponForm.code} onChange={e => setCouponForm({ ...couponForm, code: e.target.value.toUpperCase() })} className="w-full bg-slate-50 border border-slate-100  px-5 py-3.5 text-sm font-bold" /></div>
+                    <div className="space-y-2"><label className="text-[10px] font-black text-gray-400 uppercase ml-1">Discount Type</label><select value={couponForm.discountType} onChange={e => setCouponForm({ ...couponForm, discountType: e.target.value as any })} className="w-full bg-slate-50 border border-slate-100  px-5 py-3.5 text-sm font-bold"><option value="Fixed">Fixed Amount</option><option value="Percentage">Percentage %</option></select></div>
+                    <div className="space-y-2"><label className="text-[10px] font-black text-gray-400 uppercase ml-1">Value</label><input required type="number" value={couponForm.discountValue} onChange={e => setCouponForm({ ...couponForm, discountValue: parseFloat(e.target.value) })} className="w-full bg-slate-50 border border-slate-100  px-5 py-3.5 text-sm font-bold" /></div>
+                    <div className="space-y-2"><label className="text-[10px] font-black text-gray-400 uppercase ml-1">Min Spend</label><input required type="number" value={couponForm.minimumSpend} onChange={e => setCouponForm({ ...couponForm, minimumSpend: parseFloat(e.target.value) })} className="w-full bg-slate-50 border border-slate-100  px-5 py-3.5 text-sm font-bold" /></div>
+                    <div className="space-y-2"><label className="text-[10px] font-black text-gray-400 uppercase ml-1">Expiry Date</label><input required type="date" value={couponForm.expiryDate} onChange={e => setCouponForm({ ...couponForm, expiryDate: e.target.value })} className="w-full bg-slate-50 border border-slate-100  px-5 py-3.5 text-sm font-bold" /></div>
                     <div className="space-y-2 flex items-center pt-6 ml-4"><label className="flex items-center gap-3 cursor-pointer"><input type="checkbox" checked={couponForm.autoApply} onChange={e => setCouponForm({ ...couponForm, autoApply: e.target.checked })} className="w-5 h-5 accent-black" /><span className="text-xs font-black text-gray-500 uppercase">Auto-Apply</span></label></div>
                   </div>
-                  <div className="flex justify-end gap-3"><button type="button" onClick={closeForms} className="px-6 py-3 text-slate-400 font-bold uppercase text-[11px]">Cancel</button><button type="submit" className="bg-black text-white px-10 py-3 rounded-xl font-black uppercase text-[11px] hover:bg-gray-800 transition-all">Save Coupon</button></div>
+                  <div className="flex justify-end gap-3"><button type="button" onClick={closeForms} className="px-6 py-3 text-slate-400 font-bold uppercase text-[11px]">Cancel</button><button type="submit" className="bg-black text-white px-10 py-3  font-black uppercase text-[11px] hover:bg-gray-800 transition-all">Save Coupon</button></div>
                 </form>
               )}
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {coupons.map(cp => (
-                  <div key={cp.id} className="bg-white p-6 rounded-[2rem] border border-gray-100 relative group overflow-hidden">
-                    <div className="absolute top-0 right-0 w-24 h-24 bg-gray-100 rounded-full -mr-12 -mt-12 group-hover:bg-gray-200 transition-colors"></div>
+                  <div key={cp.id} className="bg-white p-6  border border-gray-100 relative group overflow-hidden">
+                    <div className="absolute top-0 right-0 w-24 h-24 bg-gray-100  -mr-12 -mt-12 group-hover:bg-gray-200 transition-colors"></div>
                     <div className="relative space-y-4">
-                      <div className="flex justify-between items-center"><span className="bg-black text-white px-4 py-1.5 rounded-full text-xs font-black tracking-widest">{cp.code}</span><div className="flex gap-2"><button onClick={() => { setEditingItem({ type: 'coupon', data: cp }); setCouponForm(cp); }} className="text-gray-300 hover:text-blue-500"><Pencil size={16} /></button><button onClick={() => deleteCoupon(cp.id)} className="text-gray-300 hover:text-red-500"><Trash2 size={16} /></button></div></div>
+                      <div className="flex justify-between items-center"><span className="bg-black text-white px-4 py-1.5  text-xs font-black tracking-widest">{cp.code}</span><div className="flex gap-2"><button onClick={() => { setEditingItem({ type: 'coupon', data: cp }); setCouponForm(cp); }} className="text-gray-300 hover:text-blue-500"><Pencil size={16} /></button><button onClick={() => deleteCoupon(cp.id)} className="text-gray-300 hover:text-red-500"><Trash2 size={16} /></button></div></div>
                       <div className="space-y-1"><p className="font-black text-2xl text-gray-800">{cp.discountType === 'Fixed' ? `৳${cp.discountValue}` : `${cp.discountValue}%`} OFF</p><p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Min Spend: ৳{cp.minimumSpend}</p></div>
                       <div className="pt-4 border-t flex items-center gap-2 text-xs font-bold text-gray-400"><RefreshCw size={14} /> Expires: {new Date(cp.expiryDate).toLocaleDateString()}</div>
                     </div>
@@ -2499,26 +2499,26 @@ CREATE POLICY "Public read blog" ON public.blog_posts FOR SELECT USING (true);`;
               <div><h2 className="text-2xl font-black text-slate-800 tracking-tight">Customer Reviews</h2><p className="text-slate-400 text-sm">Moderate and respond to customer feedback.</p></div>
               <div className="space-y-6">
                 {reviews.map(review => (
-                  <div key={review.id} className="bg-white rounded-[2rem] border border-gray-100 p-8 space-y-6 group">
+                  <div key={review.id} className="bg-white  border border-gray-100 p-8 space-y-6 group">
                     <div className="flex justify-between items-start">
-                      <div className="flex gap-4"><div className="w-12 h-12 bg-gray-100 rounded-2xl flex items-center justify-center text-black font-black text-xl border border-gray-200">{review.authorName.charAt(0)}</div><div><h4 className="font-black text-gray-800">{review.authorName}</h4><span className="text-[10px] font-black text-gray-400 uppercase">{review.productName} • {new Date(review.createdAt).toLocaleDateString()}</span></div></div>
+                      <div className="flex gap-4"><div className="w-12 h-12 bg-gray-100  flex items-center justify-center text-black font-black text-xl border border-gray-200">{review.authorName.charAt(0)}</div><div><h4 className="font-black text-gray-800">{review.authorName}</h4><span className="text-[10px] font-black text-gray-400 uppercase">{review.productName} • {new Date(review.createdAt).toLocaleDateString()}</span></div></div>
                       <div className="flex items-center gap-4"><div className="flex text-yellow-400 gap-0.5">{[1, 2, 3, 4, 5].map(i => <Star key={i} size={14} fill={i <= review.rating ? "currentColor" : "none"} className={i <= review.rating ? "" : "text-gray-200"} />)}</div><button onClick={() => deleteReview(review.id)} className="text-gray-300 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity"><Trash2 size={18} /></button></div>
                     </div>
                     <p className="text-gray-600 text-[15px] leading-relaxed italic">"{review.comment}"</p>
                     {review.reply ? (
-                      <div className="bg-gray-50/50 p-6 rounded-2xl border border-gray-100"><span className="text-[10px] font-black text-black uppercase tracking-widest block mb-2">Merchant Response</span><p className="text-gray-800 text-sm font-bold">"{review.reply}"</p><button onClick={() => setReplyingTo(review.id)} className="text-[10px] font-black text-black uppercase mt-4 hover:underline">Edit Response</button></div>
+                      <div className="bg-gray-50/50 p-6  border border-gray-100"><span className="text-[10px] font-black text-black uppercase tracking-widest block mb-2">Merchant Response</span><p className="text-gray-800 text-sm font-bold">"{review.reply}"</p><button onClick={() => setReplyingTo(review.id)} className="text-[10px] font-black text-black uppercase mt-4 hover:underline">Edit Response</button></div>
                     ) : (
-                      <button onClick={() => setReplyingTo(review.id)} className="bg-gray-50 hover:bg-black text-gray-500 hover:text-white px-6 py-2 rounded-xl text-xs font-black uppercase tracking-widest border border-gray-100 transition-all">Reply to Review</button>
+                      <button onClick={() => setReplyingTo(review.id)} className="bg-gray-50 hover:bg-black text-gray-500 hover:text-white px-6 py-2  text-xs font-black uppercase tracking-widest border border-gray-100 transition-all">Reply to Review</button>
                     )}
                   </div>
                 ))}
               </div>
               {replyingTo && (
                 <div className="fixed inset-0 bg-black/50 z-[110] flex items-center justify-center p-4">
-                  <form onSubmit={handleReplySubmit} className="bg-white rounded-[2rem] w-full max-w-lg p-10 shadow-2xl space-y-6 animate-in zoom-in-95">
+                  <form onSubmit={handleReplySubmit} className="bg-white  w-full max-w-lg p-10 shadow-2xl space-y-6 animate-in zoom-in-95">
                     <div className="flex justify-between items-center"><h3 className="text-xl font-black text-gray-800 uppercase tracking-widest">Merchant Reply</h3><button type="button" onClick={() => setReplyingTo(null)} className="text-gray-300 hover:text-red-500"><X size={24} /></button></div>
-                    <textarea value={replyText} onChange={e => setReplyText(e.target.value)} required placeholder="Write your response here..." className="w-full bg-gray-50 border border-gray-100 rounded-2xl p-6 h-48 text-sm font-medium outline-none focus:border-black transition-all" />
-                    <div className="flex gap-4"><button type="button" onClick={() => setReplyingTo(null)} className="flex-1 bg-gray-50 text-gray-400 font-black py-4 rounded-xl text-xs uppercase">Cancel</button><button type="submit" className="flex-1 bg-black text-white font-black py-4 rounded-xl text-xs uppercase tracking-widest shadow-lg hover:bg-gray-800 transition-all">Submit Reply</button></div>
+                    <textarea value={replyText} onChange={e => setReplyText(e.target.value)} required placeholder="Write your response here..." className="w-full bg-gray-50 border border-gray-100  p-6 h-48 text-sm font-medium outline-none focus:border-black transition-all" />
+                    <div className="flex gap-4"><button type="button" onClick={() => setReplyingTo(null)} className="flex-1 bg-gray-50 text-gray-400 font-black py-4  text-xs uppercase">Cancel</button><button type="submit" className="flex-1 bg-black text-white font-black py-4  text-xs uppercase tracking-widest shadow-lg hover:bg-gray-800 transition-all">Submit Reply</button></div>
                   </form>
                 </div>
               )}
@@ -2531,7 +2531,7 @@ CREATE POLICY "Public read blog" ON public.blog_posts FOR SELECT USING (true);`;
           adminTab === 'users' && (
             <div className="space-y-8 animate-in fade-in duration-500">
               <div><h2 className="text-2xl font-black text-slate-800 tracking-tight">Registered Users</h2><p className="text-slate-400 text-sm">Manage user accounts and permission roles.</p></div>
-              <div className="bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm">
+              <div className="bg-white  border border-gray-100 overflow-hidden shadow-sm">
                 <table className="w-full text-left">
                   <thead className="bg-slate-50 border-b text-[10px] uppercase font-black text-slate-400 tracking-widest">
                     <tr><th className="px-8 py-6">User</th><th className="px-6 py-6">Role</th><th className="px-6 py-6">Registered On</th><th className="px-8 py-6 text-right">Actions</th></tr>
@@ -2539,8 +2539,8 @@ CREATE POLICY "Public read blog" ON public.blog_posts FOR SELECT USING (true);`;
                   <tbody className="divide-y divide-slate-50">
                     {users.map(u => (
                       <tr key={u.id} className="hover:bg-slate-50/50 transition-colors">
-                        <td className="px-8 py-5 flex items-center gap-4"><div className="w-10 h-10 bg-gray-100 rounded-xl flex items-center justify-center text-black font-black text-lg">{u.email.charAt(0).toUpperCase()}</div><div className="flex flex-col"><span className="font-bold text-gray-800">{u.full_name || 'Anonymous User'}</span><span className="text-xs text-gray-400">{u.email}</span></div></td>
-                        <td className="px-6 py-5"><span className={`px-4 py-1 rounded-full text-[10px] font-black uppercase tracking-widest border ${u.role === 'admin' ? 'bg-red-50 text-red-600 border-red-100' : 'bg-gray-50 text-gray-400 border-gray-100'}`}>{u.role}</span></td>
+                        <td className="px-8 py-5 flex items-center gap-4"><div className="w-10 h-10 bg-gray-100  flex items-center justify-center text-black font-black text-lg">{u.email.charAt(0).toUpperCase()}</div><div className="flex flex-col"><span className="font-bold text-gray-800">{u.full_name || 'Anonymous User'}</span><span className="text-xs text-gray-400">{u.email}</span></div></td>
+                        <td className="px-6 py-5"><span className={`px-4 py-1  text-[10px] font-black uppercase tracking-widest border ${u.role === 'admin' ? 'bg-red-50 text-red-600 border-red-100' : 'bg-gray-50 text-gray-400 border-gray-100'}`}>{u.role}</span></td>
                         <td className="px-6 py-5 text-gray-400 font-bold text-sm">{new Date(u.created_at).toLocaleDateString()}</td>
                         <td className="px-8 py-5 text-right"><button onClick={() => updateUserRole(u.id, u.role === 'admin' ? 'customer' : 'admin')} className="text-[10px] font-black text-black uppercase tracking-widest hover:underline">{u.role === 'admin' ? 'Revoke Admin' : 'Make Admin'}</button></td>
                       </tr>
@@ -2563,53 +2563,53 @@ CREATE POLICY "Public read blog" ON public.blog_posts FOR SELECT USING (true);`;
                 {/* LEFT COLUMN */}
                 <div className="space-y-8">
                   {/* Delivery Fees Card */}
-                  <div className="bg-white rounded-[2rem] border border-gray-100 p-8 space-y-8 shadow-sm">
+                  <div className="bg-white  border border-gray-100 p-8 space-y-8 shadow-sm">
                     <div className="space-y-6">
                       <h3 className="text-lg font-black text-gray-800 uppercase tracking-widest flex items-center gap-3"><Truck className="text-black" /> Delivery Fees</h3>
                       <div className="grid grid-cols-2 gap-6">
-                        <div className="space-y-2"><label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Inside Dhaka (৳)</label><input type="number" value={shipForm.insideDhaka} onChange={e => setShipForm({ ...shipForm, insideDhaka: parseFloat(e.target.value) })} className="w-full bg-gray-50 border border-gray-100 rounded-2xl px-5 py-3 text-sm font-black outline-none focus:bg-white focus:border-black transition-all" /></div>
-                        <div className="space-y-2"><label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Outside Dhaka (৳)</label><input type="number" value={shipForm.outsideDhaka} onChange={e => setShipForm({ ...shipForm, outsideDhaka: parseFloat(e.target.value) })} className="w-full bg-gray-50 border border-gray-100 rounded-2xl px-5 py-3 text-sm font-black outline-none focus:bg-white focus:border-black transition-all" /></div>
+                        <div className="space-y-2"><label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Inside Dhaka (৳)</label><input type="number" value={shipForm.insideDhaka} onChange={e => setShipForm({ ...shipForm, insideDhaka: parseFloat(e.target.value) })} className="w-full bg-gray-50 border border-gray-100  px-5 py-3 text-sm font-black outline-none focus:bg-white focus:border-black transition-all" /></div>
+                        <div className="space-y-2"><label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Outside Dhaka (৳)</label><input type="number" value={shipForm.outsideDhaka} onChange={e => setShipForm({ ...shipForm, outsideDhaka: parseFloat(e.target.value) })} className="w-full bg-gray-50 border border-gray-100  px-5 py-3 text-sm font-black outline-none focus:bg-white focus:border-black transition-all" /></div>
                       </div>
                     </div>
-                    <div className="pt-4 border-t flex justify-end"><button onClick={() => updateShippingSettings(shipForm)} className="bg-black text-white font-black px-8 py-3 rounded-xl uppercase tracking-widest text-[10px] shadow-lg shadow-gray-200 hover:bg-gray-800 transition-all">Update Fees</button></div>
+                    <div className="pt-4 border-t flex justify-end"><button onClick={() => updateShippingSettings(shipForm)} className="bg-black text-white font-black px-8 py-3  uppercase tracking-widest text-[10px] shadow-lg shadow-gray-200 hover:bg-gray-800 transition-all">Update Fees</button></div>
                   </div>
 
                   {/* Store Profile Card */}
-                  <div className="bg-white rounded-[2rem] border border-gray-100 p-8 space-y-8 shadow-sm">
+                  <div className="bg-white  border border-gray-100 p-8 space-y-8 shadow-sm">
                     <div className="space-y-6">
                       <h3 className="text-lg font-black text-gray-800 uppercase tracking-widest flex items-center gap-3"><Globe className="text-black" /> Store Profile</h3>
 
-                      <div className="space-y-2"><label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Store Name</label><input value={storeForm.name} onChange={e => setStoreForm({ ...storeForm, name: e.target.value })} className="w-full bg-gray-50 border border-gray-100 rounded-2xl px-5 py-3 text-sm font-bold outline-none focus:bg-white focus:border-black transition-all" /></div>
+                      <div className="space-y-2"><label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Store Name</label><input value={storeForm.name} onChange={e => setStoreForm({ ...storeForm, name: e.target.value })} className="w-full bg-gray-50 border border-gray-100  px-5 py-3 text-sm font-bold outline-none focus:bg-white focus:border-black transition-all" /></div>
 
                       <div className="space-y-2">
                         <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Store Logo</label>
                         <div className="flex items-center gap-3">
-                          {storeForm.logo_url && <img src={storeForm.logo_url} alt="Logo" className="w-12 h-12 object-contain bg-gray-50 rounded-lg p-1 border border-gray-100" />}
-                          <label className="cursor-pointer bg-gray-50 hover:bg-gray-100 text-gray-500 hover:text-black px-4 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest border border-gray-100 transition-all flex items-center gap-2">
+                          {storeForm.logo_url && <img src={storeForm.logo_url} alt="Logo" className="w-12 h-12 object-contain bg-gray-50  p-1 border border-gray-100" />}
+                          <label className="cursor-pointer bg-gray-50 hover:bg-gray-100 text-gray-500 hover:text-black px-4 py-3  text-[10px] font-black uppercase tracking-widest border border-gray-100 transition-all flex items-center gap-2">
                             <ImageIcon size={14} /> Upload
                             <input type="file" accept="image/*" onChange={handleLogoUpload} className="hidden" />
                           </label>
-                          <button type="button" onClick={() => setImageSelectorCallback(() => handleStoreLogoSelect)} className="bg-emerald-50 text-emerald-600 px-4 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-emerald-100 transition-colors flex items-center gap-2 border border-emerald-100">
+                          <button type="button" onClick={() => setImageSelectorCallback(() => handleStoreLogoSelect)} className="bg-emerald-50 text-emerald-600 px-4 py-3  text-[10px] font-black uppercase tracking-widest hover:bg-emerald-100 transition-colors flex items-center gap-2 border border-emerald-100">
                             <ImageIcon size={14} /> Select
                           </button>
                         </div>
                       </div>
 
-                      <div className="space-y-2"><label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Address</label><input value={storeForm.address} onChange={e => setStoreForm({ ...storeForm, address: e.target.value })} className="w-full bg-gray-50 border border-gray-100 rounded-2xl px-5 py-3 text-sm font-bold outline-none focus:bg-white focus:border-black transition-all" /></div>
+                      <div className="space-y-2"><label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Address</label><input value={storeForm.address} onChange={e => setStoreForm({ ...storeForm, address: e.target.value })} className="w-full bg-gray-50 border border-gray-100  px-5 py-3 text-sm font-bold outline-none focus:bg-white focus:border-black transition-all" /></div>
 
                       <div className="grid grid-cols-2 gap-6">
-                        <div className="space-y-2"><label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Phone</label><input value={storeForm.phone} onChange={e => setStoreForm({ ...storeForm, phone: e.target.value })} className="w-full bg-gray-50 border border-gray-100 rounded-2xl px-5 py-3 text-sm font-bold outline-none focus:bg-white focus:border-black transition-all" /></div>
-                        <div className="space-y-2"><label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Email</label><input value={storeForm.email} onChange={e => setStoreForm({ ...storeForm, email: e.target.value })} className="w-full bg-gray-50 border border-gray-100 rounded-2xl px-5 py-3 text-sm font-bold outline-none focus:bg-white focus:border-black transition-all" /></div>
+                        <div className="space-y-2"><label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Phone</label><input value={storeForm.phone} onChange={e => setStoreForm({ ...storeForm, phone: e.target.value })} className="w-full bg-gray-50 border border-gray-100  px-5 py-3 text-sm font-bold outline-none focus:bg-white focus:border-black transition-all" /></div>
+                        <div className="space-y-2"><label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Email</label><input value={storeForm.email} onChange={e => setStoreForm({ ...storeForm, email: e.target.value })} className="w-full bg-gray-50 border border-gray-100  px-5 py-3 text-sm font-bold outline-none focus:bg-white focus:border-black transition-all" /></div>
                       </div>
 
-                      <div className="space-y-2"><label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Facebook URL</label><input value={storeForm.socials?.facebook || ''} onChange={e => setStoreForm({ ...storeForm, socials: { ...storeForm.socials, facebook: e.target.value } })} className="w-full bg-gray-50 border border-gray-100 rounded-2xl px-5 py-3 text-sm font-bold outline-none focus:bg-white focus:border-black transition-all" placeholder="https://facebook.com/..." /></div>
-                      <div className="space-y-2"><label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Instagram URL</label><input value={storeForm.socials?.instagram || ''} onChange={e => setStoreForm({ ...storeForm, socials: { ...storeForm.socials, instagram: e.target.value } })} className="w-full bg-gray-50 border border-gray-100 rounded-2xl px-5 py-3 text-sm font-bold outline-none focus:bg-white focus:border-black transition-all" placeholder="https://instagram.com/..." /></div>
+                      <div className="space-y-2"><label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Facebook URL</label><input value={storeForm.socials?.facebook || ''} onChange={e => setStoreForm({ ...storeForm, socials: { ...storeForm.socials, facebook: e.target.value } })} className="w-full bg-gray-50 border border-gray-100  px-5 py-3 text-sm font-bold outline-none focus:bg-white focus:border-black transition-all" placeholder="https://facebook.com/..." /></div>
+                      <div className="space-y-2"><label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Instagram URL</label><input value={storeForm.socials?.instagram || ''} onChange={e => setStoreForm({ ...storeForm, socials: { ...storeForm.socials, instagram: e.target.value } })} className="w-full bg-gray-50 border border-gray-100  px-5 py-3 text-sm font-bold outline-none focus:bg-white focus:border-black transition-all" placeholder="https://instagram.com/..." /></div>
                     </div>
                   </div>
 
                   {/* Warning Card */}
-                  <div className="bg-amber-50 rounded-[2rem] border border-amber-100 p-8 flex items-start gap-5">
-                    <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center text-amber-500 shadow-sm shrink-0"><AlertTriangle size={20} /></div>
+                  <div className="bg-amber-50  border border-amber-100 p-8 flex items-start gap-5">
+                    <div className="w-10 h-10 bg-white  flex items-center justify-center text-amber-500 shadow-sm shrink-0"><AlertTriangle size={20} /></div>
                     <div><h4 className="font-black text-amber-800 uppercase text-xs tracking-widest mb-1">Technical Warning</h4><p className="text-xs text-amber-700/80 leading-relaxed font-bold">Shipping changes affect active checkouts immediately.</p></div>
                   </div>
                 </div>
@@ -2617,7 +2617,7 @@ CREATE POLICY "Public read blog" ON public.blog_posts FOR SELECT USING (true);`;
                 {/* RIGHT COLUMN */}
                 <div className="space-y-8">
                   {/* Configuration Card */}
-                  <div className="bg-white rounded-[2rem] border border-gray-100 p-8 space-y-8 shadow-sm">
+                  <div className="bg-white  border border-gray-100 p-8 space-y-8 shadow-sm">
                     <div className="space-y-8">
                       <h3 className="text-lg font-black text-gray-800 uppercase tracking-widest flex items-center gap-3"><SettingsIcon className="text-black" /> Configuration</h3>
 
@@ -2625,8 +2625,8 @@ CREATE POLICY "Public read blog" ON public.blog_posts FOR SELECT USING (true);`;
                       <div className="space-y-5">
                         <div className="flex items-center justify-between border-b border-gray-50 pb-2">
                           <h4 className="text-xs font-black text-gray-400 uppercase tracking-widest">Floating Contact Widget</h4>
-                          <label className="flex items-center gap-2 cursor-pointer bg-gray-50 px-3 py-1.5 rounded-lg hover:bg-gray-100 transition-colors">
-                            <input type="checkbox" checked={storeForm.floatingWidget?.isVisible ?? true} onChange={e => setStoreForm({ ...storeForm, floatingWidget: { ...(storeForm.floatingWidget || {}), isVisible: e.target.checked } })} className="w-4 h-4 accent-black rounded" />
+                          <label className="flex items-center gap-2 cursor-pointer bg-gray-50 px-3 py-1.5  hover:bg-gray-100 transition-colors">
+                            <input type="checkbox" checked={storeForm.floatingWidget?.isVisible ?? true} onChange={e => setStoreForm({ ...storeForm, floatingWidget: { ...(storeForm.floatingWidget || {}), isVisible: e.target.checked } })} className="w-4 h-4 accent-black " />
                             <span className="text-[10px] font-black text-gray-600 uppercase tracking-widest">Enable</span>
                           </label>
                         </div>
@@ -2634,25 +2634,25 @@ CREATE POLICY "Public read blog" ON public.blog_posts FOR SELECT USING (true);`;
                         <div className="space-y-2">
                           <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Agent Avatar</label>
                           <div className="flex items-center gap-3">
-                            {storeForm.floatingWidget?.supportImage && <img src={storeForm.floatingWidget.supportImage} className="w-10 h-10 object-cover rounded-full border border-gray-100" />}
-                            <label className="cursor-pointer bg-gray-50 hover:bg-gray-100 text-gray-500 hover:text-black px-4 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest border border-gray-100 transition-all flex items-center gap-2">
+                            {storeForm.floatingWidget?.supportImage && <img src={storeForm.floatingWidget.supportImage} className="w-10 h-10 object-cover  border border-gray-100" />}
+                            <label className="cursor-pointer bg-gray-50 hover:bg-gray-100 text-gray-500 hover:text-black px-4 py-2.5  text-[10px] font-black uppercase tracking-widest border border-gray-100 transition-all flex items-center gap-2">
                               <ImageIcon size={14} /> Upload
                               <input type="file" accept="image/*" onChange={handleSupportImageUpload} className="hidden" />
                             </label>
-                            <button type="button" onClick={() => setImageSelectorCallback(() => handleSupportImageSelect)} className="bg-emerald-50 text-emerald-600 px-4 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-emerald-100 transition-colors flex items-center gap-2 border border-emerald-100">
+                            <button type="button" onClick={() => setImageSelectorCallback(() => handleSupportImageSelect)} className="bg-emerald-50 text-emerald-600 px-4 py-2.5  text-[10px] font-black uppercase tracking-widest hover:bg-emerald-100 transition-colors flex items-center gap-2 border border-emerald-100">
                               <ImageIcon size={14} /> Select
                             </button>
                           </div>
                         </div>
 
                         <div className="grid grid-cols-2 gap-5">
-                          <div className="space-y-2"><label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">WhatsApp</label><input value={storeForm.floatingWidget?.whatsapp || ''} onChange={e => setStoreForm({ ...storeForm, floatingWidget: { ...(storeForm.floatingWidget || {}), whatsapp: e.target.value } })} className="w-full bg-gray-50 border border-gray-100 rounded-2xl px-5 py-3 text-sm font-bold outline-none focus:bg-white focus:border-black transition-all" placeholder="88017..." /></div>
-                          <div className="space-y-2"><label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Messenger ID</label><input value={storeForm.floatingWidget?.messenger || ''} onChange={e => setStoreForm({ ...storeForm, floatingWidget: { ...(storeForm.floatingWidget || {}), messenger: e.target.value } })} className="w-full bg-gray-50 border border-gray-100 rounded-2xl px-5 py-3 text-sm font-bold outline-none focus:bg-white focus:border-black transition-all" placeholder="username" /></div>
+                          <div className="space-y-2"><label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">WhatsApp</label><input value={storeForm.floatingWidget?.whatsapp || ''} onChange={e => setStoreForm({ ...storeForm, floatingWidget: { ...(storeForm.floatingWidget || {}), whatsapp: e.target.value } })} className="w-full bg-gray-50 border border-gray-100  px-5 py-3 text-sm font-bold outline-none focus:bg-white focus:border-black transition-all" placeholder="88017..." /></div>
+                          <div className="space-y-2"><label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Messenger ID</label><input value={storeForm.floatingWidget?.messenger || ''} onChange={e => setStoreForm({ ...storeForm, floatingWidget: { ...(storeForm.floatingWidget || {}), messenger: e.target.value } })} className="w-full bg-gray-50 border border-gray-100  px-5 py-3 text-sm font-bold outline-none focus:bg-white focus:border-black transition-all" placeholder="username" /></div>
                         </div>
-                        <div className="space-y-2"><label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Support Phone</label><input value={storeForm.floatingWidget?.phone || ''} onChange={e => setStoreForm({ ...storeForm, floatingWidget: { ...(storeForm.floatingWidget || {}), phone: e.target.value } })} className="w-full bg-gray-50 border border-gray-100 rounded-2xl px-5 py-3 text-sm font-bold outline-none focus:bg-white focus:border-black transition-all" placeholder="+8801..." /></div>
+                        <div className="space-y-2"><label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Support Phone</label><input value={storeForm.floatingWidget?.phone || ''} onChange={e => setStoreForm({ ...storeForm, floatingWidget: { ...(storeForm.floatingWidget || {}), phone: e.target.value } })} className="w-full bg-gray-50 border border-gray-100  px-5 py-3 text-sm font-bold outline-none focus:bg-white focus:border-black transition-all" placeholder="+8801..." /></div>
                         <div className="grid grid-cols-2 gap-5">
-                          <div className="space-y-2"><label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">FB Link</label><input value={storeForm.floatingWidget?.facebook || ''} onChange={e => setStoreForm({ ...storeForm, floatingWidget: { ...(storeForm.floatingWidget || {}), facebook: e.target.value } })} className="w-full bg-gray-50 border border-gray-100 rounded-2xl px-5 py-3 text-sm font-bold outline-none focus:bg-white focus:border-black transition-all" placeholder="fb.com/..." /></div>
-                          <div className="space-y-2"><label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">IG Link</label><input value={storeForm.floatingWidget?.instagram || ''} onChange={e => setStoreForm({ ...storeForm, floatingWidget: { ...(storeForm.floatingWidget || {}), instagram: e.target.value } })} className="w-full bg-gray-50 border border-gray-100 rounded-2xl px-5 py-3 text-sm font-bold outline-none focus:bg-white focus:border-black transition-all" placeholder="inst.com/..." /></div>
+                          <div className="space-y-2"><label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">FB Link</label><input value={storeForm.floatingWidget?.facebook || ''} onChange={e => setStoreForm({ ...storeForm, floatingWidget: { ...(storeForm.floatingWidget || {}), facebook: e.target.value } })} className="w-full bg-gray-50 border border-gray-100  px-5 py-3 text-sm font-bold outline-none focus:bg-white focus:border-black transition-all" placeholder="fb.com/..." /></div>
+                          <div className="space-y-2"><label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">IG Link</label><input value={storeForm.floatingWidget?.instagram || ''} onChange={e => setStoreForm({ ...storeForm, floatingWidget: { ...(storeForm.floatingWidget || {}), instagram: e.target.value } })} className="w-full bg-gray-50 border border-gray-100  px-5 py-3 text-sm font-bold outline-none focus:bg-white focus:border-black transition-all" placeholder="inst.com/..." /></div>
                         </div>
                       </div>
 
@@ -2661,28 +2661,28 @@ CREATE POLICY "Public read blog" ON public.blog_posts FOR SELECT USING (true);`;
                         <h4 className="text-xs font-black text-gray-400 uppercase tracking-widest border-b border-gray-50 pb-2">Footer Settings</h4>
                         <div className="space-y-2">
                           <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Footer Description</label>
-                          <textarea value={storeForm.footer_description || ''} onChange={e => setStoreForm({ ...storeForm, footer_description: e.target.value })} className="w-full bg-gray-50 border border-gray-100 rounded-2xl px-5 py-3 text-sm font-bold outline-none focus:bg-white focus:border-black transition-all min-h-[80px]" placeholder="Brief description..." />
+                          <textarea value={storeForm.footer_description || ''} onChange={e => setStoreForm({ ...storeForm, footer_description: e.target.value })} className="w-full bg-gray-50 border border-gray-100  px-5 py-3 text-sm font-bold outline-none focus:bg-white focus:border-black transition-all min-h-[80px]" placeholder="Brief description..." />
                         </div>
 
                         <div className="grid grid-cols-2 gap-5">
-                          <div className="space-y-2"><label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">iOS Link</label><input value={storeForm.app_links?.ios || ''} onChange={e => setStoreForm({ ...storeForm, app_links: { ...storeForm.app_links, ios: e.target.value } })} className="w-full bg-gray-50 border border-gray-100 rounded-2xl px-5 py-3 text-sm font-bold outline-none focus:bg-white focus:border-black transition-all" /></div>
-                          <div className="space-y-2"><label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Android Link</label><input value={storeForm.app_links?.android || ''} onChange={e => setStoreForm({ ...storeForm, app_links: { ...storeForm.app_links, android: e.target.value } })} className="w-full bg-gray-50 border border-gray-100 rounded-2xl px-5 py-3 text-sm font-bold outline-none focus:bg-white focus:border-black transition-all" /></div>
+                          <div className="space-y-2"><label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">iOS Link</label><input value={storeForm.app_links?.ios || ''} onChange={e => setStoreForm({ ...storeForm, app_links: { ...storeForm.app_links, ios: e.target.value } })} className="w-full bg-gray-50 border border-gray-100  px-5 py-3 text-sm font-bold outline-none focus:bg-white focus:border-black transition-all" /></div>
+                          <div className="space-y-2"><label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Android Link</label><input value={storeForm.app_links?.android || ''} onChange={e => setStoreForm({ ...storeForm, app_links: { ...storeForm.app_links, android: e.target.value } })} className="w-full bg-gray-50 border border-gray-100  px-5 py-3 text-sm font-bold outline-none focus:bg-white focus:border-black transition-all" /></div>
                         </div>
 
                         <div className="space-y-3">
                           <label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Quick Links</label>
                           {storeForm.footer_links?.map((link, idx) => (
                             <div key={idx} className="flex gap-3">
-                              <input value={link.label} onChange={e => { const newLinks = [...(storeForm.footer_links || [])]; newLinks[idx] = { ...newLinks[idx], label: e.target.value }; setStoreForm({ ...storeForm, footer_links: newLinks }); }} className="flex-1 bg-gray-50 border border-gray-100 rounded-xl px-4 py-2.5 text-xs font-bold outline-none" placeholder="Label" />
-                              <input value={link.url} onChange={e => { const newLinks = [...(storeForm.footer_links || [])]; newLinks[idx] = { ...newLinks[idx], url: e.target.value }; setStoreForm({ ...storeForm, footer_links: newLinks }); }} className="flex-1 bg-gray-50 border border-gray-100 rounded-xl px-4 py-2.5 text-xs font-bold outline-none" placeholder="URL" />
-                              <button onClick={() => setStoreForm({ ...storeForm, footer_links: storeForm.footer_links?.filter((_, i) => i !== idx) })} className="text-red-400 hover:text-red-500 bg-red-50 p-2.5 rounded-xl"><Trash2 size={14} /></button>
+                              <input value={link.label} onChange={e => { const newLinks = [...(storeForm.footer_links || [])]; newLinks[idx] = { ...newLinks[idx], label: e.target.value }; setStoreForm({ ...storeForm, footer_links: newLinks }); }} className="flex-1 bg-gray-50 border border-gray-100  px-4 py-2.5 text-xs font-bold outline-none" placeholder="Label" />
+                              <input value={link.url} onChange={e => { const newLinks = [...(storeForm.footer_links || [])]; newLinks[idx] = { ...newLinks[idx], url: e.target.value }; setStoreForm({ ...storeForm, footer_links: newLinks }); }} className="flex-1 bg-gray-50 border border-gray-100  px-4 py-2.5 text-xs font-bold outline-none" placeholder="URL" />
+                              <button onClick={() => setStoreForm({ ...storeForm, footer_links: storeForm.footer_links?.filter((_, i) => i !== idx) })} className="text-red-400 hover:text-red-500 bg-red-50 p-2.5 "><Trash2 size={14} /></button>
                             </div>
                           ))}
-                          <button onClick={() => setStoreForm({ ...storeForm, footer_links: [...(storeForm.footer_links || []), { label: '', url: '' }] })} className="w-full py-3 bg-gray-50 border border-dashed border-gray-200 rounded-xl text-gray-500 font-bold text-[10px] uppercase tracking-widest hover:bg-white hover:border-black hover:text-black transition-all flex items-center justify-center gap-2"><Plus size={14} /> Add Link</button>
+                          <button onClick={() => setStoreForm({ ...storeForm, footer_links: [...(storeForm.footer_links || []), { label: '', url: '' }] })} className="w-full py-3 bg-gray-50 border border-dashed border-gray-200  text-gray-500 font-bold text-[10px] uppercase tracking-widest hover:bg-white hover:border-black hover:text-black transition-all flex items-center justify-center gap-2"><Plus size={14} /> Add Link</button>
                         </div>
                       </div>
                     </div>
-                    <div className="pt-6 border-t flex justify-end"><button onClick={() => updateStoreInfo(storeForm)} className="bg-black text-white font-black px-8 py-3 rounded-xl uppercase tracking-widest text-[10px] shadow-lg shadow-gray-200 hover:bg-gray-800 transition-all">Update Config</button></div>
+                    <div className="pt-6 border-t flex justify-end"><button onClick={() => updateStoreInfo(storeForm)} className="bg-black text-white font-black px-8 py-3  uppercase tracking-widest text-[10px] shadow-lg shadow-gray-200 hover:bg-gray-800 transition-all">Update Config</button></div>
                   </div>
                 </div>
 
@@ -2697,9 +2697,9 @@ CREATE POLICY "Public read blog" ON public.blog_posts FOR SELECT USING (true);`;
             <div className="space-y-8 animate-in fade-in duration-500 max-w-5xl">
               <div className="flex justify-between items-center">
                 <div><h2 className="text-2xl font-black text-slate-800 tracking-tight">Supabase SQL Schema</h2><p className="text-slate-400 text-sm">Copy and paste this script into your Supabase SQL Editor.</p></div>
-                <button onClick={handleCopySchema} className={`flex items-center gap-2 px-6 py-3 rounded-xl font-black uppercase text-[11px] transition-all shadow-lg active:scale-95 ${copySuccess ? 'bg-black text-white' : 'bg-slate-800 text-white hover:bg-black'}`}>{copySuccess ? <><Check size={16} /> Copied!</> : <><Copy size={16} /> Copy SQL Script</>}</button>
+                <button onClick={handleCopySchema} className={`flex items-center gap-2 px-6 py-3  font-black uppercase text-[11px] transition-all shadow-lg active:scale-95 ${copySuccess ? 'bg-black text-white' : 'bg-slate-800 text-white hover:bg-black'}`}>{copySuccess ? <><Check size={16} /> Copied!</> : <><Copy size={16} /> Copy SQL Script</>}</button>
               </div>
-              <div className="relative group"><div className="absolute -inset-1 bg-gradient-to-r from-gray-500 to-gray-700 rounded-[2.5rem] blur opacity-10 group-hover:opacity-20 transition duration-1000"></div><div className="relative bg-[#0f172a] rounded-[2rem] overflow-hidden shadow-2xl border border-slate-800"><div className="flex items-center justify-between px-8 py-4 bg-slate-900 border-b border-slate-800"><div className="flex gap-1.5"><div className="w-3 h-3 rounded-full bg-red-500"></div><div className="w-3 h-3 rounded-full bg-amber-500"></div><div className="w-3 h-3 rounded-full bg-emerald-500"></div></div><span className="text-[10px] font-black text-slate-500 uppercase tracking-widest">Supabase Setup Script</span></div><pre className="p-10 text-gray-300 font-mono text-sm leading-relaxed overflow-x-auto max-h-[600px] custom-scrollbar">{SQL_SCHEMA}</pre></div></div>
+              <div className="relative group"><div className="absolute -inset-1 bg-gradient-to-r from-gray-500 to-gray-700  blur opacity-10 group-hover:opacity-20 transition duration-1000"></div><div className="relative bg-[#0f172a]  overflow-hidden shadow-2xl border border-slate-800"><div className="flex items-center justify-between px-8 py-4 bg-slate-900 border-b border-slate-800"><div className="flex gap-1.5"><div className="w-3 h-3  bg-red-500"></div><div className="w-3 h-3  bg-amber-500"></div><div className="w-3 h-3  bg-emerald-500"></div></div><span className="text-[10px] font-black text-slate-500 uppercase tracking-widest">Supabase Setup Script</span></div><pre className="p-10 text-gray-300 font-mono text-sm leading-relaxed overflow-x-auto max-h-[600px] custom-scrollbar">{SQL_SCHEMA}</pre></div></div>
             </div>
           )
         }

@@ -5,6 +5,7 @@ import { useStore } from '../context/StoreContext';
 import { ShoppingCart, MessageCircle, PhoneCall, Star, Plus, Minus, ChevronRight, X, Info, Send, ChevronLeft } from 'lucide-react';
 import { Variant, Review } from '../types';
 import ProductCard from '../components/ProductCard';
+import ImageZoom from '../components/ImageZoom';
 
 const ProductDetails: React.FC = () => {
   const { slug } = useParams() as { slug: string };
@@ -204,14 +205,14 @@ const ProductDetails: React.FC = () => {
   return (
     <div className="bg-white min-h-screen pb-20">
       <div className="container mx-auto px-4 md:px-8 py-8">
-        <div className="flex flex-col lg:flex-row gap-12">
+        <div className="flex flex-col lg:flex-row gap-5 md:gap-12">
           {/* Gallery Section */}
           <div className="lg:w-1/2 space-y-4">
             <div className="bg-white border border-gray-100 rounded-none overflow-hidden shadow-sm aspect-square flex items-center justify-center p-8 relative group">
-              <img
+              <ImageZoom
                 src={variantImage || displayImages[activeImageIdx] || ''}
                 alt={product.name}
-                className="max-h-full max-w-full object-contain transition-all duration-500"
+                className="w-full h-full"
               />
               {displayImages.length > 1 && !variantImage && (
                 <>
@@ -243,7 +244,7 @@ const ProductDetails: React.FC = () => {
             )}
           </div>
 
-          <div className="lg:w-1/2 space-y-4 md:space-y-6">
+          <div className="lg:w-1/2 space-y-4 md:space-y-6 bg-white p-4 md:p-0 rounded-none border border-gray-100 shadow-sm md:border-0 md:shadow-none">
             <div className="space-y-4">
               <span className="text-[11px] font-black text-black uppercase tracking-[2px] bg-gray-100 px-4 py-1.5 rounded-none inline-block">
                 {product.category}
@@ -315,20 +316,20 @@ const ProductDetails: React.FC = () => {
               </div>
             )}
 
-            <div className="flex items-center gap-6 pt-6">
-              <div className="flex items-center border-2 border-gray-100 rounded-none overflow-hidden h-16 shadow-sm bg-gray-50/50">
-                <button onClick={() => setQuantity(prev => Math.max(1, prev - 1))} className="px-6 h-full hover:bg-white text-gray-400 hover:text-[#00a651] transition-colors"><Minus size={20} /></button>
-                <span className="w-14 text-center font-black text-gray-800 text-xl">{quantity}</span>
-                <button onClick={() => setQuantity(prev => prev + 1)} className="px-6 h-full hover:bg-white text-gray-400 hover:text-[#00a651] transition-colors"><Plus size={20} /></button>
+            <div className="flex items-center gap-3 md:gap-6 pt-6">
+              <div className="flex items-center border-2 border-gray-100 rounded-none overflow-hidden h-12 md:h-16 shadow-sm bg-gray-50/50">
+                <button onClick={() => setQuantity(prev => Math.max(1, prev - 1))} className="px-3 md:px-6 h-full hover:bg-white text-gray-400 hover:text-[#00a651] transition-colors"><Minus size={20} /></button>
+                <span className="w-10 md:w-14 text-center font-black text-gray-800 text-lg md:text-xl">{quantity}</span>
+                <button onClick={() => setQuantity(prev => prev + 1)} className="px-3 md:px-6 h-full hover:bg-white text-gray-400 hover:text-[#00a651] transition-colors"><Plus size={20} /></button>
               </div>
               <button
                 onClick={handleAddToCart}
-                className={`flex-1 font-black py-5 px-10 rounded-none transition-all flex items-center justify-center gap-4 h-16 shadow-2xl uppercase tracking-widest text-sm ${product.variants && product.variants.length > 0 && !currentVariant
+                className={`flex-1 font-black py-3 md:py-5 px-4 md:px-10 rounded-none transition-all flex items-center justify-center gap-2 md:gap-4 h-12 md:h-16 shadow-2xl uppercase tracking-widest text-xs md:text-sm ${product.variants && product.variants.length > 0 && !currentVariant
                   ? 'bg-gray-200 text-gray-400 cursor-not-allowed shadow-none'
                   : 'bg-black hover:bg-gray-900 text-white shadow-gray-200 active:scale-95'
                   }`}
               >
-                <ShoppingCart size={22} />
+                <ShoppingCart size={20} className="md:w-[22px] md:h-[22px]" />
                 Add To Cart
               </button>
             </div>
@@ -342,7 +343,7 @@ const ProductDetails: React.FC = () => {
         </div>
 
         {/* Detailed Info Section */}
-        <div className="mt-12 bg-white rounded-none p-8 border border-gray-100 shadow-sm">
+        <div className="mt-6 md:mt-12 bg-white rounded-none p-8 border border-gray-100 shadow-sm">
           <div className="mb-6">
             <h2 className="text-xl font-bold text-gray-800 mb-2">Product Details</h2>
             <div className="w-12 h-1 bg-black rounded-none"></div>
@@ -354,7 +355,7 @@ const ProductDetails: React.FC = () => {
         </div>
 
         {/* Reviews Section */}
-        <div className="mt-12 md:mt-24">
+        <div className="mt-8 md:mt-24">
           <div className="flex items-center justify-between mb-6 md:mb-12">
             <h2 className="text-xl md:text-3xl font-black text-black uppercase tracking-tight">Customer Reviews</h2>
             <div className="hidden md:flex items-center gap-2 bg-gray-100 px-6 py-2 rounded-none">
@@ -365,7 +366,7 @@ const ProductDetails: React.FC = () => {
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-16">
             {/* Left Column: Stats */}
-            <div className="space-y-6 md:space-y-8">
+            <div className="space-y-6 md:space-y-8 bg-white p-6 md:p-10 rounded-none border border-gray-100 shadow-sm mx-4 md:mx-0">
               <div className="flex items-center gap-6">
                 <span className="text-6xl md:text-8xl font-black text-black tracking-tighter leading-none">{Math.round(Number(ratingStats.average))}</span>
                 <div className="space-y-1">

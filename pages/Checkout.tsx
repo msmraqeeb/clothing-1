@@ -145,7 +145,7 @@ const Checkout: React.FC = () => {
       <div className="min-h-screen flex items-center justify-center bg-gray-50 p-4">
         <div className="text-center">
           <h2 className="text-2xl font-bold mb-4">Your cart is empty</h2>
-          <button onClick={() => navigate('/')} className="bg-[#00a651] text-white px-8 py-3 rounded-none font-bold">Return to Store</button>
+          <button onClick={() => navigate('/')} className="bg-black text-white px-8 py-3 rounded-none font-bold hover:bg-gray-900 transition-colors">Return to Store</button>
         </div>
       </div>
     );
@@ -175,56 +175,57 @@ const Checkout: React.FC = () => {
                 <span className="w-10 h-10 rounded-none bg-gray-100 text-black flex items-center justify-center text-lg font-black border border-gray-200">01</span>
                 Shipping Information
               </h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div className="space-y-2 md:col-span-2">
-                  <label className="block text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Full Name</label>
-                  <input required name="fullName" value={formData.fullName} onChange={handleInputChange} placeholder="Recipient Name" className="w-full bg-[#f8f9fa] border border-gray-100 rounded-none px-6 py-4 outline-none focus:bg-white focus:border-black transition-all text-gray-800 font-bold" />
+              <div className="grid grid-cols-2 md:grid-cols-2 gap-4 md:gap-8">
+                <div className="space-y-2 col-span-1 md:col-span-2">
+                  <label className="hidden md:block text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Full Name</label>
+                  <input required name="fullName" value={formData.fullName} onChange={handleInputChange} placeholder="Full Name" className="w-full bg-[#f8f9fa] border border-gray-100 rounded-none px-4 py-3 md:px-6 md:py-4 outline-none focus:bg-white focus:border-black transition-all text-gray-800 font-bold" />
                 </div>
-                <div className="space-y-2 md:col-span-2">
-                  <label className="block text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Email Address</label>
-                  <input required name="email" type="email" value={formData.email} onChange={handleInputChange} placeholder="email@example.com" className="w-full bg-[#f8f9fa] border border-gray-100 rounded-none px-6 py-4 outline-none focus:bg-white focus:border-black transition-all text-gray-800 font-bold" />
+                <div className="space-y-2 col-span-1 md:col-span-2">
+                  <label className="hidden md:block text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Phone Number</label>
+                  <input required name="phone" type="tel" value={formData.phone} onChange={handleInputChange} placeholder="Phone Number" className="w-full bg-[#f8f9fa] border border-gray-100 rounded-none px-4 py-3 md:px-6 md:py-4 outline-none focus:bg-white focus:border-black transition-all text-gray-800 font-bold" />
                 </div>
-                <div className="space-y-2 md:col-span-2">
-                  <label className="block text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Street Address</label>
-                  <input required name="address" value={formData.address} onChange={handleInputChange} placeholder="House #, Road #" className="w-full bg-[#f8f9fa] border border-gray-100 rounded-none px-6 py-4 outline-none focus:bg-white focus:border-black transition-all text-gray-800 font-bold" />
+                <div className="space-y-2 col-span-2">
+                  <label className="hidden md:block text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Email Address</label>
+                  <input required name="email" type="email" value={formData.email} onChange={handleInputChange} placeholder="Email Address" className="w-full bg-[#f8f9fa] border border-gray-100 rounded-none px-4 py-3 md:px-6 md:py-4 outline-none focus:bg-white focus:border-black transition-all text-gray-800 font-bold" />
                 </div>
-                <div className="space-y-2">
+                <div className="space-y-2 col-span-2">
+                  <label className="hidden md:block text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Street Address</label>
+                  <input required name="address" value={formData.address} onChange={handleInputChange} placeholder="Street Address" className="w-full bg-[#f8f9fa] border border-gray-100 rounded-none px-4 py-3 md:px-6 md:py-4 outline-none focus:bg-white focus:border-black transition-all text-gray-800 font-bold" />
+                </div>
+                <div className="space-y-2 col-span-1">
+                  <label className="hidden md:block text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">District/Zilla</label>
                   <CustomSelect
-                    label="District/Zilla"
                     options={districts}
                     value={formData.district}
                     onChange={handleDistrictChange}
-                    placeholder="Select District"
+                    placeholder="District"
                   />
                 </div>
-                <div className="space-y-2">
+                <div className="space-y-2 col-span-1">
+                  <label className="hidden md:block text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Area</label>
                   <CustomSelect
-                    label="Area"
                     options={areas}
                     value={formData.area}
                     onChange={handleAreaChange}
-                    placeholder="Select Area"
+                    placeholder="Area"
                     disabled={!formData.district}
                   />
                 </div>
-                <div className="space-y-2 md:col-span-2">
-                  <label className="block text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Phone Number</label>
-                  <input required name="phone" type="tel" value={formData.phone} onChange={handleInputChange} placeholder="01XXXXXXXXX" className="w-full bg-[#f8f9fa] border border-gray-100 rounded-none px-6 py-4 outline-none focus:bg-white focus:border-black transition-all text-gray-800 font-bold" />
-                </div>
+
               </div>
             </div>
 
             <div className="bg-white rounded-none shadow-sm border border-gray-100 p-8 md:p-12">
               <h2 className="text-xl font-black text-gray-800 mb-8 flex items-center gap-4 uppercase tracking-tighter"><span className="w-10 h-10 rounded-none bg-gray-100 text-black flex items-center justify-center text-lg font-black border border-gray-200">02</span>Payment Method</h2>
               <div className="space-y-4">
-                <label className="flex items-center gap-6 p-8 border-2 border-black bg-gray-50 rounded-none cursor-pointer shadow-none transition-transform active:scale-[0.99]">
-                  <input type="radio" name="payment" defaultChecked className="w-6 h-6 accent-black" />
+                <label className="flex items-center gap-3 md:gap-6 p-4 md:p-8 border-2 border-black bg-gray-50 rounded-none cursor-pointer shadow-none transition-transform active:scale-[0.99]">
+                  <input type="radio" name="payment" defaultChecked className="w-5 h-5 md:w-6 md:h-6 accent-black" />
                   <div className="flex-1">
-                    <span className="font-black text-gray-800 text-lg block leading-none mb-2">Cash on Delivery</span>
-                    <span className="text-xs text-gray-500 font-bold uppercase tracking-[1px]">Standard delivery in 2-3 business days.</span>
+                    <span className="font-black text-gray-800 text-sm md:text-lg block leading-none mb-1 md:mb-2">Cash on Delivery</span>
+                    <span className="text-[10px] md:text-xs text-gray-500 font-bold uppercase tracking-[1px] leading-tight block">Standard delivery in 2-3 business days.</span>
                   </div>
-                  <div className="w-14 h-14 bg-white rounded-none flex items-center justify-center text-black shadow-md">
-                    <Truck size={28} />
+                  <div className="w-10 h-10 md:w-14 md:h-14 bg-white rounded-none flex items-center justify-center text-black shadow-md">
+                    <Truck className="w-5 h-5 md:w-7 md:h-7" />
                   </div>
                 </label>
               </div>
@@ -232,42 +233,42 @@ const Checkout: React.FC = () => {
           </div>
 
           <div className="lg:col-span-1">
-            <div className="bg-white rounded-none shadow-2xl shadow-gray-200 border border-gray-100 p-8 md:p-10 sticky top-24 overflow-hidden">
+            <div className="bg-white rounded-none shadow-2xl shadow-gray-200 border border-gray-100 p-5 md:p-10 sticky top-24 overflow-hidden">
               <div className="absolute top-0 right-0 w-32 h-32 bg-gray-100 rounded-full -mr-16 -mt-16 opacity-50"></div>
               <h2 className="text-2xl font-black text-black mb-10 uppercase tracking-tighter border-b border-gray-50 pb-6 relative z-10">Summary</h2>
               <div className="space-y-6 mb-10 max-h-[400px] overflow-y-auto pr-3 custom-scrollbar relative z-10">
                 {cart.map(item => {
                   const itemKey = item.selectedVariantId ? `${item.id}-${item.selectedVariantId}` : item.id;
                   return (
-                    <div key={itemKey} className="flex gap-5 group items-center">
-                      <div className="w-16 h-16 bg-gray-50 rounded-none flex items-center justify-center p-2 border border-gray-100 flex-shrink-0 group-hover:scale-110 transition-transform shadow-sm">
+                    <div key={itemKey} className="flex gap-3 md:gap-5 group items-center">
+                      <div className="w-12 h-12 md:w-16 md:h-16 bg-gray-50 rounded-none flex items-center justify-center p-2 border border-gray-100 flex-shrink-0 group-hover:scale-110 transition-transform shadow-sm">
                         <img src={item.selectedVariantImage || item.images?.[0] || ''} alt={item.name} className="max-h-full max-w-full object-contain mix-blend-multiply" />
                       </div>
                       <div className="flex-1 min-w-0">
-                        <h4 className="text-[13px] font-bold text-gray-800 leading-tight mb-1 truncate">{item.name}</h4>
+                        <h4 className="text-xs md:text-[13px] font-bold text-gray-800 leading-tight mb-1 truncate">{item.name}</h4>
                         <div className="text-[10px] text-black font-black uppercase tracking-widest bg-gray-100 w-fit px-2 py-0.5 rounded-none border border-gray-200">Qty: {item.quantity}</div>
                       </div>
-                      <div className="text-sm font-black text-gray-800 whitespace-nowrap">৳{(item.price * item.quantity).toFixed(2)}</div>
+                      <div className="text-xs md:text-sm font-black text-gray-800 whitespace-nowrap">৳{(item.price * item.quantity).toFixed(2)}</div>
                     </div>
                   );
                 })}
               </div>
 
-              <div className="border-t border-gray-50 pt-8 space-y-5 relative z-10">
-                <div className="flex justify-between text-[14px] font-bold text-gray-400 uppercase tracking-widest"><span>Subtotal</span><span className="text-gray-800">৳{subtotal.toFixed(2)}</span></div>
-                <div className="flex justify-between text-[14px] font-bold text-gray-400 uppercase tracking-widest"><span>Shipping</span><span className="text-gray-800">৳{shipping.toFixed(2)}</span></div>
+              <div className="border-t border-gray-50 pt-6 md:pt-8 space-y-3 md:space-y-5 relative z-10">
+                <div className="flex justify-between text-xs md:text-[14px] font-bold text-gray-400 uppercase tracking-widest"><span>Subtotal</span><span className="text-gray-800">৳{subtotal.toFixed(2)}</span></div>
+                <div className="flex justify-between text-xs md:text-[14px] font-bold text-gray-400 uppercase tracking-widest"><span>Shipping</span><span className="text-gray-800">৳{shipping.toFixed(2)}</span></div>
 
                 {appliedCoupon && (
-                  <div className="flex justify-between text-[14px] font-black text-black items-center bg-gray-50 p-4 rounded-none border border-gray-200 animate-in slide-in-from-right-2">
+                  <div className="flex justify-between text-xs md:text-[14px] font-black text-black items-center bg-gray-50 p-3 md:p-4 rounded-none border border-gray-200 animate-in slide-in-from-right-2">
                     <span className="flex items-center gap-2"><Ticket size={14} /> {appliedCoupon.code}</span>
                     <span>-৳{discount.toFixed(2)}</span>
                   </div>
                 )}
 
-                <div className="flex justify-between items-center pt-8 border-t border-gray-100">
-                  <span className="text-xl font-black text-black uppercase tracking-tighter">Total</span>
+                <div className="flex justify-between items-center pt-6 md:pt-8 border-t border-gray-100">
+                  <span className="text-lg md:text-xl font-black text-black uppercase tracking-tighter">Total</span>
                   <div className="text-right">
-                    <span className="text-4xl font-black text-gray-900 tracking-tighter">৳{total.toFixed(2)}</span>
+                    <span className="text-2xl md:text-4xl font-black text-gray-900 tracking-tighter">৳{total.toFixed(2)}</span>
                   </div>
                 </div>
               </div>
@@ -275,9 +276,9 @@ const Checkout: React.FC = () => {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className={`w-full mt-10 text-white font-black py-6 rounded-none shadow-2xl transition-all flex items-center justify-center gap-3 uppercase tracking-[2px] text-[16px] relative z-10 ${isSubmitting ? 'bg-gray-200 text-gray-400 cursor-not-allowed shadow-none' : 'bg-black hover:bg-gray-900 shadow-gray-200/50 active:scale-95'}`}
+                className={`w-full mt-6 md:mt-10 text-white font-black py-4 md:py-6 rounded-none shadow-2xl transition-all flex items-center justify-center gap-3 uppercase tracking-[2px] text-sm md:text-[16px] relative z-10 ${isSubmitting ? 'bg-gray-200 text-gray-400 cursor-not-allowed shadow-none' : 'bg-black hover:bg-gray-900 shadow-gray-200/50 active:scale-95'}`}
               >
-                {isSubmitting ? <Loader2 className="w-6 h-6 animate-spin" /> : 'Confirm Order'}
+                {isSubmitting ? <Loader2 className="w-5 h-5 md:w-6 md:h-6 animate-spin" /> : 'Confirm Order'}
               </button>
             </div>
           </div>

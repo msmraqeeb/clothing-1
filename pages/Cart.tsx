@@ -10,14 +10,12 @@ const Cart: React.FC = () => {
   const [couponError, setCouponError] = useState<string | null>(null);
 
   const subtotal = cart.reduce((acc, item) => acc + ((Number(item.price) || 0) * item.quantity), 0);
-  const shipping = subtotal > 1000 ? 0 : 60;
-
   let discount = 0;
   if (appliedCoupon) {
     discount = appliedCoupon.discountType === 'Fixed' ? appliedCoupon.discountValue : (subtotal * appliedCoupon.discountValue / 100);
   }
 
-  const total = subtotal + shipping - discount;
+  const total = subtotal - discount;
 
   const handleApplyCoupon = () => {
     if (!couponInput.trim()) return;
@@ -37,7 +35,7 @@ const Cart: React.FC = () => {
         <img src="https://cdn-icons-png.flaticon.com/512/11329/11329060.png" alt="Empty Cart" className="w-32 h-32 mb-6 opacity-50 mix-blend-multiply" />
         <h2 className="text-2xl font-bold text-gray-800 mb-2">Your Cart is Empty</h2>
         <p className="text-gray-500 mb-8">Looks like you haven't added anything to your cart yet.</p>
-        <Link to="/" className="bg-emerald-500 text-white px-8 py-3 rounded-none font-bold hover:bg-emerald-600 transition-colors">
+        <Link to="/" className="bg-black text-white px-8 py-3 rounded-none font-bold hover:bg-gray-900 transition-colors">
           Start Shopping
         </Link>
       </div>
@@ -64,50 +62,104 @@ const Cart: React.FC = () => {
                 {cart.map(item => {
                   const cartItemId = item.selectedVariantId ? `${item.id}-${item.selectedVariantId}` : item.id;
                   return (
-                    <div key={cartItemId} className="p-5 flex flex-col md:grid md:grid-cols-12 gap-4 items-center group">
-                      {/* Product Info */}
-                      <div className="col-span-6 flex items-center gap-4 w-full">
-                        <button onClick={() => removeFromCart(cartItemId)} className="text-gray-300 hover:text-red-500 transition-colors">
-                          <Trash2 size={18} />
-                        </button>
-                        <div className="w-16 h-16 bg-white rounded-none flex items-center justify-center p-2 shrink-0 border border-gray-50 shadow-sm group-hover:scale-105 transition-transform">
-                          <img src={item.selectedVariantImage || item.images?.[0] || ''} alt={item.name} className="w-full h-full object-contain mix-blend-multiply" />
+                    <div key={cartItemId} className="group border-b border-gray-100 last:border-0 md:border-0">
+                      {/* Mobile View */}
+                      <div className="flex gap-4 p-4 md:hidden">
+                        {/* Image */}
+                        <div className="w-20 h-24 bg-white border border-gray-100 p-2 shrink-0 flex items-center justify-center">
+                          <img src={item.selectedVariantImage || item.images?.[0] || ''} alt={item.name} className="max-w-full max-h-full object-contain mix-blend-multiply" />
                         </div>
-                        <div>
-                          <h3 className="font-bold text-gray-800 leading-tight text-sm">{item.name}</h3>
-                          {item.selectedVariantName && (
-                            <span className="text-[10px] font-black text-emerald-500 uppercase tracking-widest mt-1 block">{item.selectedVariantName}</span>
-                          )}
+
+                        {/* Content */}
+                        <div className="flex-1 flex flex-col justify-between">
+                          <div className="flex justify-between items-start">
+                            <div>
+                              <h3 className="font-bold text-gray-800 text-sm line-clamp-2 leading-tight pr-2">{item.name}</h3>
+                              {item.selectedVariantName && (
+                                <span className="text-[10px] font-black text-emerald-500 uppercase tracking-widest mt-1 block">{item.selectedVariantName}</span>
+                              )}
+                            </div>
+                            <button onClick={() => removeFromCart(cartItemId)} className="text-gray-300 hover:text-red-500 transition-colors -mt-1 -mr-1 p-2">
+                              <Trash2 size={16} />
+                            </button>
+                          </div>
+
+                          <div className="flex items-end justify-between mt-2">
+                            <div className="flex flex-col">
+                              <span className="text-[10px] font-bold text-gray-400 uppercase">Unit Price</span>
+                              <span className="font-bold text-gray-800 text-sm">৳{(Number(item.price) || 0).toFixed(2)}</span>
+                            </div>
+
+                            <div className="flex items-center border border-gray-100 rounded-none bg-gray-50/50 p-0.5 h-8">
+                              <button
+                                onClick={() => updateQuantity(cartItemId, -1)}
+                                className="w-7 h-full flex items-center justify-center text-gray-400 hover:bg-white hover:text-emerald-500 rounded-none transition-all"
+                              >
+                                <Minus size={12} />
+                              </button>
+                              <span className="w-8 text-center text-xs font-black text-gray-700">{item.quantity}</span>
+                              <button
+                                onClick={() => updateQuantity(cartItemId, 1)}
+                                className="w-7 h-full flex items-center justify-center text-gray-400 hover:bg-white hover:text-emerald-500 rounded-none transition-all"
+                              >
+                                <Plus size={12} />
+                              </button>
+                            </div>
+                          </div>
+
+                          <div className="flex justify-between items-center mt-3 pt-3 border-t border-dashed border-gray-100">
+                            <span className="text-[10px] font-bold text-gray-400 uppercase">Subtotal</span>
+                            <span className="font-black text-gray-900">৳{((Number(item.price) || 0) * item.quantity).toFixed(2)}</span>
+                          </div>
                         </div>
                       </div>
 
-                      {/* Price */}
-                      <div className="col-span-2 text-center font-bold text-gray-400 text-sm">
-                        ৳{(Number(item.price) || 0).toFixed(2)}
-                      </div>
-
-                      {/* Quantity */}
-                      <div className="col-span-2 flex justify-center">
-                        <div className="flex items-center border border-gray-100 rounded-none bg-gray-50/50 p-1">
-                          <button
-                            onClick={() => updateQuantity(cartItemId, -1)}
-                            className="w-8 h-8 flex items-center justify-center text-gray-400 hover:bg-white hover:text-emerald-500 rounded-none transition-all"
-                          >
-                            <Minus size={14} />
+                      {/* Desktop View */}
+                      <div className="hidden md:grid md:grid-cols-12 gap-4 items-center p-5">
+                        {/* Product Info */}
+                        <div className="col-span-6 flex items-center gap-4 w-full">
+                          <button onClick={() => removeFromCart(cartItemId)} className="text-gray-300 hover:text-red-500 transition-colors">
+                            <Trash2 size={18} />
                           </button>
-                          <span className="w-8 text-center text-sm font-black text-gray-700">{item.quantity}</span>
-                          <button
-                            onClick={() => updateQuantity(cartItemId, 1)}
-                            className="w-8 h-8 flex items-center justify-center text-gray-400 hover:bg-white hover:text-emerald-500 rounded-none transition-all"
-                          >
-                            <Plus size={14} />
-                          </button>
+                          <div className="w-16 h-16 bg-white rounded-none flex items-center justify-center p-2 shrink-0 border border-gray-50 shadow-sm group-hover:scale-105 transition-transform">
+                            <img src={item.selectedVariantImage || item.images?.[0] || ''} alt={item.name} className="w-full h-full object-contain mix-blend-multiply" />
+                          </div>
+                          <div>
+                            <h3 className="font-bold text-gray-800 leading-tight text-sm">{item.name}</h3>
+                            {item.selectedVariantName && (
+                              <span className="text-[10px] font-black text-emerald-500 uppercase tracking-widest mt-1 block">{item.selectedVariantName}</span>
+                            )}
+                          </div>
                         </div>
-                      </div>
 
-                      {/* Subtotal */}
-                      <div className="col-span-2 text-center font-black text-gray-800">
-                        ৳{((Number(item.price) || 0) * item.quantity).toFixed(2)}
+                        {/* Price */}
+                        <div className="col-span-2 text-center font-bold text-gray-400 text-sm">
+                          ৳{(Number(item.price) || 0).toFixed(2)}
+                        </div>
+
+                        {/* Quantity */}
+                        <div className="col-span-2 flex justify-center">
+                          <div className="flex items-center border border-gray-100 rounded-none bg-gray-50/50 p-1">
+                            <button
+                              onClick={() => updateQuantity(cartItemId, -1)}
+                              className="w-8 h-8 flex items-center justify-center text-gray-400 hover:bg-white hover:text-emerald-500 rounded-none transition-all"
+                            >
+                              <Minus size={14} />
+                            </button>
+                            <span className="w-8 text-center text-sm font-black text-gray-700">{item.quantity}</span>
+                            <button
+                              onClick={() => updateQuantity(cartItemId, 1)}
+                              className="w-8 h-8 flex items-center justify-center text-gray-400 hover:bg-white hover:text-emerald-500 rounded-none transition-all"
+                            >
+                              <Plus size={14} />
+                            </button>
+                          </div>
+                        </div>
+
+                        {/* Subtotal */}
+                        <div className="col-span-2 text-center font-black text-gray-800">
+                          ৳{((Number(item.price) || 0) * item.quantity).toFixed(2)}
+                        </div>
                       </div>
                     </div>
                   );
@@ -132,10 +184,7 @@ const Cart: React.FC = () => {
                   <span>Subtotal</span>
                   <span className="text-gray-800 font-black">৳{(subtotal || 0).toFixed(2)}</span>
                 </div>
-                <div className="flex justify-between text-gray-400 font-bold text-sm">
-                  <span>Shipping</span>
-                  <span className="text-gray-800 font-black">{shipping === 0 ? 'FREE' : `৳${shipping.toFixed(2)}`}</span>
-                </div>
+
 
                 {appliedCoupon && (
                   <div className="flex justify-between items-center bg-gray-50 p-3 rounded-none border border-gray-100 animate-in fade-in slide-in-from-top-2 duration-300">

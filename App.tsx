@@ -21,12 +21,23 @@ import DynamicPage from './pages/DynamicPage';
 import { StoreProvider, useStore } from './context/StoreContext';
 
 const AppContent: React.FC = () => {
-  const { isAdmin, loading } = useStore();
+  const { isAdmin, loading, storeInfo } = useStore();
   const { pathname } = useLocation();
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [pathname]);
+
+  // Update Favicon dynamically based on store logo
+  useEffect(() => {
+    if (storeInfo?.logo_url) {
+      const link: HTMLLinkElement = document.querySelector("link[rel*='icon']") || document.createElement('link');
+      link.type = 'image/png';
+      link.rel = 'icon';
+      link.href = storeInfo.logo_url;
+      document.getElementsByTagName('head')[0].appendChild(link);
+    }
+  }, [storeInfo?.logo_url]);
 
   if (loading) {
     return (

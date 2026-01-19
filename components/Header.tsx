@@ -135,7 +135,7 @@ const Header: React.FC = () => {
         </div>
 
         {/* RIGHT: Actions */}
-        <div className="flex items-center gap-5">
+        <div className="flex items-center gap-2 md:gap-5">
           {/* Desktop Search Trigger */}
           <div className="hidden md:block relative">
             <button
@@ -208,17 +208,25 @@ const Header: React.FC = () => {
           {/* Wishlist */}
           <Link to="/my-account" className="flex items-center p-1 hover:text-red-500 transition-colors relative">
             <Heart size={22} strokeWidth={1.5} />
-            <span className="ml-1 text-sm font-bold">{wishlistCount}</span>
+            {wishlistCount > 0 && (
+              <span className="absolute -top-1 -right-1 bg-black text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
+                {wishlistCount}
+              </span>
+            )}
           </Link>
 
           {/* Cart */}
           <button onClick={openCart} className="flex items-center p-1 hover:text-[#00a651] transition-colors relative">
             <ShoppingCart size={22} strokeWidth={1.5} />
-            <span className="ml-1 text-sm font-bold">{cartCount}</span>
+            {cartCount > 0 && (
+              <span className="absolute -top-1 -right-1 bg-black text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">
+                {cartCount}
+              </span>
+            )}
           </button>
 
           {/* User */}
-          <Link to={user ? "/my-account" : "/login"} className="hidden md:flex p-1 hover:text-[#00a651] transition-colors">
+          <Link to={user ? "/my-account" : "/login"} className="flex p-1 hover:text-[#00a651] transition-colors">
             <User size={22} strokeWidth={1.5} />
           </Link>
 

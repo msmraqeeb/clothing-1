@@ -19,6 +19,27 @@ const BlogPost: React.FC = () => {
         );
     }
 
+    const handleShare = async () => {
+        if (navigator.share) {
+            try {
+                await navigator.share({
+                    title: post.title,
+                    text: post.excerpt,
+                    url: window.location.href,
+                });
+            } catch (error) {
+                console.log('Error sharing:', error);
+            }
+        } else {
+            try {
+                await navigator.clipboard.writeText(window.location.href);
+                alert('Link copied to clipboard!');
+            } catch (err) {
+                console.error('Failed to copy: ', err);
+            }
+        }
+    };
+
     return (
         <div className="bg-white min-h-screen pb-16">
             {/* Hero Section */}
@@ -57,7 +78,7 @@ const BlogPost: React.FC = () => {
                         <Link to="/blog" className="text-black hover:text-gray-600 flex items-center gap-2 text-sm font-medium transition-colors">
                             <ArrowLeft size={18} /> Back to Blog
                         </Link>
-                        <button className="text-black hover:text-gray-600 transition-colors p-2 hover:bg-gray-100 rounded-full" title="Share">
+                        <button onClick={handleShare} className="text-black hover:text-gray-600 transition-colors p-2 hover:bg-gray-100 rounded-full" title="Share">
                             <Share2 size={20} />
                         </button>
                     </div>
