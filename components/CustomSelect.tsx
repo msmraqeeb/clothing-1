@@ -141,7 +141,7 @@ const CustomSelect: React.FC<CustomSelectProps> = ({ options, value, onChange, p
         <div className="space-y-2 relative" ref={wrapperRef}>
             {label && <label className="block text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">{label}</label>}
             <div
-                className={`relative w-full bg-[#f8f9fa] border border-gray-100 rounded-none px-4 py-3 md:px-6 md:py-4 cursor-pointer flex items-center justify-between transition-all outline-none focus:ring-2 focus:ring-black/5 ${isOpen ? 'bg-white border-black' : ''} ${disabled ? 'opacity-50 cursor-not-allowed' : 'hover:border-gray-200'}`}
+                className={`relative w-full bg-[#f8f9fa] border border-gray-100 rounded-md md:rounded-none px-4 py-3 md:px-6 md:py-4 cursor-pointer flex items-center justify-between transition-all outline-none focus:ring-2 focus:ring-black/5 ${isOpen ? 'bg-white border-black' : ''} ${disabled ? 'opacity-50 cursor-not-allowed' : 'hover:border-gray-200'}`}
                 tabIndex={disabled ? -1 : 0}
                 onKeyDown={handleKeyDown}
                 onClick={() => {
