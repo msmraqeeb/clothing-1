@@ -175,24 +175,24 @@ const Checkout: React.FC = () => {
                 <span className="w-10 h-10 rounded-none bg-gray-100 text-black flex items-center justify-center text-lg font-black border border-gray-200">01</span>
                 Shipping Information
               </h2>
-              <div className="grid grid-cols-2 md:grid-cols-2 gap-4 md:gap-8">
-                <div className="space-y-2 col-span-1 md:col-span-2">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+                <div className="space-y-2 md:col-span-2">
                   <label className="hidden md:block text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Full Name</label>
-                  <input required name="fullName" value={formData.fullName} onChange={handleInputChange} placeholder="Full Name" className="w-full bg-[#f8f9fa] border border-gray-100 rounded-none px-4 py-3 md:px-6 md:py-4 outline-none focus:bg-white focus:border-black transition-all text-gray-800 font-bold" />
+                  <input required name="fullName" value={formData.fullName} onChange={handleInputChange} placeholder="Full Name" className="w-full bg-white border border-gray-200 rounded-none px-4 py-4 md:px-6 md:py-4 outline-none focus:bg-white focus:border-black transition-all text-gray-800 font-bold placeholder:text-gray-300 placeholder:font-normal" />
                 </div>
-                <div className="space-y-2 col-span-1 md:col-span-2">
+                <div className="space-y-2 md:col-span-2">
                   <label className="hidden md:block text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Phone Number</label>
-                  <input required name="phone" type="tel" value={formData.phone} onChange={handleInputChange} placeholder="Phone Number" className="w-full bg-[#f8f9fa] border border-gray-100 rounded-none px-4 py-3 md:px-6 md:py-4 outline-none focus:bg-white focus:border-black transition-all text-gray-800 font-bold" />
+                  <input required name="phone" type="tel" value={formData.phone} onChange={handleInputChange} placeholder="Phone Number" className="w-full bg-white border border-gray-200 rounded-none px-4 py-4 md:px-6 md:py-4 outline-none focus:bg-white focus:border-black transition-all text-gray-800 font-bold placeholder:text-gray-300 placeholder:font-normal" />
                 </div>
-                <div className="space-y-2 col-span-2">
+                <div className="space-y-2 md:col-span-2">
                   <label className="hidden md:block text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Email Address</label>
-                  <input required name="email" type="email" value={formData.email} onChange={handleInputChange} placeholder="Email Address" className="w-full bg-[#f8f9fa] border border-gray-100 rounded-none px-4 py-3 md:px-6 md:py-4 outline-none focus:bg-white focus:border-black transition-all text-gray-800 font-bold" />
+                  <input required name="email" type="email" value={formData.email} onChange={handleInputChange} placeholder="Email Address" className="w-full bg-white border border-gray-200 rounded-none px-4 py-4 md:px-6 md:py-4 outline-none focus:bg-white focus:border-black transition-all text-gray-800 font-bold placeholder:text-gray-300 placeholder:font-normal" />
                 </div>
-                <div className="space-y-2 col-span-2">
+                <div className="space-y-2 md:col-span-2">
                   <label className="hidden md:block text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Street Address</label>
-                  <input required name="address" value={formData.address} onChange={handleInputChange} placeholder="Street Address" className="w-full bg-[#f8f9fa] border border-gray-100 rounded-none px-4 py-3 md:px-6 md:py-4 outline-none focus:bg-white focus:border-black transition-all text-gray-800 font-bold" />
+                  <input required name="address" value={formData.address} onChange={handleInputChange} placeholder="Street Address" className="w-full bg-white border border-gray-200 rounded-none px-4 py-4 md:px-6 md:py-4 outline-none focus:bg-white focus:border-black transition-all text-gray-800 font-bold placeholder:text-gray-300 placeholder:font-normal" />
                 </div>
-                <div className="space-y-2 col-span-1">
+                <div className="space-y-2">
                   <label className="hidden md:block text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">District/Zilla</label>
                   <CustomSelect
                     options={districts}
@@ -201,7 +201,7 @@ const Checkout: React.FC = () => {
                     placeholder="District"
                   />
                 </div>
-                <div className="space-y-2 col-span-1">
+                <div className="space-y-2">
                   <label className="hidden md:block text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Area</label>
                   <CustomSelect
                     options={areas}
