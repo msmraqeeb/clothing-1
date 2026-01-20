@@ -170,12 +170,12 @@ const Checkout: React.FC = () => {
 
         <form onSubmit={handleSubmit} className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2 space-y-6">
-            <div className="bg-white rounded-none shadow-sm border border-gray-100 p-8 md:p-12">
+            <div className="bg-white rounded-none shadow-sm border border-gray-100 p-4 md:p-12">
               <h2 className="text-xl font-black text-gray-800 mb-10 flex items-center gap-4 uppercase tracking-tighter">
                 <span className="w-10 h-10 rounded-none bg-gray-100 text-black flex items-center justify-center text-lg font-black border border-gray-200">01</span>
                 Shipping Information
               </h2>
-              <div className="grid grid-cols-2 gap-4 md:gap-8">
+              <div className="grid grid-cols-2 gap-3 md:gap-8">
                 <div className="space-y-2 col-span-1 md:col-span-2">
                   <label className="hidden md:block text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Full Name</label>
                   <input required name="fullName" value={formData.fullName} onChange={handleInputChange} placeholder="ex: Mr./Mrs/Ms" className="w-full bg-white border border-gray-200 rounded-md md:rounded-none px-4 py-4 md:px-6 md:py-4 outline-none focus:bg-white focus:border-black transition-all text-gray-800 font-bold placeholder:text-gray-300 placeholder:font-normal" />
