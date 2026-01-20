@@ -17,6 +17,7 @@ export interface Product {
   variants?: Variant[];
   attributes?: { name: string; options: string[] }[];
   createdAt?: string;
+  salesCount?: number;
 }
 
 export interface Brand {

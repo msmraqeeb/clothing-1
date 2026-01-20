@@ -206,7 +206,8 @@ export const StoreProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     isFeatured: Boolean(p.is_featured),
     variants: Array.isArray(p.variants) ? p.variants : [],
     attributes: Array.isArray(p.attributes) ? p.attributes : [],
-    createdAt: p.created_at
+    createdAt: p.created_at,
+    salesCount: Number(p.sales_count || 0)
   });
 
   const mapProductToDB = (p: Partial<Product>) => {
