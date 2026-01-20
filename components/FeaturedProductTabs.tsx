@@ -49,12 +49,12 @@ const FeaturedProductTabs: React.FC<FeaturedProductTabsProps> = ({ title, produc
                     {/* Render Title only if provided, else keep header simple */}
                     {title && <h2 className="text-2xl md:text-3xl font-black uppercase tracking-tight text-slate-900 mb-6">{title}</h2>}
 
-                    <div className="flex flex-nowrap overflow-x-auto w-full justify-between md:justify-center gap-2 md:gap-4 no-scrollbar">
+                    <div className="flex flex-wrap justify-center gap-2 md:gap-4">
                         {(['NEW ARRIVAL', 'ON SALE', 'BEST SELLING'] as TabType[]).map(tab => (
                             <button
                                 key={tab}
                                 onClick={() => setActiveTab(tab)}
-                                className={`flex-1 md:flex-none whitespace-nowrap px-2 md:px-5 py-2 text-[10px] md:text-sm font-bold uppercase tracking-widest border transition-all duration-300 rounded-none ${activeTab === tab
+                                className={`px-5 py-2 text-xs md:text-sm font-bold uppercase tracking-widest border transition-all duration-300 rounded-none ${activeTab === tab
                                     ? 'bg-black text-white border-black'
                                     : 'bg-white text-gray-500 border-gray-200 hover:border-black hover:text-black'
                                     }`}
