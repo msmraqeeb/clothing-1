@@ -99,7 +99,7 @@ const Home: React.FC = () => {
                 <img
                   src={banner.image_url}
                   alt={banner.title || 'Banner'}
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 aspect-[4/3] md:aspect-auto"
+                  className="w-full h-auto md:h-full object-cover transition-transform duration-700 group-hover:scale-105"
                 />
                 {(banner.title || banner.subtitle) && (
                   <div className="absolute inset-0 bg-black/10 group-hover:bg-black/40 transition-colors duration-500 flex flex-col items-center justify-center p-4">
@@ -127,8 +127,8 @@ const Home: React.FC = () => {
           <div className="grid grid-cols-1 lg:grid-cols-[611px_1fr] gap-2 h-auto lg:h-[800px]">
             {/* Left Column: Banner 4 */}
             {homeBanners[3] && (
-              <Link to={homeBanners[3].link || '#'} className="relative group overflow-hidden h-[500px] lg:h-full block">
-                <img src={homeBanners[3].image_url} alt={homeBanners[3].title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+              <Link to={homeBanners[3].link || '#'} className="relative group overflow-hidden h-auto lg:h-full block">
+                <img src={homeBanners[3].image_url} alt={homeBanners[3].title} className="w-full h-auto lg:h-full object-cover transition-transform duration-700 group-hover:scale-105" />
                 {(homeBanners[3].title || homeBanners[3].subtitle) && (
                   <div className="absolute inset-0 bg-black/10 group-hover:bg-black/40 transition-colors duration-500 flex flex-col items-center justify-center p-4">
                     {homeBanners[3].title && <h3 className="text-3xl lg:text-5xl font-black uppercase text-white drop-shadow-lg text-center">{homeBanners[3].title}</h3>}
@@ -141,11 +141,11 @@ const Home: React.FC = () => {
             {/* Right Column */}
             <div className="flex flex-col gap-2 h-auto lg:h-full">
               {/* Top Row: Banner 5 & 6 */}
-              <div className="grid grid-cols-2 gap-2 h-[250px] lg:h-1/2">
+              <div className="grid grid-cols-2 gap-2 h-auto lg:h-1/2">
                 {[homeBanners[4], homeBanners[5]].map((banner, idx) => (
                   banner && (
                     <Link to={banner.link || '#'} key={banner.id} className="relative group overflow-hidden block h-full">
-                      <img src={banner.image_url} alt={banner.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                      <img src={banner.image_url} alt={banner.title} className="w-full h-auto lg:h-full object-cover transition-transform duration-700 group-hover:scale-105" />
                       {(banner.title || banner.subtitle) && (
                         <div className="absolute inset-0 bg-black/10 group-hover:bg-black/40 transition-colors duration-500 flex flex-col items-center justify-center p-4">
                           {banner.title && <h3 className="text-xl lg:text-3xl font-black uppercase text-white drop-shadow-lg text-center">{banner.title}</h3>}
@@ -157,10 +157,10 @@ const Home: React.FC = () => {
                 ))}
               </div>
               {/* Bottom Row: Banner 7 */}
-              <div className="h-[250px] lg:h-1/2">
+              <div className="h-auto lg:h-1/2">
                 {homeBanners[6] && (
-                  <Link to={homeBanners[6].link || '#'} className="relative group overflow-hidden block h-full">
-                    <img src={homeBanners[6].image_url} alt={homeBanners[6].title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                  <Link to={homeBanners[6].link || '#'} className="relative group overflow-hidden block h-auto lg:h-full">
+                    <img src={homeBanners[6].image_url} alt={homeBanners[6].title} className="w-full h-auto lg:h-full object-cover transition-transform duration-700 group-hover:scale-105" />
                     {(homeBanners[6].title || homeBanners[6].subtitle) && (
                       <div className="absolute inset-0 bg-black/10 group-hover:bg-black/40 transition-colors duration-500 flex flex-col items-center justify-center p-4">
                         {homeBanners[6].title && <h3 className="text-2xl lg:text-4xl font-black uppercase text-white drop-shadow-lg text-center">{homeBanners[6].title}</h3>}

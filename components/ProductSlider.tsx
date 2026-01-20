@@ -13,6 +13,7 @@ interface ProductSliderProps {
 
 const ProductSlider: React.FC<ProductSliderProps> = ({ title, subtitle, products, viewAllLink }) => {
     const scrollContainerRef = useRef<HTMLDivElement>(null);
+    const [activePageIndex, setActivePageIndex] = React.useState(0);
 
     const scroll = (direction: 'left' | 'right') => {
         if (scrollContainerRef.current) {
@@ -65,6 +66,12 @@ const ProductSlider: React.FC<ProductSliderProps> = ({ title, subtitle, products
 
                     <div
                         ref={scrollContainerRef}
+                        onScroll={() => {
+                            if (scrollContainerRef.current) {
+                                const { scrollLeft, clientWidth } = scrollContainerRef.current;
+                                setActivePageIndex(Math.round(scrollLeft / clientWidth));
+                            }
+                        }}
                         className="flex gap-4 overflow-x-auto pb-8 scrollbar-hide snap-x"
                         style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
                     >
@@ -74,15 +81,29 @@ const ProductSlider: React.FC<ProductSliderProps> = ({ title, subtitle, products
                             </div>
                         ))}
                     </div>
-                </div>
 
-                {viewAllLink && (
-                    <div className="mt-4 md:hidden flex justify-center">
-                        <Link to={viewAllLink} className="flex items-center gap-2 text-sm font-bold uppercase tracking-widest hover:text-emerald-600 transition-colors">
-                            View All <ArrowRight size={16} />
-                        </Link>
+                    {/* Mobile Pagination Dots */}
+                    <div className="mt-4 md:hidden flex justify-center items-center gap-2">
+                        {Array.from({ length: Math.ceil(products.length / 2) }).map((_, idx) => (
+                            <button
+                                key={idx}
+                                onClick={() => {
+                                    if (scrollContainerRef.current) {
+                                        scrollContainerRef.current.scrollTo({
+                                            left: idx * scrollContainerRef.current.clientWidth,
+                                            behavior: 'smooth'
+                                        });
+                                    }
+                                }}
+                                className={`transition-all duration-300 rounded-full ${activePageIndex === idx
+                                    ? 'w-8 h-2.5 bg-black'
+                                    : 'w-2.5 h-2.5 border border-black bg-transparent'
+                                    }`}
+                                aria-label={`Go to slide ${idx + 1}`}
+                            />
+                        ))}
                     </div>
-                )}
+                </div>
             </div>
         </section>
     );
