@@ -185,7 +185,7 @@ export const StoreProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     }
     return [];
   });
-  const [adminTab, setAdminTab] = useState<AdminTab>('products');
+  const [adminTab, setAdminTab] = useState<AdminTab>('dashboard');
   const [searchQuery, setSearchQuery] = useState('');
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [loading, setLoading] = useState(true);

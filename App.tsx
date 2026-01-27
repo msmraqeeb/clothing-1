@@ -61,7 +61,7 @@ const AppContent: React.FC = () => {
           <Route path="/blog" element={<Blog />} />
           <Route path="/blog/:slug" element={<BlogPost />} />
 
-          <Route path="/admin" element={isAdmin ? <Navigate to="/admin/products" replace /> : <Navigate to="/login" />} />
+          <Route path="/admin" element={isAdmin ? <Navigate to="/admin/dashboard" replace /> : <Navigate to="/login" />} />
           <Route path="/admin/:tab" element={isAdmin ? <Admin /> : <Navigate to="/login" />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/checkout" element={<Checkout />} />

@@ -149,7 +149,7 @@ export interface Banner {
   is_active: boolean;
 }
 
-export type AdminTab = 'products' | 'orders' | 'shipping' | 'settings' | 'attributes' | 'categories' | 'brands' | 'coupons' | 'reviews' | 'users' | 'reports' | 'pages' | 'banners' | 'layout' | 'blog';
+export type AdminTab = 'products' | 'orders' | 'shipping' | 'settings' | 'attributes' | 'categories' | 'brands' | 'coupons' | 'reviews' | 'users' | 'dashboard' | 'pages' | 'banners' | 'layout' | 'blog';
 
 export interface StoreInfo {
   name: string;

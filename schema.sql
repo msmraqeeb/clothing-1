@@ -226,7 +226,12 @@ BEGIN
     NEW.id,
     NEW.email,
     COALESCE(NEW.raw_user_meta_data->>'full_name', ''),
-    CASE WHEN NEW.email = 'msmraqeeb@gmail.com' THEN 'admin' ELSE 'customer' END
+    -- EXAMPLE: Auto-approve admins based on domain or specific list
+    CASE 
+      WHEN NEW.email LIKE '%@clothingstore.com' THEN 'admin' -- Auto-admin for domain
+      WHEN NEW.email IN ('msmraqeeb@gmail.com', 'admin@example.com') THEN 'admin' -- Specific allowlist
+      ELSE 'customer' 
+    END
   )
   ON CONFLICT (id) DO UPDATE SET role = EXCLUDED.role;
   RETURN NEW;

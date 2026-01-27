@@ -101,26 +101,22 @@ export const HeroSection: React.FC<{ data: any }> = ({ data }) => {
 
 export const CtaSection: React.FC<{ data: any }> = ({ data }) => {
     return (
-        <div className="bg-[#003d29] rounded-none p-12 md:p-16 text-center relative overflow-hidden group">
-            {/* Decorative Overlay */}
-            <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-500/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 pointer-events-none"></div>
-            <div className="absolute bottom-0 left-0 w-64 h-64 bg-emerald-500/10 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2 pointer-events-none"></div>
-
+        <div className="bg-black rounded-none p-12 md:p-16 text-center relative overflow-hidden group">
             <div className="relative z-10 max-w-3xl mx-auto space-y-8">
                 <h2 className="text-3xl md:text-5xl font-black text-white leading-tight whitespace-pre-line tracking-tight">
                     {data.title}
                 </h2>
-                <p className="text-emerald-100/80 text-lg font-medium max-w-xl mx-auto">
+                <p className="text-gray-400 text-lg font-medium max-w-xl mx-auto">
                     {data.subtitle}
                 </p>
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
                     {data.button1_text && (
-                        <Link to={data.button1_link || '#'} className="bg-[#10B981] text-white px-8 py-4 rounded-none font-black uppercase tracking-widest text-xs hover:bg-emerald-400 transition-all hover:scale-105 shadow-lg shadow-emerald-900/20 active:scale-95 w-full sm:w-auto">
+                        <Link to={data.button1_link || '#'} className="bg-white text-black border-2 border-white inline-block px-8 py-4 rounded-none font-black uppercase tracking-widest text-xs hover:!bg-transparent hover:!text-white hover:!border-white transition-all active:scale-95 w-full sm:w-auto">
                             {data.button1_text}
                         </Link>
                     )}
                     {data.button2_text && (
-                        <Link to={data.button2_link || '#'} className="border-2 border-emerald-800/50 text-emerald-100 px-8 py-4 rounded-none font-black uppercase tracking-widest text-xs hover:bg-emerald-900/30 hover:text-white hover:border-emerald-500/50 transition-all active:scale-95 w-full sm:w-auto">
+                        <Link to={data.button2_link || '#'} className="bg-transparent border border-white text-white px-8 py-4 rounded-none font-black uppercase tracking-widest text-xs hover:bg-white hover:text-black transition-all active:scale-95 w-full sm:w-auto">
                             {data.button2_text}
                         </Link>
                     )}

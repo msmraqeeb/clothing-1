@@ -38,7 +38,7 @@ const Header: React.FC = () => {
   }, [location.pathname]);
 
   return (
-    <header className="w-full font-sans relative z-50 bg-white border-b border-gray-100 sticky top-0">
+    <header className="w-full font-sans relative z-[999] bg-white border-b border-gray-100 sticky top-0">
 
       <div className="w-full px-6 md:px-12 h-14 md:h-20 flex items-center justify-between relative">
 
@@ -54,6 +54,7 @@ const Header: React.FC = () => {
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-gray-800">
             <Link to="/" className="hover:text-black transition-colors">Home</Link>
+            <Link to="/products" className="hover:text-black transition-colors">Shop</Link>
 
             {/* Dynamic Parent Categories */}
             {useStore().categories

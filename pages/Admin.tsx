@@ -34,7 +34,7 @@ const Admin: React.FC = () => {
 
   const { tab } = useParams<{ tab: string }>();
   const navigate = useNavigate();
-  const adminTab = tab || 'products';
+  const adminTab = tab || 'dashboard';
 
   // const [adminTab, setAdminTabState] = useState<string>('products');
   const setAdminTabState = (newTab: string) => navigate(`/admin/${newTab}`);
@@ -177,13 +177,20 @@ const Admin: React.FC = () => {
       customerStats[email].spent += o.total;
     });
 
+    // 6. Delivered Revenue & Count
+    const deliveredOrders = filteredOrders.filter(o => o.status === 'Delivered');
+    const deliveredRevenue = deliveredOrders.reduce((sum, o) => sum + o.total, 0);
+
     return {
       salesByDate,
       salesByProduct: Object.values(salesByProduct).sort((a, b) => b.revenue - a.revenue),
       salesByCategory,
       couponsByDate,
       customerReport: Object.values(customerStats).sort((a, b) => b.spent - a.spent),
-      newCustomersCount: filteredUsers.length
+      newCustomersCount: filteredUsers.length,
+      filteredOrders: filteredOrders.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()),
+      deliveredRevenue,
+      deliveredOrdersCount: deliveredOrders.length
     };
   }, [orders, coupons, users, reportStartDate, reportEndDate]);
 
@@ -618,17 +625,46 @@ CREATE POLICY "Public read blog" ON public.blog_posts FOR SELECT USING (true);`;
     const pSale = parseFloat(String(prodForm.salePrice)) || 0;
     const isDiscounted = pSale > 0 && pSale < pBase;
 
+    // Helper to generate meaningful abbreviations
+    const getAbbr = (text: string) => {
+      const t = text.toUpperCase().trim();
+      // 1. If spaces, take initials (e.g. "Free Size" -> "FS")
+      if (t.includes(' ')) return t.split(' ').map(w => w[0]).join('');
+      // 2. If short, keep as is (e.g. "XL", "RED")
+      if (t.length <= 3) return t;
+      // 3. Heuristic for colors: Use consonants if length >= 3 (e.g. "White" -> "WHT", "Black" -> "BLK")
+      const consonants = t.replace(/[AEIOU]/g, '');
+      if (consonants.length >= 3) return consonants.substring(0, 3);
+      // 4. Default: First 3 chars
+      return t.substring(0, 3);
+    };
+
     setProdForm(prev => ({
       ...prev,
       variants: combinations.map((combo: string[], idx: number) => {
         const attrValues: Record<string, string> = {};
         selectedAttrs.forEach((attr, i) => { attrValues[attr.name] = combo[i]; });
+
+        let generatedSku = '';
+        if (prodForm.sku && prodForm.sku.trim()) {
+          generatedSku = `${prodForm.sku.trim()}-${idx + 1}`;
+        } else {
+          // Smart SKU Generation: CAT-PROD-ATTR1-ATTR2
+          const catObj = categories.find(c => c.name === prodForm.category || c.id === prodForm.category); // Try to find category object (name or id)
+          const catPart = (catObj ? catObj.name : (prodForm.category || 'GEN')).substring(0, 3).toUpperCase();
+          const namePart = (prodForm.name || 'PROD').substring(0, 3).toUpperCase();
+
+          const attrParts = combo.map(val => getAbbr(val));
+
+          generatedSku = [catPart, namePart, ...attrParts].join('-');
+        }
+
         return {
           id: Math.random().toString(36).substr(2, 9),
           attributeValues: attrValues,
           price: isDiscounted ? pSale : pBase,
           originalPrice: isDiscounted ? pBase : undefined,
-          sku: `${prodForm.sku || 'PROD'}-${idx}`,
+          sku: generatedSku,
           stock: 100,
           image: prodForm.images[0] || ''
         };
@@ -766,12 +802,15 @@ CREATE POLICY "Public read blog" ON public.blog_posts FOR SELECT USING (true);`;
 
   const handlePageSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsSaving(true);
     const slug = pageForm.slug.toLowerCase().trim().replace(/[\s_-]+/g, '-');
     try {
       if (editingItem?.type === 'page') await updatePage(editingItem.data.id, { ...pageForm, slug });
       else await addPage({ ...pageForm, slug });
       closeForms();
-    } catch (err: any) { alert(err.message); }
+    } catch (err: any) { alert(err.message); } finally {
+      setIsSaving(false);
+    }
   };
 
   const startEditPage = (p: Page) => {
@@ -783,6 +822,7 @@ CREATE POLICY "Public read blog" ON public.blog_posts FOR SELECT USING (true);`;
   const handleBannerSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
+      setIsSaving(true);
       if (editingItem?.type === 'banner') {
         await updateBanner(editingItem.data.id, bannerForm);
       } else {
@@ -791,7 +831,9 @@ CREATE POLICY "Public read blog" ON public.blog_posts FOR SELECT USING (true);`;
       setBannerForm({ type: 'slider', title: '', subtitle: '', image_url: '', link: '', sort_order: 0, is_active: true });
       setIsAdding(null);
       setEditingItem(null);
-    } catch (err: any) { alert(err.message); }
+    } catch (err: any) { alert(err.message); } finally {
+      setIsSaving(false);
+    }
   };
 
   const startEditBanner = (b: any) => {
@@ -802,9 +844,28 @@ CREATE POLICY "Public read blog" ON public.blog_posts FOR SELECT USING (true);`;
     setIsAdding('banner');
   };
 
+  const handleShippingSubmit = async () => {
+    try {
+      setIsSaving(true);
+      await updateShippingSettings(shipForm);
+    } catch (err: any) { alert(err.message); } finally {
+      setIsSaving(false);
+    }
+  };
+
+  const handleStoreInfoSubmit = async () => {
+    try {
+      setIsSaving(true);
+      await updateStoreInfo(storeForm);
+    } catch (err: any) { alert(err.message); } finally {
+      setIsSaving(false);
+    }
+  };
+
   const handleSectionSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
+      setIsSaving(true);
       if (editingItem?.type === 'section') {
         const updatedSection = { ...sectionForm, id: editingItem.data.id } as HomeSection;
         await updateHomeSection(editingItem.data.id, updatedSection);
@@ -813,7 +874,9 @@ CREATE POLICY "Public read blog" ON public.blog_posts FOR SELECT USING (true);`;
         await addHomeSection(newSection);
       }
       closeForms();
-    } catch (err: any) { alert(err.message); }
+    } catch (err: any) { alert(err.message); } finally {
+      setIsSaving(false);
+    }
   };
 
   const handleSectionBannerImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -945,10 +1008,13 @@ CREATE POLICY "Public read blog" ON public.blog_posts FOR SELECT USING (true);`;
     }
 
     try {
+      setIsSaving(true);
       if (editingItem?.type === 'category') await updateCategory(editingItem.data.id, { ...catForm, slug });
       else await addCategory({ ...catForm, slug });
       closeForms();
-    } catch (err: any) { alert(err.message); }
+    } catch (err: any) { alert(err.message); } finally {
+      setIsSaving(false);
+    }
   };
 
   const handleBrandLogoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -980,40 +1046,52 @@ CREATE POLICY "Public read blog" ON public.blog_posts FOR SELECT USING (true);`;
     e.preventDefault();
     const slug = (brandForm.slug || brandForm.name).toLowerCase().trim().replace(/[^\w\s-]/g, '').replace(/[\s_-]+/g, '-');
     try {
+      setIsSaving(true);
       if (editingItem?.type === 'brand') await updateBrand(editingItem.data.id, { ...brandForm, slug });
       else await addBrand({ ...brandForm, slug });
       closeForms();
-    } catch (err: any) { alert(err.message); }
+    } catch (err: any) { alert(err.message); } finally {
+      setIsSaving(false);
+    }
   };
 
   const handleAttributeSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
+      setIsSaving(true);
       const valuesArray = attrValuesInput.split(',').map(v => v.trim()).filter(v => v !== '');
       const valuesObjects = valuesArray.map(v => ({ id: Math.random().toString(), value: v }));
       if (editingItem?.type === 'attribute') await updateAttribute(editingItem.data.id, attrForm.name, valuesObjects);
       else await addAttribute(attrForm.name, valuesObjects);
       closeForms();
-    } catch (err: any) { alert(err.message); }
+    } catch (err: any) { alert(err.message); } finally {
+      setIsSaving(false);
+    }
   };
 
   const handleCouponSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
+      setIsSaving(true);
       if (editingItem?.type === 'coupon') await updateCoupon(editingItem.data.id, couponForm);
       else await addCoupon(couponForm);
       closeForms();
-    } catch (err: any) { alert(err.message); }
+    } catch (err: any) { alert(err.message); } finally {
+      setIsSaving(false);
+    }
   };
 
   const handleReplySubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!replyingTo) return;
     try {
+      setIsSaving(true);
       await replyToReview(replyingTo, replyText);
       setReplyingTo(null);
       setReplyText('');
-    } catch (err: any) { alert(err.message); }
+    } catch (err: any) { alert(err.message); } finally {
+      setIsSaving(false);
+    }
   };
 
   // Order Editing Handlers
@@ -1132,11 +1210,14 @@ CREATE POLICY "Public read blog" ON public.blog_posts FOR SELECT USING (true);`;
   const saveOrderEdits = async () => {
     if (!editingOrderData) return;
     try {
+      setIsSaving(true);
       await updateOrder(editingOrderData.id, editingOrderData);
       setViewingOrder(editingOrderData);
       setIsEditingOrder(false);
       setEditingOrderData(null);
-    } catch (err: any) { alert("Failed to update order: " + err.message); }
+    } catch (err: any) { alert("Failed to update order: " + err.message); } finally {
+      setIsSaving(false);
+    }
   };
 
   const orderSearchFilteredProducts = useMemo(() => {
@@ -1256,38 +1337,40 @@ CREATE POLICY "Public read blog" ON public.blog_posts FOR SELECT USING (true);`;
         />
       )}
       {/* Sidebar */}
-      <aside className="w-72 bg-black text-white flex flex-col p-8 sticky top-0 h-screen shrink-0 shadow-2xl z-50">
-        <div className="flex items-center gap-3 mb-10 px-2">
-          <ShieldCheck className="text-white" size={36} />
-          <span className="font-black text-2xl uppercase tracking-tighter">Admin <span className="text-gray-400">V&V</span></span>
-        </div>
-        <button onClick={async () => { setIsSyncing(true); await refreshAllData(); setIsSyncing(false); }} className="mb-6 flex items-center justify-center gap-2 bg-gray-900 border border-gray-800  py-3 px-4 text-[11px] font-black uppercase tracking-widest hover:bg-gray-800 transition-all active:scale-95">
-          <RefreshCw size={14} className={isSyncing ? 'animate-spin' : ''} /> {isSyncing ? 'Syncing...' : 'Sync Database'}
-        </button>
-        <nav className="flex flex-col gap-1 flex-1 overflow-y-auto custom-scrollbar">
-          {[
-            { id: 'products', icon: Package, label: 'Products' },
-            { id: 'categories', icon: Layers, label: 'Categories' },
-            { id: 'brands', icon: Globe, label: 'Brands' },
-            { id: 'attributes', icon: Zap, label: 'Attributes' },
-            { id: 'orders', icon: ShoppingBag, label: 'Orders' },
-            { id: 'coupons', icon: Ticket, label: 'Coupons' },
-            { id: 'reviews', icon: MessageSquare, label: 'Reviews' },
-            { id: 'pages', icon: FileText, label: 'Pages' },
-            { id: 'banners', icon: ImageIcon, label: 'Banners' },
-            { id: 'users', icon: UsersIcon, label: 'Users & Roles' },
-            { id: 'settings', icon: SettingsIcon, label: 'System' },
-            { id: 'database', icon: Database, label: 'Database' },
+      <aside className="w-72 bg-black text-white shrink-0 shadow-2xl z-50 min-h-screen">
+        <div className="sticky top-0 h-screen flex flex-col p-8">
+          <div className="flex items-center gap-3 mb-10 px-2">
+            <ShieldCheck className="text-white" size={36} />
+            <span className="font-black text-2xl uppercase tracking-tighter">Admin <span className="text-gray-400">V&V</span></span>
+          </div>
+          <button onClick={async () => { setIsSyncing(true); await refreshAllData(); setIsSyncing(false); }} className="mb-6 flex items-center justify-center gap-2 bg-gray-900 border border-gray-800  py-3 px-4 text-[11px] font-black uppercase tracking-widest hover:bg-gray-800 transition-all active:scale-95">
+            <RefreshCw size={14} className={isSyncing ? 'animate-spin' : ''} /> {isSyncing ? 'Syncing...' : 'Sync Database'}
+          </button>
+          <nav className="flex flex-col gap-1 flex-1 overflow-y-auto scrollbar-hide">
+            {[
+              { id: 'dashboard', icon: BarChart3, label: 'Dashboard' },
+              { id: 'products', icon: Package, label: 'Products' },
+              { id: 'categories', icon: Layers, label: 'Categories' },
+              { id: 'brands', icon: Globe, label: 'Brands' },
+              { id: 'attributes', icon: Zap, label: 'Attributes' },
+              { id: 'orders', icon: ShoppingBag, label: 'Orders' },
+              { id: 'coupons', icon: Ticket, label: 'Coupons' },
+              { id: 'reviews', icon: MessageSquare, label: 'Reviews' },
+              { id: 'pages', icon: FileText, label: 'Pages' },
+              { id: 'banners', icon: ImageIcon, label: 'Banners' },
+              { id: 'users', icon: UsersIcon, label: 'Users & Roles' },
+              { id: 'settings', icon: SettingsIcon, label: 'System' },
+              { id: 'database', icon: Database, label: 'Database' },
 
-            { id: 'reports', icon: BarChart3, label: 'Reports' },
-            { id: 'layout', icon: LayoutTemplate, label: 'Home Layout' },
-            { id: 'blog', icon: BookOpen, label: 'Blog' },
-          ].map(item => (
-            <button key={item.id} onClick={() => { setAdminTabState(item.id); closeForms(); }} className={`flex items-center gap-4 px-6 py-3.5  transition-all font-bold text-sm ${adminTab === item.id ? 'bg-white text-black shadow-lg' : 'text-gray-400 hover:bg-white/10'}`}>
-              <item.icon size={18} /> {item.label}
-            </button>
-          ))}
-        </nav>
+              { id: 'layout', icon: LayoutTemplate, label: 'Home Layout' },
+              { id: 'blog', icon: BookOpen, label: 'Blog' },
+            ].map(item => (
+              <button key={item.id} onClick={() => { setAdminTabState(item.id); closeForms(); }} className={`flex items-center gap-4 px-6 py-3.5  transition-all font-bold text-sm ${adminTab === item.id ? 'bg-white text-black shadow-lg' : 'text-gray-400 hover:bg-white/10'}`}>
+                <item.icon size={18} /> {item.label}
+              </button>
+            ))}
+          </nav>
+        </div>
       </aside>
 
       <main className="flex-1 p-10 overflow-x-hidden">
@@ -1312,8 +1395,7 @@ CREATE POLICY "Public read blog" ON public.blog_posts FOR SELECT USING (true);`;
                     <select value={sectionForm.type} onChange={e => setSectionForm({ ...sectionForm, type: e.target.value as any })} className="w-full bg-slate-50 border border-slate-100  px-4 py-3 font-bold outline-none">
                       <option value="slider">Slider (1 Row)</option>
                       <option value="tabbed-slider">Tabbed Slider (Featured/New/Best)</option>
-                      <option value="grid">Grid (2 Rows + Banner)</option>
-                      <option value="grid-no-banner">Grid (2 Rows, No Banner)</option>
+
                     </select>
                   </div>
                   <div className="space-y-2">
@@ -1369,7 +1451,15 @@ CREATE POLICY "Public read blog" ON public.blog_posts FOR SELECT USING (true);`;
 
                 <div className="flex justify-end gap-3 pt-6 border-t border-gray-100">
                   <button type="button" onClick={closeForms} className="px-6 py-3 text-slate-400 font-bold uppercase text-[11px] hover:text-slate-600">Cancel</button>
-                  <button type="submit" className="bg-black text-white px-10 py-3  font-black uppercase text-[11px] shadow-lg transition-all hover:bg-gray-800">Save Section</button>
+                  <button type="submit" disabled={isSaving} className={`bg-black text-white px-10 py-3  font-black uppercase text-[11px] shadow-lg transition-all hover:bg-gray-800 flex items-center gap-2 ${isSaving ? 'opacity-70 cursor-not-allowed' : ''}`}>
+                    {isSaving ? (
+                      <>
+                        <Loader2 size={14} className="animate-spin" /> Saving...
+                      </>
+                    ) : (
+                      'Save Section'
+                    )}
+                  </button>
                 </div>
               </form>
             ) : (
@@ -1445,7 +1535,15 @@ CREATE POLICY "Public read blog" ON public.blog_posts FOR SELECT USING (true);`;
                       <div className="space-y-3"><label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Subtitle (Optional)</label><input value={bannerForm.subtitle} onChange={e => setBannerForm({ ...bannerForm, subtitle: e.target.value })} className="w-full bg-gray-50 border border-gray-100  px-6 py-4 text-sm font-bold outline-none focus:bg-white focus:border-black transition-all" placeholder="Up to 50% off" /></div>
                     </div>
                     <div className="space-y-3"><label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Link (Optional)</label><input value={bannerForm.link} onChange={e => setBannerForm({ ...bannerForm, link: e.target.value })} className="w-full bg-gray-50 border border-gray-100  px-6 py-4 text-sm font-bold outline-none focus:bg-white focus:border-black transition-all" placeholder="/category/vegetables" /></div>
-                    <button type="submit" className="w-full bg-black hover:bg-gray-800 text-white py-4  font-black uppercase tracking-widest shadow-lg shadow-gray-200 transition-all active:scale-95">Save Banner</button>
+                    <button type="submit" disabled={isSaving} className={`w-full bg-black hover:bg-gray-800 text-white py-4  font-black uppercase tracking-widest shadow-lg shadow-gray-200 transition-all active:scale-95 flex items-center justify-center gap-2 ${isSaving ? 'opacity-70 cursor-not-allowed' : ''}`}>
+                      {isSaving ? (
+                        <>
+                          <Loader2 size={14} className="animate-spin" /> Saving...
+                        </>
+                      ) : (
+                        'Save Banner'
+                      )}
+                    </button>
                   </form>
                 </div>
               </div>
@@ -1522,11 +1620,11 @@ CREATE POLICY "Public read blog" ON public.blog_posts FOR SELECT USING (true);`;
             </div>
           </div>
         )}
-        {adminTab === 'reports' && (
+        {adminTab === 'dashboard' && (
           <div className="space-y-8 animate-in fade-in duration-500">
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-white p-6  border border-gray-100 shadow-sm">
               <div>
-                <h2 className="text-2xl font-black text-gray-800 tracking-tight">Business Reports</h2>
+                <h2 className="text-2xl font-black text-gray-800 tracking-tight">Dashboard</h2>
                 <p className="text-gray-500 font-medium">Insights and analytics for your store</p>
               </div>
               <div className="flex items-center gap-4 bg-gray-50 p-2  border border-gray-200">
@@ -1546,35 +1644,48 @@ CREATE POLICY "Public read blog" ON public.blog_posts FOR SELECT USING (true);`;
               {/* Summary Cards */}
               <div className="bg-white p-6  border border-gray-100 shadow-sm">
                 <h3 className="text-gray-500 font-bold uppercase text-xs tracking-widest mb-2">Total Revenue</h3>
-                <p className="text-3xl font-black text-black">৳{Object.values(reportData.salesByDate).reduce((a, b) => a + b, 0).toFixed(2)}</p>
+                <p className="text-3xl font-black text-black">৳{reportData.deliveredRevenue.toFixed(2)}</p>
               </div>
               <div className="bg-white p-6  border border-gray-100 shadow-sm">
                 <h3 className="text-gray-500 font-bold uppercase text-xs tracking-widest mb-2">New Customers</h3>
                 <p className="text-3xl font-black text-blue-600">{reportData.newCustomersCount}</p>
               </div>
               <div className="bg-white p-6  border border-gray-100 shadow-sm">
-                <h3 className="text-gray-500 font-bold uppercase text-xs tracking-widest mb-2">Coupon Orders</h3>
-                <p className="text-3xl font-black text-purple-600">{Object.values(reportData.couponsByDate).reduce((a, b) => a + b, 0)}</p>
+                <h3 className="text-gray-500 font-bold uppercase text-xs tracking-widest mb-2">Total Order Delivered</h3>
+                <p className="text-3xl font-black text-purple-600">{reportData.deliveredOrdersCount}</p>
               </div>
             </div>
 
             <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
-              {/* Sales by Date */}
-              <div className="bg-white p-8  border border-gray-100 shadow-sm">
-                <h3 className="text-xl font-black text-gray-800 mb-6 flex items-center gap-2"><Calendar size={20} className="text-emerald-500" /> Sales by Date</h3>
-                <div className="overflow-y-auto max-h-80 custom-scrollbar">
+              {/* Filtered Orders Table */}
+              <div className="bg-white p-8 border border-gray-100 shadow-sm">
+                <h3 className="text-xl font-black text-gray-800 mb-6 flex items-center gap-2"><ShoppingBag size={20} className="text-blue-600" /> Recent Orders</h3>
+                <div className="overflow-x-auto max-h-80 custom-scrollbar">
                   <table className="w-full text-left border-collapse">
-                    <thead className="text-xs font-black text-gray-400 uppercase tracking-widest sticky top-0 bg-white">
-                      <tr><th className="py-3 border-b-2">Date</th><th className="py-3 border-b-2 text-right">Revenue</th></tr>
+                    <thead className="text-[10px] font-black text-gray-400 uppercase tracking-widest sticky top-0 bg-white border-y border-gray-100">
+                      <tr>
+                        <th className="px-6 py-4">Date</th>
+                        <th className="px-6 py-4">Order ID</th>
+                        <th className="px-6 py-4 text-right">Amount</th>
+                        <th className="px-6 py-4 text-center">Status</th>
+                      </tr>
                     </thead>
-                    <tbody>
-                      {Object.entries(reportData.salesByDate).length === 0 ? (
-                        <tr><td colSpan={2} className="text-center py-8 text-gray-400 italic">No sales in this period</td></tr>
+                    <tbody className="divide-y divide-gray-50">
+                      {reportData.filteredOrders.length === 0 ? (
+                        <tr><td colSpan={4} className="text-center py-8 text-gray-400 italic">No orders found in this period</td></tr>
                       ) : (
-                        Object.entries(reportData.salesByDate).map(([date, total]) => (
-                          <tr key={date} className="border-b border-gray-50 hover:bg-gray-50/50">
-                            <td className="py-3 font-medium text-gray-600">{date}</td>
-                            <td className="py-3 font-bold text-gray-800 text-right">৳{total.toFixed(2)}</td>
+                        reportData.filteredOrders.map(order => (
+                          <tr key={order.id} className="hover:bg-gray-50/50 transition-colors">
+                            <td className="px-6 py-4 font-bold text-gray-600 text-sm">{new Date(order.date).toLocaleDateString()}</td>
+                            <td className="px-6 py-4 font-black text-gray-800 text-sm">#{order.id}</td>
+                            <td className="px-6 py-4 font-black text-gray-900 text-sm text-right">৳{order.total.toFixed(2)}</td>
+                            <td className="px-6 py-4 text-center">
+                              <span className={`px-3 py-1 text-[10px] font-black uppercase tracking-widest border rounded-full ${order.status === 'Pending' ? 'bg-yellow-50 text-yellow-600 border-yellow-100' :
+                                order.status === 'Processing' ? 'bg-blue-50 text-blue-600 border-blue-100' :
+                                  order.status === 'Delivered' ? 'bg-emerald-50 text-emerald-600 border-emerald-100' :
+                                    'bg-red-50 text-red-600 border-red-100'
+                                }`}>{order.status}</span>
+                            </td>
                           </tr>
                         ))
                       )}
@@ -1688,6 +1799,8 @@ CREATE POLICY "Public read blog" ON public.blog_posts FOR SELECT USING (true);`;
                 </div>
               </div>
             </div>
+
+
           </div>
         )}
 
@@ -1732,7 +1845,15 @@ CREATE POLICY "Public read blog" ON public.blog_posts FOR SELECT USING (true);`;
                   </div>
                   <div className="flex justify-end gap-3 pt-6 border-t border-gray-100">
                     <button type="button" onClick={closeForms} className="px-6 py-3 text-slate-400 font-bold uppercase text-[11px] hover:text-slate-600">Cancel</button>
-                    <button type="submit" className="bg-black text-white px-10 py-3  font-black uppercase text-[11px] shadow-lg transition-all hover:bg-gray-800">Save Page</button>
+                    <button type="submit" disabled={isSaving} className={`bg-black text-white px-10 py-3  font-black uppercase text-[11px] shadow-lg transition-all hover:bg-gray-800 flex items-center gap-2 ${isSaving ? 'opacity-70 cursor-not-allowed' : ''}`}>
+                      {isSaving ? (
+                        <>
+                          <Loader2 size={14} className="animate-spin" /> Saving...
+                        </>
+                      ) : (
+                        'Save Page'
+                      )}
+                    </button>
                   </div>
                 </form>
               ) : (
@@ -1863,7 +1984,68 @@ CREATE POLICY "Public read blog" ON public.blog_posts FOR SELECT USING (true);`;
               <>
                 <div className="flex justify-between items-center">
                   <div><h2 className="text-2xl font-black text-slate-800 tracking-tight">Products</h2><p className="text-slate-400 text-sm">Manage your product catalog.</p></div>
-                  <button onClick={() => setIsAdding('product')} className="bg-black text-white px-8 py-3.5  font-black uppercase text-[11px] flex items-center gap-2 shadow-xl hover:bg-gray-800 transition-all"><Plus size={18} /> Add Product</button>
+                  <div className="flex items-center gap-3">
+                    <button onClick={async () => {
+                      if (!confirm("Are you sure you want to regenerate SKUs for ALL products? This cannot be undone.")) return;
+                      setIsSaving(true);
+                      try {
+                        const getAbbr = (text: string) => {
+                          if (!text) return 'VAR';
+                          const t = text.toUpperCase().trim();
+                          if (t.includes(' ')) return t.split(' ').map(w => w[0]).join('');
+                          if (t.length <= 3) return t;
+                          const consonants = t.replace(/[AEIOU]/g, '');
+                          if (consonants.length >= 3) return consonants.substring(0, 3);
+                          return t.substring(0, 3);
+                        };
+
+                        let updatedCount = 0;
+                        for (const p of products) {
+                          const catObj = categories.find(c => c.name === p.category || c.id === p.category);
+                          const catPart = (catObj ? catObj.name : (p.category || 'GEN')).substring(0, 3).toUpperCase();
+                          const namePart = (p.name || 'PROD').substring(0, 3).toUpperCase();
+
+                          let newVariants = p.variants;
+                          // Always update Base SKU to smart format: CAT-PROD
+                          let newSku = `${catPart}-${namePart}`;
+
+                          if (p.variants && p.variants.length > 0) {
+                            newVariants = p.variants.map((v, idx) => {
+                              const sortedKeys = Object.keys(v.attributeValues).sort();
+                              const attrParts = sortedKeys.map(k => getAbbr(v.attributeValues[k]));
+                              return {
+                                ...v,
+                                sku: [catPart, namePart, ...attrParts].join('-')
+                              };
+                            });
+                          }
+
+                          // Direct Supabase update to avoid repeated fetches
+                          const { error } = await supabase.from('products').update({
+                            variants: newVariants,
+                            sku: newSku
+                          }).eq('id', p.id);
+
+                          if (error) {
+                            console.error(`Failed to update product ${p.name}:`, error);
+                          } else {
+                            updatedCount++;
+                          }
+                        }
+
+                        await refreshAllData();
+                        alert(`Successfully regenerated SKUs for ${updatedCount} products!`);
+                      } catch (e: any) {
+                        console.error(e);
+                        alert("Error: " + e.message);
+                      } finally {
+                        setIsSaving(false);
+                      }
+                    }} className="bg-white border border-slate-200 text-slate-600 px-4 py-3.5 font-bold uppercase text-[10px] flex items-center gap-2 shadow-sm hover:bg-slate-50 transition-all">
+                      <RefreshCw size={14} /> Regenerate SKUs
+                    </button>
+                    <button onClick={() => setIsAdding('product')} className="bg-black text-white px-8 py-3.5  font-black uppercase text-[11px] flex items-center gap-2 shadow-xl hover:bg-gray-800 transition-all"><Plus size={18} /> Add Product</button>
+                  </div>
                 </div>
                 <div className="bg-white  border border-gray-100 overflow-hidden shadow-sm">
                   <table className="w-full text-left">
@@ -2126,8 +2308,7 @@ CREATE POLICY "Public read blog" ON public.blog_posts FOR SELECT USING (true);`;
                     <button onClick={handleProductSubmit} disabled={isSaving} className={`bg-black text-white px-10 py-3.5  font-black uppercase text-xs shadow-lg hover:bg-gray-800 flex items-center gap-2 transition-all ${isSaving ? 'opacity-70 cursor-not-allowed' : ''}`}>
                       {isSaving ? (
                         <>
-                          <div className="animate-spin  h-4 w-4 border-2 border-white border-t-transparent"></div>
-                          Saving...
+                          <Loader2 size={14} className="animate-spin" /> Saving...
                         </>
                       ) : (
                         <>
@@ -2182,7 +2363,15 @@ CREATE POLICY "Public read blog" ON public.blog_posts FOR SELECT USING (true);`;
                       </div>
                       <div className="flex justify-end items-center gap-4 pt-4 border-t border-gray-100">
                         <button type="button" onClick={closeForms} className="text-gray-400 hover:text-gray-600 font-black uppercase text-[13px] tracking-widest transition-colors px-4 py-2">CANCEL</button>
-                        <button type="submit" className="bg-black text-white px-10 py-3  font-black uppercase text-[13px] tracking-widest shadow-lg transition-all hover:bg-gray-800 active:scale-95">SAVE ATTRIBUTE</button>
+                        <button type="submit" disabled={isSaving} className={`bg-black text-white px-10 py-3  font-black uppercase text-[13px] tracking-widest shadow-lg transition-all hover:bg-gray-800 active:scale-95 flex items-center gap-2 ${isSaving ? 'opacity-70 cursor-not-allowed' : ''}`}>
+                          {isSaving ? (
+                            <>
+                              <Loader2 size={14} className="animate-spin" /> Saving...
+                            </>
+                          ) : (
+                            'SAVE ATTRIBUTE'
+                          )}
+                        </button>
                       </div>
                     </form>
                   </div>
@@ -2247,7 +2436,15 @@ CREATE POLICY "Public read blog" ON public.blog_posts FOR SELECT USING (true);`;
                       </div>
                       <div className="flex justify-end gap-3 pt-4 border-t border-gray-100">
                         <button type="button" onClick={closeForms} className="px-6 py-3 text-slate-400 font-bold uppercase text-[11px] hover:text-slate-600 transition-colors">Cancel</button>
-                        <button type="submit" className="bg-black text-white px-10 py-3  font-black uppercase text-[11px] shadow-lg transition-all hover:bg-gray-800 hover:scale-105 active:scale-95">Save Category</button>
+                        <button type="submit" disabled={isSaving} className={`bg-black text-white px-10 py-3  font-black uppercase text-[11px] shadow-lg transition-all hover:bg-gray-800 hover:scale-105 active:scale-95 flex items-center gap-2 ${isSaving ? 'opacity-70 cursor-not-allowed' : ''}`}>
+                          {isSaving ? (
+                            <>
+                              <Loader2 size={14} className="animate-spin" /> Saving...
+                            </>
+                          ) : (
+                            'Save Category'
+                          )}
+                        </button>
                       </div>
                     </form>
                   </div>
@@ -2329,7 +2526,17 @@ CREATE POLICY "Public read blog" ON public.blog_posts FOR SELECT USING (true);`;
                       </div>
                     </div>
                   </div>
-                  <div className="flex justify-end gap-3"><button type="button" onClick={closeForms} className="px-6 py-3 text-slate-400 font-bold uppercase text-[11px]">Cancel</button><button type="submit" className="bg-black text-white px-10 py-3  font-black uppercase text-[11px]">Save Brand</button></div>
+                  <div className="flex justify-end gap-3"><button type="button" onClick={closeForms} className="px-6 py-3 text-slate-400 font-bold uppercase text-[11px]">Cancel</button>
+                    <button type="submit" disabled={isSaving} className={`bg-black text-white px-10 py-3  font-black uppercase text-[11px] flex items-center gap-2 ${isSaving ? 'opacity-70 cursor-not-allowed' : ''}`}>
+                      {isSaving ? (
+                        <>
+                          <Loader2 size={14} className="animate-spin" /> Saving...
+                        </>
+                      ) : (
+                        'Save Brand'
+                      )}
+                    </button>
+                  </div>
                 </form>
               )}
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -2447,7 +2654,22 @@ CREATE POLICY "Public read blog" ON public.blog_posts FOR SELECT USING (true);`;
                       <div className="flex justify-between items-center"><h4 className="text-xs font-black text-gray-400 uppercase tracking-widest flex items-center gap-2"><Package size={16} className="text-black" /> Items Purchased</h4>{isEditingOrder && (<div className="relative"><button onClick={() => setShowProductPicker(!showProductPicker)} className="flex items-center gap-2 bg-black text-white px-5 py-2  text-[10px] font-black uppercase tracking-widest hover:bg-gray-800 transition-all shadow-lg active:scale-95"><Plus size={14} /> Add Item</button>{showProductPicker && (<div className="absolute right-0 mt-3 w-96 bg-white border border-gray-200  shadow-2xl p-6 z-[110] animate-in slide-in-from-top-2 duration-300"><div className="relative mb-5"><Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-300" size={18} /><input autoFocus placeholder="Search products..." className="w-full pl-12 pr-4 py-3.5 bg-gray-50 border border-gray-100  text-sm font-bold outline-none focus:ring-4 focus:ring-gray-100 focus:bg-white focus:border-black transition-all" value={orderProductSearch} onChange={(e) => setOrderProductSearch(e.target.value)} /></div><div className="space-y-3 max-h-80 overflow-y-auto custom-scrollbar pr-1">{orderSearchFilteredProducts.map(p => (<div key={p.id} className="p-4 bg-gray-50/50  border border-gray-100 transition-all"><div className="flex justify-between items-center mb-3"><div className="flex items-center gap-3"><div className="w-10 h-10 bg-white  p-1 border border-gray-100 flex items-center justify-center"><img src={p.images?.[0] || ''} className="max-h-full max-w-full object-contain" /></div><span className="text-xs font-black text-gray-800 leading-tight">{p.name}</span></div><span className="text-[11px] font-black text-black bg-white px-2 py-1  border border-gray-200 shadow-sm">৳{p.price}</span></div>{p.variants && p.variants.length > 0 ? (<div className="flex flex-wrap gap-2">{p.variants.map(v => (<button key={v.id} onClick={() => addProductToOrder(p, v)} className="text-[9px] font-black uppercase tracking-widest bg-gray-50 text-gray-700 px-3 py-1.5  border border-gray-200 hover:bg-black hover:text-white hover:border-black transition-all">{Object.values(v.attributeValues).join(' / ')}</button>))}</div>) : (<button onClick={() => addProductToOrder(p)} className="w-full text-[9px] font-black uppercase tracking-widest bg-black text-white py-2  hover:bg-gray-800 transition-all shadow-md active:scale-95">Add Piece</button>)}</div>))}{orderSearchFilteredProducts.length === 0 && orderProductSearch && (<div className="text-center py-10"><Search size={32} className="mx-auto text-gray-200 mb-2" /><p className="text-xs font-bold text-gray-400 italic">No products matched "{orderProductSearch}"</p></div>)}</div></div>)}</div>)}</div>
                       <div className="space-y-3">{(isEditingOrder ? editingOrderData?.items : viewingOrder.items)?.map((item, idx) => (<div key={idx} className="flex justify-between items-center p-5 bg-gray-50/50  border border-gray-50 group hover:bg-gray-100 transition-all duration-300"><div className="flex items-center gap-5"><div className="w-14 h-14 bg-white  p-2 flex items-center justify-center border border-gray-100 shadow-sm overflow-hidden group-hover:scale-105 transition-transform"><img src={item.selectedVariantImage || item.images?.[0] || ''} className="max-h-full max-w-full object-contain" /></div><div><p className="font-black text-gray-800 text-[15px] leading-tight mb-1">{item.name}</p>{item.selectedVariantName && (<p className="text-[10px] font-black text-gray-500 uppercase tracking-widest inline-block bg-white px-2 py-0.5  border border-gray-200">{item.selectedVariantName}</p>)}</div></div><div className="flex items-center gap-10"><div className="flex items-center gap-5">{isEditingOrder ? (<div className="flex items-center bg-white border border-gray-200  p-1 shadow-sm ring-4 ring-gray-100"><button onClick={() => changeOrderItemQty(idx, -1)} className="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-red-500 transition-colors"><Minus size={14} /></button><span className="w-8 text-center text-sm font-black text-[#1a3a34]">{item.quantity}</span><button onClick={() => changeOrderItemQty(idx, 1)} className="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-black transition-colors"><Plus size={14} /></button></div>) : (<p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Qty: <span className="text-gray-700 text-sm ml-1">{item.quantity}</span></p>)}</div><div className="text-right min-w-[120px]"><div className="text-base font-black text-[#1a3a34]">৳{(item.price * item.quantity).toFixed(2)}</div><div className="text-[10px] font-bold text-gray-400">৳{item.price.toFixed(2)} / unit</div></div>{isEditingOrder && (<button onClick={() => removeOrderItem(idx)} className="w-10 h-10 flex items-center justify-center bg-white text-gray-300 hover:text-red-500 hover:bg-red-50 border border-gray-100  transition-all shadow-sm active:scale-90"><Trash2 size={18} /></button>)}</div></div>))}</div>
                     </div>
-                    {isEditingOrder && (<div className="pt-12 flex gap-5 border-t border-gray-50"><button onClick={closeForms} className="flex-1 bg-gray-50 text-gray-400 font-black py-5  uppercase text-xs tracking-widest hover:bg-gray-100 transition-all active:scale-95">Discard Changes</button><button onClick={saveOrderEdits} className="flex-[2] bg-black text-white font-black py-5  uppercase text-xs tracking-widest shadow-xl shadow-gray-200 hover:bg-gray-800 transition-all flex items-center justify-center gap-3 active:scale-[0.98]"><Check size={20} /> Update Order</button></div>)}
+                    {isEditingOrder && (
+                      <div className="pt-12 flex gap-5 border-t border-gray-50">
+                        <button onClick={closeForms} className="flex-1 bg-gray-50 text-gray-400 font-black py-5  uppercase text-xs tracking-widest hover:bg-gray-100 transition-all active:scale-95">Discard Changes</button>
+                        <button onClick={saveOrderEdits} disabled={isSaving} className={`flex-[2] bg-black text-white font-black py-5  uppercase text-xs tracking-widest shadow-xl shadow-gray-200 hover:bg-gray-800 transition-all flex items-center justify-center gap-3 active:scale-[0.98] ${isSaving ? 'opacity-70 cursor-not-allowed' : ''}`}>
+                          {isSaving ? (
+                            <>
+                              <Loader2 size={20} className="animate-spin" /> Updating...
+                            </>
+                          ) : (
+                            <>
+                              <Check size={20} /> Update Order
+                            </>
+                          )}
+                        </button>
+                      </div>
+                    )}
                   </div>
                 </div>
               )}
@@ -2473,7 +2695,17 @@ CREATE POLICY "Public read blog" ON public.blog_posts FOR SELECT USING (true);`;
                     <div className="space-y-2"><label className="text-[10px] font-black text-gray-400 uppercase ml-1">Expiry Date</label><input required type="date" value={couponForm.expiryDate} onChange={e => setCouponForm({ ...couponForm, expiryDate: e.target.value })} className="w-full bg-slate-50 border border-slate-100  px-5 py-3.5 text-sm font-bold" /></div>
                     <div className="space-y-2 flex items-center pt-6 ml-4"><label className="flex items-center gap-3 cursor-pointer"><input type="checkbox" checked={couponForm.autoApply} onChange={e => setCouponForm({ ...couponForm, autoApply: e.target.checked })} className="w-5 h-5 accent-black" /><span className="text-xs font-black text-gray-500 uppercase">Auto-Apply</span></label></div>
                   </div>
-                  <div className="flex justify-end gap-3"><button type="button" onClick={closeForms} className="px-6 py-3 text-slate-400 font-bold uppercase text-[11px]">Cancel</button><button type="submit" className="bg-black text-white px-10 py-3  font-black uppercase text-[11px] hover:bg-gray-800 transition-all">Save Coupon</button></div>
+                  <div className="flex justify-end gap-3"><button type="button" onClick={closeForms} className="px-6 py-3 text-slate-400 font-bold uppercase text-[11px]">Cancel</button>
+                    <button type="submit" disabled={isSaving} className={`bg-black text-white px-10 py-3  font-black uppercase text-[11px] hover:bg-gray-800 transition-all flex items-center gap-2 ${isSaving ? 'opacity-70 cursor-not-allowed' : ''}`}>
+                      {isSaving ? (
+                        <>
+                          <Loader2 size={14} className="animate-spin" /> Saving...
+                        </>
+                      ) : (
+                        'Save Coupon'
+                      )}
+                    </button>
+                  </div>
                 </form>
               )}
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -2518,7 +2750,17 @@ CREATE POLICY "Public read blog" ON public.blog_posts FOR SELECT USING (true);`;
                   <form onSubmit={handleReplySubmit} className="bg-white  w-full max-w-lg p-10 shadow-2xl space-y-6 animate-in zoom-in-95">
                     <div className="flex justify-between items-center"><h3 className="text-xl font-black text-gray-800 uppercase tracking-widest">Merchant Reply</h3><button type="button" onClick={() => setReplyingTo(null)} className="text-gray-300 hover:text-red-500"><X size={24} /></button></div>
                     <textarea value={replyText} onChange={e => setReplyText(e.target.value)} required placeholder="Write your response here..." className="w-full bg-gray-50 border border-gray-100  p-6 h-48 text-sm font-medium outline-none focus:border-black transition-all" />
-                    <div className="flex gap-4"><button type="button" onClick={() => setReplyingTo(null)} className="flex-1 bg-gray-50 text-gray-400 font-black py-4  text-xs uppercase">Cancel</button><button type="submit" className="flex-1 bg-black text-white font-black py-4  text-xs uppercase tracking-widest shadow-lg hover:bg-gray-800 transition-all">Submit Reply</button></div>
+                    <div className="flex gap-4"><button type="button" onClick={() => setReplyingTo(null)} className="flex-1 bg-gray-50 text-gray-400 font-black py-4  text-xs uppercase">Cancel</button>
+                      <button type="submit" disabled={isSaving} className={`flex-1 bg-black text-white font-black py-4  text-xs uppercase tracking-widest shadow-lg hover:bg-gray-800 transition-all flex items-center justify-center gap-2 ${isSaving ? 'opacity-70 cursor-not-allowed' : ''}`}>
+                        {isSaving ? (
+                          <>
+                            <Loader2 size={14} className="animate-spin" /> Sending...
+                          </>
+                        ) : (
+                          'Submit Reply'
+                        )}
+                      </button>
+                    </div>
                   </form>
                 </div>
               )}
@@ -2571,7 +2813,17 @@ CREATE POLICY "Public read blog" ON public.blog_posts FOR SELECT USING (true);`;
                         <div className="space-y-2"><label className="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Outside Dhaka (৳)</label><input type="number" value={shipForm.outsideDhaka} onChange={e => setShipForm({ ...shipForm, outsideDhaka: parseFloat(e.target.value) })} className="w-full bg-gray-50 border border-gray-100  px-5 py-3 text-sm font-black outline-none focus:bg-white focus:border-black transition-all" /></div>
                       </div>
                     </div>
-                    <div className="pt-4 border-t flex justify-end"><button onClick={() => updateShippingSettings(shipForm)} className="bg-black text-white font-black px-8 py-3  uppercase tracking-widest text-[10px] shadow-lg shadow-gray-200 hover:bg-gray-800 transition-all">Update Fees</button></div>
+                    <div className="pt-4 border-t flex justify-end">
+                      <button onClick={handleShippingSubmit} disabled={isSaving} className={`bg-black text-white font-black px-8 py-3  uppercase tracking-widest text-[10px] shadow-lg shadow-gray-200 hover:bg-gray-800 transition-all flex items-center gap-2 ${isSaving ? 'opacity-70 cursor-not-allowed' : ''}`}>
+                        {isSaving ? (
+                          <>
+                            <Loader2 size={14} className="animate-spin" /> Updating...
+                          </>
+                        ) : (
+                          'Update Fees'
+                        )}
+                      </button>
+                    </div>
                   </div>
 
                   {/* Store Profile Card */}
@@ -2682,7 +2934,17 @@ CREATE POLICY "Public read blog" ON public.blog_posts FOR SELECT USING (true);`;
                         </div>
                       </div>
                     </div>
-                    <div className="pt-6 border-t flex justify-end"><button onClick={() => updateStoreInfo(storeForm)} className="bg-black text-white font-black px-8 py-3  uppercase tracking-widest text-[10px] shadow-lg shadow-gray-200 hover:bg-gray-800 transition-all">Update Config</button></div>
+                    <div className="pt-6 border-t flex justify-end">
+                      <button onClick={handleStoreInfoSubmit} disabled={isSaving} className={`bg-black text-white font-black px-8 py-3  uppercase tracking-widest text-[10px] shadow-lg shadow-gray-200 hover:bg-gray-800 transition-all flex items-center gap-2 ${isSaving ? 'opacity-70 cursor-not-allowed' : ''}`}>
+                        {isSaving ? (
+                          <>
+                            <Loader2 size={14} className="animate-spin" /> Updating...
+                          </>
+                        ) : (
+                          'Update Config'
+                        )}
+                      </button>
+                    </div>
                   </div>
                 </div>
 
