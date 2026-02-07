@@ -1268,7 +1268,7 @@ CREATE POLICY "Public read blog" ON public.blog_posts FOR SELECT USING (true);`;
         <body>
           <div class="header">
             <div class="company">
-              <h1>SMart Grocery</h1>
+              <h1>Vera & Velour</h1>
               <p>Dhaka, Bangladesh</p>
             </div>
             <div class="invoice-details">

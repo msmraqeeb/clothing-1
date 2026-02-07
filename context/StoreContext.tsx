@@ -156,10 +156,10 @@ export const StoreProvider: React.FC<{ children: ReactNode }> = ({ children }) =
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
   const [shippingSettings, setShippingSettings] = useState<ShippingSettings>({ insideDhaka: 80, outsideDhaka: 150 });
   const [storeInfo, setStoreInfo] = useState<StoreInfo>({
-    name: 'SMart',
+    name: 'V&V',
     address: '1418 River Drive, Suite 35, Cottonhall, CA 96222',
     phone: '+0 123 456 789',
-    email: 'support@smart.com',
+    email: 'support@vnv.com',
     socials: {},
     floatingWidget: {
       isVisible: true,
